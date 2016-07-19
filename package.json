@@ -1,0 +1,42 @@
+{
+  "name": "muleify",
+  "version": "1.0.0",
+  "description": "Website bundler.",
+  "main": "index.js",
+  "bin": {
+    "muleify": "./cli.js"
+  },
+  "scripts": {
+    "start": "",
+    "test": "node test/general.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlexanderElias/muleify.git"
+  },
+  "keywords": [
+    "webpack",
+    "webpacker",
+    "webpacks",
+    "webbundle",
+    "webbundler",
+    "webbundles",
+    "web-pack",
+    "web-packer",
+    "web-packs",
+    "web-bundle",
+    "web-bundler",
+    "web-bundles"
+  ],
+  "author": "Alexander Elias",
+  "license": "MPL-2.0",
+  "bugs": {
+    "url": "https://github.com/AlexanderElias/muleify/issues"
+  },
+  "homepage": "https://github.com/AlexanderElias/muleify#readme",
+  "dependencies": {
+    "commander": "^2.9.0",
+    "fs-extra": "^0.30.0",
+    "html-minify": "^0.3.2"
+  }
+}

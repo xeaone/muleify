@@ -1,0 +1,20 @@
+{
+	"muleifyRegExpString": "(<!--\\s{)(.*)(}\\s-->)",
+	"isMuleifyableRegExpString": "(<!--\\s{)(.*)(}\\s-->)",
+	"commentRegExpString": "(<!--)|(-->)|(\\/\\*)|(\\*\\/)",
+
+	"ignoreables": [
+		"^\\.",
+		"\\/\\.",
+		"node_modules"
+	],
+
+	"startDelimiterRegExp": "(<!--\\s{)|(\/\\*\\s{)",
+	"endDelimiterRegExp": "(}\\s-->)|(}\\s\\*\/)",
+
+	"startIncludeRegExpString": "((<!--\\s{)|(\/\\*\\s{))(\\s?)(\"|\\')(include)(\"|\\')(:)(\\s?)(\"|\\')(",
+	"endIncludeRegExpString": ")(\"|\\')(\\s?)((}\\s*\/)|(}\\s-->))",
+
+	"includeRegExpString": "((\\<\\!\\-\\-)|(\/\\*))(\\s|)(\\{(\\s|)include\\:(\\s|)(\\'|\")[a-zA-Z0-9](\"|\\')(\\s|)\\})(\\s|)((\\*\/)|(\\-\\-\\>))",
+	"includePlaceholderRegExpString": "((\\<\\!\\-\\-)|(\/\\*))(\\s|)(\\{(\\s|)include\\:(\\s|)(\\'|\")(placeholder)(\"|\\')(\\s|)\\})(\\s|)((\\*\/)|(\\-\\-\\>))"
+}
