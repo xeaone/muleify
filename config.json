@@ -1,6 +1,5 @@
 {
-	"muleifyRegExpString": "(<!--\\s{)(.*)(}\\s-->)",
-	"isMuleifyableRegExpString": "(<!--\\s{)(.*)(}\\s-->)",
+	"muleifyRegExpString": "((<!--\\s{)|(\/\\*))(.*)((\\*\/)|(}\\s-->))",
 	"commentRegExpString": "(<!--)|(-->)|(\\/\\*)|(\\*\\/)",
 
 	"ignoreables": [
@@ -12,9 +11,8 @@
 	"startDelimiterRegExp": "(<!--\\s{)|(\/\\*\\s{)",
 	"endDelimiterRegExp": "(}\\s-->)|(}\\s\\*\/)",
 
-	"startIncludeRegExpString": "((<!--\\s{)|(\/\\*\\s{))(\\s?)(\"|\\')(include)(\"|\\')(:)(\\s?)(\"|\\')(",
-	"endIncludeRegExpString": ")(\"|\\')(\\s?)((}\\s*\/)|(}\\s-->))",
+	"startIncludeRegExpString": "((<!--\\s{)|(\/\\*\\s{))(\\s?)(\"|\\')(include)(\"|\\')(:)(\\s?)(\"|\\')",
+	"endIncludeRegExpString": "(\"|\\')(\\s?)((}\\s*\/)|(}\\s-->))",
 
-	"includeRegExpString": "((\\<\\!\\-\\-)|(\/\\*))(\\s|)(\\{(\\s|)include\\:(\\s|)(\\'|\")[a-zA-Z0-9](\"|\\')(\\s|)\\})(\\s|)((\\*\/)|(\\-\\-\\>))",
-	"includePlaceholderRegExpString": "((\\<\\!\\-\\-)|(\/\\*))(\\s|)(\\{(\\s|)include\\:(\\s|)(\\'|\")(placeholder)(\"|\\')(\\s|)\\})(\\s|)((\\*\/)|(\\-\\-\\>))"
+	"includeRegExpString": "((<!--\\s{)|(\/\\*\\s{))(\\s?)(\"|\\')(include)(\"|\\')(:)(\\s?)(\"|\\')(.*?)(\"|\\')(\\s?)((}\\s*\/)|(}\\s-->))"
 }

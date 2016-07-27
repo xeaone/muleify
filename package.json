@@ -4,7 +4,7 @@
   "description": "Website bundler.",
   "main": "index.js",
   "bin": {
-    "muleify": "./cli.js"
+    "muleify": "bin/muleify.js"
   },
   "scripts": {
     "start": "",
@@ -35,6 +35,9 @@
   },
   "homepage": "https://github.com/AlexanderElias/muleify#readme",
   "dependencies": {
+    "babel-core": "^6.11.4",
+    "bluebird": "^3.4.1",
+    "chalk": "^1.1.3",
     "commander": "^2.9.0",
     "fs-extra": "^0.30.0",
     "html-minify": "^0.3.2"

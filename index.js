@@ -1,175 +1,125 @@
 'use strict';
 
-var Path = require('path');
-var Fse = require('fs-extra');
-var Config = require('./config');
+const Bluebird = require('bluebird');
+const Path = require('path');
+const Fse = require('fs-extra');
+const Config = require('./config');
+const MuleifyItem = require('./muleify-item');
 
-var IGNOREABLES = ignoreablesRegExp();
-var PATH_ABSOLUTE = null;
+const IGNOREABLES = ignoreablesRegExp();
 
 exports.pack = function (path) {
-	if (path === null) throw 'Error: path required';
-	if (path === '') throw 'Error: path required';
+	var pathObject = null;
 
-	path = Path.normalize(path);
+	return createPaths(path)
+	.then(function (data) {
+		pathObject = data;
+		return srcDirectoryExists(pathObject.cwd);
+	})
+	.then(function () {
+		return getMuleifyItems(pathObject.src);
+	})
+	.then(function (muleifyItems) {
+		var includes = [];
 
-	if (Path.isAbsolute(path)) PATH_ABSOLUTE = path;
-	else PATH_ABSOLUTE = process.cwd();
-
-	var options = {
-		filter: function (path) {
-			var pathRelative = path.replace(PATH_ABSOLUTE + Path.sep, '');
-			return !IGNOREABLES.test(pathRelative);
-		}
-	};
-
-	var fileObjects = {};
-
-	var fileObject = null;
-	var fileString = null;
-	var filePath = null;
-
-	Fse.walk(PATH_ABSOLUTE, options)
-		.on('data', function (item) {
-			if (item.stats.isFile()) {
-				filePath = item.path;
-				fileString = getFileString(filePath);
-				fileObject = getFileObject(fileString);
-
-				fileObject.path = filePath;
-				fileObject.string = fileString;
-
-				fileObjects[fileObject.name] = fileObject;
-			}
-		})
-		.on('end', function () {
-			var fos = fileObjects;
-
-			for (var key in fos) {
-				if (fos.hasOwnProperty(key)) {
-					if (fos[key].include.length > 0) fos[key] = include(fos[key], fos);
-
-				}
-			}
-
-			for (var key in fos) {
-				if (fos.hasOwnProperty(key)) {
-					if (fos[key].include.length > 0) {
-						if (isInherit(fos[key])) {
-							//TODO: inherit
-						}
-					}
-				}
-			}
-
-			//TODO: variables
-			//TODO: write files
+		muleifyItems.forEach(function (item) {
+			includes.push.apply(includes, item.includes); //FIXME: adds duplicate includes
 		});
+
+		includes.forEach(function (item) {
+			muleifyItems.delete(item.absolute);
+		});
+
+		return muleifyItems;
+	})
+	.catch(function (error) {
+		throw error;
+	});
+};
+
+exports.min = function (muleifyItems) {
+	
+};
+
+exports.es6 = function (muleifyItems) {
+
 };
 
 /*
 	internal
 */
+function createPaths (path) {
+	return new Promise(function (resolve) {
+		var cwdPath = null;
+		var srcPath = null;
 
-// function inherit (child, parent) {
-// 	var includePlaceholderRegExpString = Config.includePlaceholderRegExpString;
-// 	var includePlaceholderRegExp = new RegExp(includePlaceholderRegExpString);
-// 	return parent.replace(includePlaceholderRegExp, child);
-// }
-//
-// function include (item) {
-//
-// 	var includeNames = getIncludeNames(item.data);
-//
-// 	var includePartialRegExpString = Config.includePartialRegExpStringStart + name + Config.includePartialRegExpStringEnd;
-// 	var includePartialRegExp = new RegExp(includePartialRegExpString, 'g');
-// 	return parentData.replace(includePartialRegExp, childData);
-// }
+		if (path === null || path === undefined || path === '') path = Path.resolve('.');
 
-function include (fo, fos) {
-	var startIncludeRegExpString = Config.startIncludeRegExpString;
-	var endIncludeRegExpString = Config.endIncludeRegExpString;
+		path = Path.normalize(path);
 
-	var includes = fo.include;
-	var includeRegExp = null;
-	var includeString = null;
-	var includeName = null;
+		if (Path.isAbsolute(path)) cwdPath = path;
+		else cwdPath = Path.resolve(path);
 
-	var i = 0;
+		srcPath = Path.join(cwdPath, 'src');
 
-	for (i; i < includes.length; i++) {
-		includeName = includes[i];
-
-		if (includeName !== 'inheritor') {
-			includeString = fos[includeName].string;
-			includeRegExp = new RegExp(startIncludeRegExpString + includeName + endIncludeRegExpString);
-			fo.string = fo.string.replace(includeRegExp, includeString);
-		}
-	}
-
-	//TODO: might need to check for includes again
-
-	return fo;
-}
-
-function getFileString (path) {
-	try { return Fse.readFileSync(path, 'utf8'); }
-	catch (e) { throw e; }
-}
-
-function getFileObject (string) {
-	if (!isMuleifyable(string)) return null;
-
-	var muleifyRegExpString = Config.muleifyRegExpString;
-	var muleifyRegExp = new RegExp(muleifyRegExpString, 'g');
-	var muleifyStrings = string.match(muleifyRegExp);
-	var muleifyObject = { include: [], variable: [] };
-
-	muleifyStrings.forEach(function(item) {
-		item = item.cleanSpecials();
-
-		try { item = JSON.prep(item); item = JSON.parse(item); }
-		catch (e) { throw e; }
-
-		for (var key in item) {
-			if (key === 'include' || key === 'variable')  muleifyObject[key].push(item[key]);
-			else muleifyObject[key] = item[key];
-		}
+		resolve({ cwd: cwdPath, src: srcPath });
 	});
-
-	return muleifyObject;
 }
 
-function isMuleifyable (string) {
-	var muleifyRegExpString = Config.muleifyRegExpString;
-	var muleifyRegExp = new RegExp(muleifyRegExpString);
-	return muleifyRegExp.test(string);
+function srcDirectoryExists (path) {
+	path = path + Path.sep + 'src';
+
+	return new Promise (function (resolve, reject) {
+		Fse.stat(path, function (error, stats) {
+			if (error === null) resolve();
+			else if (error.code === 'ENOENT' || stats.isFile()) reject('Error: missing \"src\" directory');
+			else throw error;
+		});
+	});
+}
+
+function getMuleifyItems (path) {
+	return new Promise (function (resolve, reject) {
+		var muleifyItemPromises = [];
+		var muleifyItems = new Map();
+
+		var options = {
+			filter: function (currentPath) {
+				var pathRelative = currentPath.replace(path + Path.sep, '');
+				return !IGNOREABLES.test(pathRelative);
+			}
+		};
+
+		Fse.walk(path, options)
+		.on('data', function (item) {
+			if (item.stats.isFile()) {
+				muleifyItemPromises.push(
+					MuleifyItem(item.path, path).then(function (self) {
+						muleifyItems.set(self.readPath, self);
+					})
+				);
+			}
+		})
+		.on('end', function () {
+			Bluebird.all(muleifyItemPromises)
+			.then(function () {
+				resolve(muleifyItems);
+			});
+		})
+		.on('error', function (error) {
+			reject(error);
+		});
+	});
 }
 
 function ignoreablesRegExp () {
 	var ignoreables = Config.ignoreables;
-	var l = ignoreables.length;
-	var i = 0;
-
 	var res = '';
 
-	for (i; i < l; i++) {
-		if (i === 0) res = '(' + res + ignoreables[i];
-		else if (i === l - 1) res = res + '|' + ignoreables[i] + ')';
-		else res = res + '|' + ignoreables[i];
+	for (var i = 0; i < ignoreables.length; i++) {
+		if (i !== 0) res = res + '|';
+		res = res + ignoreables[i];
 	}
 
 	return new RegExp(res);
 }
-
-String.prototype.cleanSpecials = function () {
-	return this.replace(/[\n\r\t\b\f]/igm, '');
-};
-
-JSON.prep = function (string) {
-	var commentRegExpString = Config.commentRegExpString;
-	var commentRegExp = new RegExp(commentRegExpString, 'igm');
-	string = string.replace(commentRegExp, '');
-	string = string.replace(/\'/igm, '\"');
-	return string;
-};
