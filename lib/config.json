@@ -1,0 +1,31 @@
+{
+	"muleifyRegExpString": "((<!--\\s{)|(\/\\*))(.*)((\\*\/)|(}\\s-->))",
+	"commentRegExpString": "(<!--)|(-->)|(\\/\\*)|(\\*\\/)",
+
+	"allCommentsRegExpString": "(<!--(.*?)-->)|(\\/\\*(.*?)\\*\\/)",
+	"allWhiteSpaceRegExpString": "(\t)|(\r)|(\n)|(\/v)|(\f)",
+
+	"babelOptions": {
+		"compact": true,
+		"minified": true,
+		"comments": false,
+		"presets": ["es2015"]
+	},
+
+	"ignoreables": [
+		"node_modules",
+		"jspm_modules"
+	],
+
+	"dataCommentRegExpString": "((<!--\\s{)|(\/\\*\\s{))(.*?)((}\\s*\/)|(}\\s-->))",
+
+	"startDataRegExpString": "(<!--\\s{)|(\/\\*\\s{)",
+	"endDataRegExpString": "(}\\s-->)|(}\\s\\*\/)",
+
+	"startIncludeRegExpString": "((<!--\\s{)|(\/\\*\\s{))(\\s?)(\"|\\')(include)(\"|\\')(:)(\\s?)(\"|\\')",
+	"endIncludeRegExpString": "(\"|\\')(\\s?)((}\\s*\/)|(}\\s-->))",
+
+	"variableGetRegExpString": "((<!--\\s{)|(\/\\*\\s{))(\\s?)(\"|\\')(variable)(\"|\\')(:)(\\s?)(\"|\\')(.*?)(\"|\\')(\\s?)((}\\s*\/)|(}\\s-->))",
+	"variableSetRegExpString": "((<!--\\s{)|(\/\\*\\s{))(\\s?)(\"|\\')(variable)(\"|\\')(:)(\\s?)({)(.*?)(})(\\s?)((}\\s*\/)|(}\\s-->))",
+	"includeRegExpString": "((<!--\\s{)|(\/\\*\\s{))(\\s?)(\"|\\')(include)(\"|\\')(:)(\\s?)(\"|\\')(.*?)(\"|\\')(\\s?)((}\\s*\/)|(}\\s-->))"
+}

@@ -1,14 +1,14 @@
 {
   "name": "muleify",
   "version": "1.0.0",
-  "description": "Website bundler.",
+  "description": "Website bundler. Static site generator.",
   "main": "index.js",
   "bin": {
     "muleify": "bin/muleify.js"
   },
   "scripts": {
     "start": "",
-    "test": "node test/general.js"
+    "test": "node ./bin/muleify.js pack ./test"
   },
   "repository": {
     "type": "git",
@@ -26,7 +26,12 @@
     "web-packs",
     "web-bundle",
     "web-bundler",
-    "web-bundles"
+    "web-bundles",
+    "static",
+    "static-site",
+    "static-site-generator",
+    "muleify",
+    "mule"
   ],
   "author": "Alexander Elias",
   "license": "MPL-2.0",
@@ -36,10 +41,10 @@
   "homepage": "https://github.com/AlexanderElias/muleify#readme",
   "dependencies": {
     "babel-core": "^6.11.4",
-    "bluebird": "^3.4.1",
+    "babel-preset-es2015": "^6.9.0",
     "chalk": "^1.1.3",
     "commander": "^2.9.0",
-    "fs-extra": "^0.30.0",
-    "html-minify": "^0.3.2"
+    "fsep": "^1.2.2",
+    "when": "^3.7.7"
   }
 }

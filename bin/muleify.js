@@ -16,39 +16,23 @@ Commander
 	.option('-m, --min', 'Minifies html, css, js')
 	.option('-e, --es6', 'Compile es6 to es5')
 	.action(function (path, command) {
-		console.log(Chalk.cyan('\n\t\tPackaging The Mule\n'));
+		console.log(Chalk.cyan('\n\t\tPacking The Mule\n'));
 
 		Muleify.pack(path)
 		.then(function (muelifyItems) {
-
+			if (command.es6) return Muleify.es6(muelifyItems);
+			else return muelifyItems;
 		})
-		.then(function () {
-			if (command.min) {
-				return Muleify.min
-				.then(function () {
-
-				})
-				.catch(function () {
-
-				});
-			}
+		.then(function (muelifyItems) {
+			if (command.min) return Muleify.min(muelifyItems);
+			else return muelifyItems;
 		})
-		.then(function () {
-			if (command.es6) {
-				return Muleify.es6
-				.then(function () {
-
-				})
-				.catch(function () {
-
-				});
-			}
-		})
-		.then(function () {
-			console.log(Chalk.green('Mule Is Packed'));
+		.then(function (muelifyItems) {
+			// console.log(muelifyItems);
+			console.log(Chalk.green('\n\t\tMule Is Packed\n'));
 		})
 		.catch(function (error) {
-			console.log(Chalk.red(error));
+			console.log(Chalk.red('\n\t\t' + error + '\n'));
 		});
 	});
 

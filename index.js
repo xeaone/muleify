@@ -1,55 +1,38 @@
 'use strict';
 
-const Bluebird = require('bluebird');
+const When = require('when');
+const Chalk = require('chalk');
 const Path = require('path');
-const Fse = require('fs-extra');
-const Config = require('./config');
-const MuleifyItem = require('./muleify-item');
+const Fsep = require('fsep');
 
-const IGNOREABLES = ignoreablesRegExp();
+const Helpers = require('./lib/helpers');
+const Config = require('./lib/config');
+const Globals = require('./lib/globals');
 
 exports.pack = function (path) {
-	var pathObject = null;
 
 	return createPaths(path)
-	.then(function (data) {
-		pathObject = data;
-		return srcDirectoryExists(pathObject.cwd);
+	.then(function () {
+		return verifyFilesDirectories();
 	})
 	.then(function () {
-		return getMuleifyItems(pathObject.src);
+		return setupFilesDirectories();
 	})
-	.then(function (muleifyItems) {
-		var includes = [];
-
-		muleifyItems.forEach(function (item) {
-			includes.push.apply(includes, item.includes); //FIXME: adds duplicate includes
-		});
-
-		includes.forEach(function (item) {
-			muleifyItems.delete(item.absolute);
-		});
-
-		return muleifyItems;
+	.then(function () {
+		console.log(Globals.others);
+		//TODO: modify files
 	})
 	.catch(function (error) {
 		throw error;
 	});
 };
 
-exports.min = function (muleifyItems) {
-	
-};
-
-exports.es6 = function (muleifyItems) {
-
-};
 
 /*
 	internal
 */
 function createPaths (path) {
-	return new Promise(function (resolve) {
+	return When.promise(function (resolve) {
 		var cwdPath = null;
 		var srcPath = null;
 
@@ -62,64 +45,105 @@ function createPaths (path) {
 
 		srcPath = Path.join(cwdPath, 'src');
 
-		resolve({ cwd: cwdPath, src: srcPath });
-	});
-}
-
-function srcDirectoryExists (path) {
-	path = path + Path.sep + 'src';
-
-	return new Promise (function (resolve, reject) {
-		Fse.stat(path, function (error, stats) {
-			if (error === null) resolve();
-			else if (error.code === 'ENOENT' || stats.isFile()) reject('Error: missing \"src\" directory');
-			else throw error;
-		});
-	});
-}
-
-function getMuleifyItems (path) {
-	return new Promise (function (resolve, reject) {
-		var muleifyItemPromises = [];
-		var muleifyItems = new Map();
-
-		var options = {
-			filter: function (currentPath) {
-				var pathRelative = currentPath.replace(path + Path.sep, '');
-				return !IGNOREABLES.test(pathRelative);
-			}
+		Globals.paths = {
+			cwd: cwdPath,
+			src: srcPath,
+			layouts: Path.join(srcPath, 'layouts'),
+			pages: Path.join(srcPath, 'pages'),
+			partials: Path.join(srcPath, 'partials')
 		};
 
-		Fse.walk(path, options)
-		.on('data', function (item) {
-			if (item.stats.isFile()) {
-				muleifyItemPromises.push(
-					MuleifyItem(item.path, path).then(function (self) {
-						muleifyItems.set(self.readPath, self);
-					})
-				);
-			}
-		})
-		.on('end', function () {
-			Bluebird.all(muleifyItemPromises)
-			.then(function () {
-				resolve(muleifyItems);
-			});
-		})
-		.on('error', function (error) {
-			reject(error);
-		});
+		return resolve(Globals.paths);
 	});
 }
 
-function ignoreablesRegExp () {
-	var ignoreables = Config.ignoreables;
-	var res = '';
+function verifyFilesDirectories () {
+	return Fsep.valid(Globals.paths.src)
+	.then(function (isValid) {
+		if (!isValid) throw new Error('Missing src directory');
+		return Fsep.valid(Globals.paths.layouts);
+	})
+	.then(function (isValid) {
+		Globals.isLayouts = isValid;
+		if (!isValid) console.log(Chalk.yellow('Missing \"layouts\" directory'));
+		return Fsep.valid(Globals.paths.pages);
+	})
+	.then(function (isValid) {
+		Globals.isPages = isValid;
+		if (!isValid) console.log(Chalk.yellow('Missing \"pages\" directory'));
+		return Fsep.valid(Globals.paths.partials);
+	})
+	.then(function (isValid) {
+		Globals.isPartials = isValid;
+		if (!isValid) console.log(Chalk.yellow('Missing \"partials\" directory'));
+	})
+	.catch(function (error) {
+		throw error;
+	});
+}
 
-	for (var i = 0; i < ignoreables.length; i++) {
-		if (i !== 0) res = res + '|';
-		res = res + ignoreables[i];
-	}
+function setupFilesDirectories () {
+	return When.all([getLayouts(), getPages(), getPartials(), getOthers()])
+	.then(function (values) {
 
-	return new RegExp(res);
+		values[0].forEach(function (layout) {
+			Globals.layouts.push(layout);
+		});
+
+		values[1].forEach(function (page) {
+			Globals.pages.push(page);
+		});
+
+		values[2].forEach(function (partial) {
+			Globals.partials.push(partial);
+		});
+
+		values[3].forEach(function (others) {
+			Globals.others.push(others);
+		});
+
+	})
+	.catch(function (error) {
+		throw error;
+	});
+}
+
+function getLayouts () {
+	return Fsep.walk(Globals.paths.layouts)
+	.then(function (files) {
+		return files;
+	})
+	.catch(function (error) {
+		throw error;
+	});
+}
+
+function getPages () {
+	return Fsep.walk(Globals.paths.pages)
+	.then(function (files) {
+		return files;
+	})
+	.catch(function (error) {
+		throw error;
+	});
+}
+
+function getPartials () {
+	return Fsep.walk(Globals.paths.partials)
+	.then(function (files) {
+		return files;
+	})
+	.catch(function (error) {
+		throw error;
+	});
+}
+
+function getOthers () {
+	return Fsep.walk(Globals.paths.src, { filters: ['layouts', 'pages', 'partials'] }) //not filtering correctly
+	.then(function (files) {
+		return files;
+	})
+	.catch(function (error) {
+		throw error;
+	});
 }
