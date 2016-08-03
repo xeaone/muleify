@@ -16,10 +16,13 @@ exports.pack = function (path) {
 		return verifyFilesDirectories();
 	})
 	.then(function () {
-		return setupFilesDirectories();
+		return getFilesDirectories();
 	})
 	.then(function () {
-		console.log(Globals.others);
+		return getLayoutData();
+	})
+	.then(function () {
+		console.log(Globals.layoutHtml);
 		//TODO: modify files
 	})
 	.catch(function (error) {
@@ -82,7 +85,7 @@ function verifyFilesDirectories () {
 	});
 }
 
-function setupFilesDirectories () {
+function getFilesDirectories () {
 	return When.all([getLayouts(), getPages(), getPartials(), getOthers()])
 	.then(function (values) {
 
@@ -139,9 +142,25 @@ function getPartials () {
 }
 
 function getOthers () {
-	return Fsep.walk(Globals.paths.src, { filters: ['layouts', 'pages', 'partials'] }) //not filtering correctly
+	var options = {
+		path: Globals.paths.src,
+		filters: ['layouts', 'pages', 'partials']
+	};
+
+	return Fsep.walk(options)
 	.then(function (files) {
 		return files;
+	})
+	.catch(function (error) {
+		throw error;
+	});
+}
+
+function getLayoutData () {
+	var path = Path.join(Globals.paths.layouts, Globals.layouts[0]);
+
+	return Fsep.readFile(path, 'utf8').then(function (data) {
+		Globals.layoutHtml = data;
 	})
 	.catch(function (error) {
 		throw error;
