@@ -19,14 +19,14 @@ Commander
 		console.log(Chalk.cyan('\n\t\tPacking The Mule\n'));
 
 		Muleify.pack(path)
-		.then(function (muelifyItems) {
-			if (command.es6) return Muleify.es6(muelifyItems);
-			else return muelifyItems;
-		})
-		.then(function (muelifyItems) {
-			if (command.min) return Muleify.min(muelifyItems);
-			else return muelifyItems;
-		})
+		// .then(function (muelifyItems) {
+		// 	if (command.es6) return Muleify.es6(muelifyItems);
+		// 	else return muelifyItems;
+		// })
+		// .then(function (muelifyItems) {
+		// 	if (command.min) return Muleify.min(muelifyItems);
+		// 	else return muelifyItems;
+		// })
 		.then(function (muelifyItems) {
 			// console.log(muelifyItems);
 			console.log(Chalk.green('\n\t\tMule Is Packed\n'));
