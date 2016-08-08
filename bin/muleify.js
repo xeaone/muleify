@@ -11,24 +11,19 @@ Commander
 	.usage('<command> [options]');
 
 Commander
-	.command('pack [path]')
+	.command('pack <path>')
 	.description('Creates a Muleified package')
 	.option('-m, --min', 'Minifies html, css, js')
 	.option('-e, --es6', 'Compile es6 to es5')
 	.action(function (path, command) {
 		console.log(Chalk.cyan('\n\t\tPacking The Mule\n'));
 
-		Muleify.pack(path)
-		// .then(function (muelifyItems) {
-		// 	if (command.es6) return Muleify.es6(muelifyItems);
-		// 	else return muelifyItems;
-		// })
-		// .then(function (muelifyItems) {
-		// 	if (command.min) return Muleify.min(muelifyItems);
-		// 	else return muelifyItems;
-		// })
-		.then(function (muelifyItems) {
-			// console.log(muelifyItems);
+		const options = {
+			es6: command.es6 || false,
+			min: command.min || false
+		};
+
+		Muleify.pack(path, options).then(function () {
 			console.log(Chalk.green('\n\t\tMule Is Packed\n'));
 		})
 		.catch(function (error) {

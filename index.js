@@ -6,10 +6,12 @@ const Fsep = require('fsep');
 
 const Partial = require('./lib/partial');
 const Page = require('./lib/page');
+const Other = require('./lib/other');
 const Globals = require('./lib/globals');
 
-exports.pack = function (path) {
+exports.pack = function (path, options) {
 
+	Globals.options = options;
 	Globals.paths = createPaths(path);
 
 	return When.all([getPages(), getPartials(), getOthers()])
@@ -18,7 +20,11 @@ exports.pack = function (path) {
 	}).then(function () {
 		return setupPages();
 	}).then(function () {
-		console.log(Globals.pages);
+		return setupOthers();
+	}).then(function () {
+		return writeDist();
+	}).then(function () {
+		console.log(Globals.others);
 	}).catch(function (error) { throw error; });
 };
 
@@ -94,23 +100,31 @@ function getOthers () {
 		return Fsep.walk(options);
 
 	}).then(function (otherPaths) {
+		const scss = new RegExp('(.*?)\.(\.scss|\.sass)', 'ig');
+		const indexScss = new RegExp('index.scss|index.sass|style.scss|index.sass', 'ig');
+
+		const js = new RegExp('(.*?)\.(\.js)', 'ig');
+		const indexJs = new RegExp('index.js', 'ig');
 
 		otherPaths.forEach(function (otherPath) {
-			Globals.otherPaths.push(otherPath);
+			if (otherPath.match(scss) || otherPath.match(js)) {
+				if (otherPath.match(indexScss)) Globals.otherPaths.push(otherPath);
+				if (otherPath.match(indexJs)) Globals.otherPaths.push(otherPath);
+			} else {
+				Globals.otherPaths.push(otherPath);
+			}
 		});
 
 	}).catch(function (error) { throw error; });
 }
 
 function setupPages () {
-	var pagePromises = Globals.pagePaths.map(function (pagePath) {
-		var options = {
+	const pagePromises = Globals.pagePaths.map(function (pagePath) {
+		return Page({
 			rel: pagePath,
 			paths: Globals.paths,
 			partials: Globals.partials
-		};
-
-		return Page(options);
+		});
 	});
 
 	return When.all(pagePromises).then(function (pages) {
@@ -121,13 +135,11 @@ function setupPages () {
 }
 
 function setupPartials () {
-	var partialPromises = Globals.partialPaths.map(function (partialPath) {
-		var options = {
+	const partialPromises = Globals.partialPaths.map(function (partialPath) {
+		return Partial({
 			rel: partialPath,
 			paths: Globals.paths
-		};
-
-		return Partial(options);
+		});
 	});
 
 	return When.all(partialPromises).then(function (partials) {
@@ -135,4 +147,36 @@ function setupPartials () {
 			Globals.partials.set(partial.rel, partial);
 		});
 	}).catch(function (error) { throw error; });
+}
+
+function setupOthers () {
+	const otherPromises = Globals.otherPaths.map(function (otherPath) {
+		return Other({
+			rel: otherPath,
+			paths: Globals.paths,
+			options: Globals.options
+		});
+	});
+
+	return When.all(otherPromises).then(function (others) {
+		others.forEach(function (other) {
+			Globals.others.set(other.rel, other);
+		});
+	}).catch(function (error) { throw error; });
+}
+
+function writeDist () {
+	const pages = Globals.pages;
+	const others = Globals.others;
+	var promises = [];
+
+	pages.forEach(function (page) {
+
+	});
+
+	others.forEach(function (other) {
+
+	});
+
+	//TODO: write files
 }

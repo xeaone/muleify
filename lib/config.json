@@ -1,12 +1,5 @@
 {
 
-	"babelOptions": {
-		"compact": true,
-		"minified": true,
-		"comments": false,
-		"presets": ["es2015"]
-	},
-
 	"ignoreables": [
 		"node_modules",
 		"jspm_modules"

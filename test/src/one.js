@@ -1,6 +1,8 @@
 
+import two from './two.js';
+
 function say (cb) {
-	cb('hello world');
+	cb(two);
 }
 
 say(w => {

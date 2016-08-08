@@ -7,8 +7,9 @@
     "muleify": "bin/muleify.js"
   },
   "scripts": {
-    "start": "",
-    "test": "node ./bin/muleify.js pack ./test"
+    "std": "node bin/muleify.js pack ./test",
+    "es6": "node bin/muleify.js pack ./test --es6",
+    "min": "node bin/muleify.js pack ./test --min"
   },
   "repository": {
     "type": "git",
@@ -40,11 +41,13 @@
   },
   "homepage": "https://github.com/AlexanderElias/muleify#readme",
   "dependencies": {
-    "babel-core": "^6.11.4",
-    "babel-preset-es2015": "^6.9.0",
+    "babel-core": "^6.13.2",
+    "babel-preset-es2015": "^6.13.2",
     "chalk": "^1.1.3",
     "commander": "^2.9.0",
     "fsep": "^1.2.3",
+    "node-sass": "^3.8.0",
+    "rollup": "^0.34.7",
     "when": "^3.7.7"
   }
 }
