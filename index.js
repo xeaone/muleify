@@ -1,10 +1,7 @@
-const When = require('when');
 const Path = require('path');
 const Fsep = require('fsep');
-
-const Partial = require('./lib/partial');
-const Page = require('./lib/page');
-const Others = require('./lib/others');
+const When = require('when');
+const Files = require('./lib/files');
 const Globals = require('./lib/globals');
 
 exports.pack = function (path, options) {
@@ -12,30 +9,25 @@ exports.pack = function (path, options) {
 	Globals.options = options;
 	Globals.paths = createPaths(path);
 
-	return When.all([getPages(), getPartials(), Others.get()])
-	.then(function () {
+	return Files.get().then(function () {
 
-		return setupPartials();
+		return Files.set();
 
-	}).then(function () {
+	}).then(function (files) {
 
-		return setupPages();
+		return writeFiles(files);
 
-	}).then(function () {
+	}).catch(function (error) {
 
-		return Others.set();
+		throw error;
 
-	// }).then(function () {
-	// 	return writeDist();
-	// }).then(function () {
-	// 	console.log(Globals.others);
-	}).catch(function (error) { throw error; });
+	});
 };
-
 
 /*
 	internal
 */
+
 function createPaths (path) {
 	var cwdPath = null;
 	var srcPath = null;
@@ -61,79 +53,14 @@ function createPaths (path) {
 	};
 }
 
-function getPages () {
-	return Fsep.valid(Globals.paths.pages).then(function (isValid) {
+function writeFiles (files) {
 
-		if (!isValid) return null;
-		return Fsep.walk(Globals.paths.pages);
+	// FIXME: error dist file exists ?? (if dist doesnt already exist)
 
-	}).then(function (pagePaths) {
-
-		pagePaths.forEach(function (pagePath) {
-			Globals.pagePaths.push(pagePath);
-		});
-
-	}).catch(function (error) { throw error; });
-}
-
-function getPartials () {
-	return Fsep.valid(Globals.paths.partials).then(function (isValid) {
-
-		if (!isValid) return null;
-		return Fsep.walk(Globals.paths.partials);
-
-	}).then(function (partialPaths) {
-
-		partialPaths.forEach(function (partialPath) {
-			Globals.partialPaths.push(partialPath);
-		});
-
-	}).catch(function (error) { throw error; });
-}
-
-function setupPages () {
-	const pagePromises = Globals.pagePaths.map(function (pagePath) {
-		return Page({
-			rel: pagePath,
-			paths: Globals.paths,
-			partials: Globals.partials
-		});
+	var filePromises = files.map(function (file) {
+		// console.log(file.dist);
+		return Fsep.outputFile(file.dist, file.text, 'utf8');
 	});
 
-	return When.all(pagePromises).then(function (pages) {
-		pages.forEach(function (page) {
-			Globals.pages.set(page.rel, page);
-		});
-	}).catch(function (error) { throw error; });
+	return When.all(filePromises);
 }
-
-function setupPartials () {
-	const partialPromises = Globals.partialPaths.map(function (partialPath) {
-		return Partial({
-			rel: partialPath,
-			paths: Globals.paths
-		});
-	});
-
-	return When.all(partialPromises).then(function (partials) {
-		partials.forEach(function (partial) {
-			Globals.partials.set(partial.rel, partial);
-		});
-	}).catch(function (error) { throw error; });
-}
-
-// function writeDist () {
-// 	const pages = Globals.pages;
-// 	const others = Globals.others;
-// 	var promises = [];
-//
-// 	pages.forEach(function (page) {
-//
-// 	});
-//
-// 	others.forEach(function (other) {
-//
-// 	});
-//
-// 	//TODO: write files
-// }

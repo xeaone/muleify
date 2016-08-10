@@ -7,31 +7,29 @@ Static site generator / Website bundler
 
 
 ## Overview ##
-The `pack` command automatically handles many reptative tasks such as compiling scss, less, ES6 to ES5, and bundling. Typically it is best practice to serve one css and js file. If an index.js or index
+The `pack` command automatically handles many tasks such as compiling scss, less, ES6 to ES5, and bundling. Muleify uses file names and extensions to automatically handle tasks such as compiling/transpiling and bundling.
 
 
-##### Structure #####
-- src
-	- pages
-	- partials
+Typically it is best practice to serve one css and js file. If an index.js or index.scss
 
 
-##### Pages Directory #####
-The pages directory will flatten to just its contents. It can contain html files and folder. The contents of pages will preserve it's inner directory structure. The use of `partials`, `variables` and variable declaration is allowed.
+#### Directory Structure ####
+- src: **required**
+- dist: **generated** (issue is required for now)
 
 
-##### Partials Directory #####
-The partials directory and contents will not exist after generation. Partials are for use with in the contents of pages.
+#### File Extensions ####
+- file.phtml
+
+#### Bundle Names ####
+- bundle.js
+- bundle.css
+- bundle.scss
 
 
-## Usage ##
+#### Html Files ####
+- import a partial: `<!-- { "partial": "./header.phtml" } -->`
 
-## Reserved Key Words ##
-- variable
-- partial
+- define a variable: `<!-- { "title": "I Am Title" } -->`
 
-```html
- <!-- { "partial": 'header.html'} -->
-<!-- { "title": "hello world" } -->
-<!-- { "variable": "title" } -->
-```
+- import a variable: `<!-- { "variable": "title" } -->`
