@@ -1,7 +1,8 @@
 
-import two from './two.js';
+import { look } from './two.js';
 
 function say (cb) {
+	look();
 	cb(two);
 }
 

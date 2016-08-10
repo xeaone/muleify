@@ -1,12 +1,10 @@
-'use strict';
-
 const When = require('when');
 const Path = require('path');
 const Fsep = require('fsep');
 
 const Partial = require('./lib/partial');
 const Page = require('./lib/page');
-const Other = require('./lib/other');
+const Others = require('./lib/others');
 const Globals = require('./lib/globals');
 
 exports.pack = function (path, options) {
@@ -14,17 +12,23 @@ exports.pack = function (path, options) {
 	Globals.options = options;
 	Globals.paths = createPaths(path);
 
-	return When.all([getPages(), getPartials(), getOthers()])
+	return When.all([getPages(), getPartials(), Others.get()])
 	.then(function () {
+
 		return setupPartials();
+
 	}).then(function () {
+
 		return setupPages();
+
 	}).then(function () {
-		return setupOthers();
-	}).then(function () {
-		return writeDist();
-	}).then(function () {
-		console.log(Globals.others);
+
+		return Others.set();
+
+	// }).then(function () {
+	// 	return writeDist();
+	// }).then(function () {
+	// 	console.log(Globals.others);
 	}).catch(function (error) { throw error; });
 };
 
@@ -87,37 +91,6 @@ function getPartials () {
 	}).catch(function (error) { throw error; });
 }
 
-function getOthers () {
-	return Fsep.valid(Globals.paths.src).then(function (isValid) {
-
-		if (!isValid) throw new Error('Missing src directory');
-
-		const options = {
-			path: Globals.paths.src,
-			filters: ['pages', 'partials']
-		};
-
-		return Fsep.walk(options);
-
-	}).then(function (otherPaths) {
-		const scss = new RegExp('(.*?)\.(\.scss|\.sass)', 'ig');
-		const indexScss = new RegExp('index.scss|index.sass|style.scss|index.sass', 'ig');
-
-		const js = new RegExp('(.*?)\.(\.js)', 'ig');
-		const indexJs = new RegExp('index.js', 'ig');
-
-		otherPaths.forEach(function (otherPath) {
-			if (otherPath.match(scss) || otherPath.match(js)) {
-				if (otherPath.match(indexScss)) Globals.otherPaths.push(otherPath);
-				if (otherPath.match(indexJs)) Globals.otherPaths.push(otherPath);
-			} else {
-				Globals.otherPaths.push(otherPath);
-			}
-		});
-
-	}).catch(function (error) { throw error; });
-}
-
 function setupPages () {
 	const pagePromises = Globals.pagePaths.map(function (pagePath) {
 		return Page({
@@ -149,34 +122,18 @@ function setupPartials () {
 	}).catch(function (error) { throw error; });
 }
 
-function setupOthers () {
-	const otherPromises = Globals.otherPaths.map(function (otherPath) {
-		return Other({
-			rel: otherPath,
-			paths: Globals.paths,
-			options: Globals.options
-		});
-	});
-
-	return When.all(otherPromises).then(function (others) {
-		others.forEach(function (other) {
-			Globals.others.set(other.rel, other);
-		});
-	}).catch(function (error) { throw error; });
-}
-
-function writeDist () {
-	const pages = Globals.pages;
-	const others = Globals.others;
-	var promises = [];
-
-	pages.forEach(function (page) {
-
-	});
-
-	others.forEach(function (other) {
-
-	});
-
-	//TODO: write files
-}
+// function writeDist () {
+// 	const pages = Globals.pages;
+// 	const others = Globals.others;
+// 	var promises = [];
+//
+// 	pages.forEach(function (page) {
+//
+// 	});
+//
+// 	others.forEach(function (other) {
+//
+// 	});
+//
+// 	//TODO: write files
+// }
