@@ -10,7 +10,10 @@ Static site generator / Website bundler
 The `pack` command automatically handles many tasks such as compiling scss, less, ES6 to ES5, and bundling. Muleify uses file names and extensions to automatically handle tasks such as compiling/transpiling and bundling.
 
 
-Typically it is best practice to serve one css and js file. If an index.js or index.scss
+#### Todo ####
+- less
+- sass
+- more
 
 
 #### Directory Structure ####
