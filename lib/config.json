@@ -1,15 +1,11 @@
 {
 
-	"ignoreables": [
-		"node_modules",
-		"jspm_modules"
-	],
-
 	"commentRegExpString": "((<!--\\s{)|(\/\\*\\s{))(.*?)((}\\s*\/)|(}\\s-->))",
 
 	"startDataRegExpString": "(<!--\\s{)|(\/\\*\\s{)",
 	"endDataRegExpString": "(}\\s-->)|(}\\s\\*\/)",
 
+	"layoutRegExpString": "((<!--\\s{)|(\/\\*\\s{))(\\s?)(\"|\\')(layout|lay)(\"|\\')(:)(\\s?)(\"|\\')(.*?)(\"|\\')(\\s?)((}\\s*\/)|(}\\s-->))",
 	"variableRegExpString": "((<!--\\s{)|(\/\\*\\s{))(\\s?)(\"|\\')(variable|var)(\"|\\')(:)(\\s?)(\"|\\')(.*?)(\"|\\')(\\s?)((}\\s*\/)|(}\\s-->))",
 	"partialRegExpString": "((<!--\\s{)|(\/\\*\\s{))(\\s?)(\"|\\')(partial|par)(\"|\\')(:)(\\s?)(\"|\\')(.*?)(\"|\\')(\\s?)((}\\s*\/)|(}\\s-->))"
 }

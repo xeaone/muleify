@@ -1,4 +1,3 @@
+@import 'two.scss';
 
-$someVar: 123px;
-
-.some-selector { width: $someVar; }
+.some-selector { width: $twoVar; }

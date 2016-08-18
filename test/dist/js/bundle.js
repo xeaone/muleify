@@ -1,12 +1,13 @@
-function look () {
-	console.log('look');
-}
+(function () {
+	'use strict';
 
-function say (cb) {
-	look();
-	cb(two);
-}
+	var two = 2;
 
-say(w => {
-	console.log(w);
-});
+	function say(cb) {
+		cb(two);
+	}
+
+	say(function (w) {
+		console.log(w);
+	});
+})();

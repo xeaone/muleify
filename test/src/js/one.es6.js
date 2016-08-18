@@ -1,8 +1,7 @@
 
-import { look } from './two.js';
+import two from './two.es6.js';
 
 function say (cb) {
-	look();
 	cb(two);
 }
 
