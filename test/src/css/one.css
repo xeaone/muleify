@@ -1,5 +1,9 @@
 @import 'two.css';
 
+body {
+	background: lightgray;
+}
+
 .one {
 	background: blue;
 }
