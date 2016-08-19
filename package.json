@@ -1,12 +1,13 @@
 {
   "name": "muleify",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "Website bundler. Static site generator.",
   "main": "index.js",
   "bin": {
     "muleify": "bin/muleify.js"
   },
   "scripts": {
+    "serve": "node bin/muleify.js serve",
     "std": "node bin/muleify.js pack ./test",
     "es6": "node bin/muleify.js pack ./test --es6",
     "min": "node bin/muleify.js pack ./test --min"
@@ -47,7 +48,10 @@
     "commander": "^2.9.0",
     "css": "^2.2.1",
     "fsep": "^1.4.4",
+    "hapi": "^14.2.0",
+    "inert": "^4.0.1",
     "node-sass": "^3.8.0",
+    "node-watch": "^0.4.0",
     "rollup": "^0.34.7",
     "when": "^3.7.7"
   }

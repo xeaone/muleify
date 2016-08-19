@@ -12,6 +12,8 @@ The `pack` command automatically handles many tasks such as compiling scss, less
 
 #### Todo ####
 - less
+- minify
+- html template languages
 - more
 
 
