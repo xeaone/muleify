@@ -3,11 +3,8 @@
 
 	var two = 2;
 
-	function say(cb) {
-		cb(two);
-	}
+	console.log(two);
 
-	say(function (w) {
-		console.log(w);
-	});
+	var stuff = 'laa';
+	console.log(stuff);
 })();

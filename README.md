@@ -28,6 +28,7 @@ The `pack` command automatically handles many tasks such as compiling scss, less
 - `file.es6.js` **ES6** compiles to ES5
 - `bundle.es6.js` **Bundle ES6** compiles to ES5, bundles modules (AMD, CJS, ES, UMD) to IIFE
 
+
 ##### HTML #####
 - `file.l.html` **layout** extension imports all view files
 - `file.p.html` **partial** extension allows file to be imported
@@ -41,10 +42,18 @@ The `pack` command automatically handles many tasks such as compiling scss, less
 
 
 #### HTML Files ####
+Note `partial` paths need to start at the `src` root.
+
 - layout a placeholder: `<!-- { "layout": "*" } -->`
-
-- import a partial: `<!-- { "partial": "cwd/root/header.p.html" } -->`
-
+- import a partial: `<!-- { "partial": "root/header.p.html" } -->`
 - define a variable: `<!-- { "title": "I Am Title" } -->`
-
 - import a variable: `<!-- { "variable": "title" } -->`
+
+#### CSS Files ####
+Note `@import` paths need to start at the `src` root.
+
+#### SCSS Files ####
+Note `@import` paths need to start at the `src` root.
+
+#### JS Files ####
+Note ES6 `import` paths need to be relative from the importing file.

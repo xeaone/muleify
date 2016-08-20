@@ -1,4 +1,10 @@
 {
+	"ignoreables": [
+		"ignore",
+		"(.*?).p.html",
+		"node_modules",
+		"jspm_modules"
+	],
 
 	"commentRegExpString": "((<!--\\s{)|(\/\\*\\s{))(.*?)((}\\s*\/)|(}\\s-->))",
 
