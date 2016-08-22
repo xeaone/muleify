@@ -1,9 +1,8 @@
 # Muleify #
-Coming Soon!
 
 Front end generation tool.
 
-Static site generator / Website bundler
+Static Site Generator / Website bundler / Asset Compiler
 
 
 ## Overview ##
