@@ -7,4 +7,5 @@
 
 	var stuff = 'laa';
 	console.log(stuff);
-})();
+
+}());
