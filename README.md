@@ -25,7 +25,6 @@ The `pack` command automatically handles many tasks such as compiling scss, less
 
 ##### JS #####
 - `file.es6.js` **ES6** compiles to ES5
-- `bundle.es6.js` **Bundle ES6** compiles to ES5, bundles modules (AMD, CJS, ES, UMD) to IIFE
 
 
 ##### HTML #####
@@ -35,9 +34,10 @@ The `pack` command automatically handles many tasks such as compiling scss, less
 
 
 #### Special File Names ####
-- `bundle.js` bundles modules (AMD, CJS, ES, UMD) to ES
 - `bundle.css` bundles imports
 - `bundle.scss` bundles imports
+- `bundle.js` bundles modules (AMD, CJS, ES, UMD) to ES
+- `bundle.es6.js` bundles modules (AMD, CJS, ES, UMD) to IIFE
 
 
 #### HTML Files ####
@@ -49,7 +49,7 @@ Note `partial` paths need to start at the `src` root.
 - import a variable: `<!-- { "variable": "title" } -->`
 
 #### CSS Files ####
-Note `@import` paths need to start at the `src` root.
+Note `@import` paths need to be relative from the importing file.
 
 #### SCSS Files ####
 Note `@import` paths need to start at the `src` root.

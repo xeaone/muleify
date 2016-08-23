@@ -7,29 +7,27 @@ const PathHelper = require('./lib/helper-path');
 const PathHandler = require('./lib/handler-path');
 
 exports.pack = function (path, options) {
-	Globals.options = options;
 	Globals.paths = PathHelper.roots(path);
+	Globals.options = options;
 
-	return When.resolve().then(function () {
-		return Fsep.valid(Globals.paths.src);
-	}).then(function (isValid) {
-		if (!isValid) throw new Error('Missing src directory');
-	}).then(function () {
-		return Fsep.valid(Globals.paths.dist);
-	}).then(function (isValid) {
-		if (!isValid) throw new Error('Missing dist directory');
+	return Fsep.ensureDir(Globals.paths.src).then(function () {
+		return Fsep.ensureDir(Globals.paths.dist);
 	}).then(function () {
 		return directory(Globals.paths.src, Config.ignoreables);
 	}).catch(function (error) { throw error; });
 };
 
 exports.packFile = function (path, options) {
+	var root = path.slice(0, path.indexOf('src'));
+
+	Globals.paths = PathHelper.roots(root);
 	Globals.options = options;
 
-	var root = path.slice(0, path.indexOf('src'));
-	Globals.paths = PathHelper.roots(root);
-
-	return file(path, Globals.paths.src, Config.ignoreables);
+	return Fsep.ensureDir(Globals.paths.src).then(function () {
+		return Fsep.ensureDir(Globals.paths.dist);
+	}).then(function () {
+		return file(path, Globals.paths.src, Config.ignoreables);
+	}).catch(function (error) { throw error; });
 };
 
 /*
@@ -71,26 +69,28 @@ function directory (src, ignoreables) {
 	}).catch(function (error) { throw error; });
 }
 
-function file (pathUpdate, src, ignoreables) {
+function file (pathChange, src, ignoreables) {
 	const options = {
 		path: src,
 		filters: ignoreables,
 		ignoreDot: true
 	};
 
+	pathChange = PathHelper.parse(pathChange, src);
+	var pathChanges = [];
+
 	return Fsep.walk(options).then(function (paths) {
 
 		for (var i = 0; i < paths.length; i++) {
-			var path = paths[i];
+			var pathCurrent = PathHelper.parse(paths[i], src);
 
-			var pathData = PathHelper.parse(path, src);
-			var extension = pathData.extensionFull;
-			var absolute = pathData.absolute;
+			if (pathCurrent.extensionFull === '.l.html') Globals.layout = Fs.readFileSync(pathCurrent.absolute, 'binary');
 
-			if (extension === '.l.html') Globals.layout = Fs.readFileSync(absolute, 'binary');
+			if (pathChange.extensionPost === '.html' && pathCurrent.extensionPost === '.html') pathChanges.push(pathCurrent.relative);
+			else if (pathChange.extensionFull === pathCurrent.extensionFull) pathChanges.push(pathCurrent.relative);
 		}
 
-		return PathHandler([pathUpdate]);
+		return PathHandler(pathChanges);
 
 	}).catch(function (error) { throw error; });
 }
