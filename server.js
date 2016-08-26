@@ -29,7 +29,7 @@ module.exports = function (cwd, callback) {
 
 	const server = new Hapi.Server();
 
-	server.connection({ host: 'localhost', port: 8080 });
+	server.connection({ host: 'localhost', port: 8080, routes: { cors: true } });
 	server.register(register, function(error){ if (error) throw error; });
 	server.route(routes);
 
