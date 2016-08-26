@@ -7,7 +7,7 @@ const Chalk = require('chalk');
 const Path = require('path');
 
 Commander
-.version(process.env.npm_package_version)
+.version('1.1.1')
 .usage('<command> [options]');
 
 Commander
