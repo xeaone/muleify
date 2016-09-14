@@ -3,9 +3,9 @@ const Hapi = require('hapi');
 const Chalk = require('chalk');
 const NodeWatch = require('node-watch');
 
-module.exports = function (cwd, callback) {
-	const dist = Path.join(cwd, 'dist');
-	const src =  Path.join(cwd, 'src');
+module.exports = function (options, callback) {
+	const output = Path.join(options.path, options.output);
+	const src =  Path.join(options.path, 'src');
 
 	const register = [
 		{
@@ -21,7 +21,7 @@ module.exports = function (cwd, callback) {
 				directory: {
 					index: true,
 					listing: true,
-					path: dist
+					path: output
 				}
 			}
 		}
@@ -29,15 +29,22 @@ module.exports = function (cwd, callback) {
 
 	const server = new Hapi.Server();
 
-	server.connection({ host: 'localhost', port: 8080, routes: { cors: true } });
-	server.register(register, function(error){ if (error) throw error; });
+	server.connection({
+		host: 'localhost',
+		port: 8080,
+		routes: {
+			cors: true
+		}
+	});
+
+	server.register(register, function(error) { if (error) throw error; });
 	server.route(routes);
 
 	server.start(function () {
 
 		console.log(Chalk.green('Web: ' + server.info.uri));
-		console.log(Chalk.gray('Src: ' + src));
-		console.log(Chalk.gray('Dist: ' + dist));
+		console.log(Chalk.magenta('From: ' + src));
+		console.log(Chalk.magenta('To: ' + output));
 
 		const options = {
 			recursive: true,

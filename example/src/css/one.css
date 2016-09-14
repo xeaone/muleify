@@ -1,9 +1,9 @@
 @import './two.css';
 
 body {
-	background: blue;
+	background: lightgray;
 }
 
 .one {
-	background: blue;
+	color: brown;
 }

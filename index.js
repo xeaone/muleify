@@ -6,9 +6,9 @@ const Config = require('./lib/config');
 const PathHelper = require('./lib/helper-path');
 const PathHandler = require('./lib/handler-path');
 
-exports.pack = function (path, options) {
-	Globals.paths = PathHelper.roots(path);
+exports.pack = function (options) {
 	Globals.options = options;
+	Globals.paths = PathHelper.roots(options.path);
 
 	return Fsep.ensureDir(Globals.paths.src).then(function () {
 		return Fsep.ensureDir(Globals.paths.dist);
@@ -17,8 +17,8 @@ exports.pack = function (path, options) {
 	}).catch(function (error) { throw error; });
 };
 
-exports.packFile = function (path, options) {
-	var root = path.slice(0, path.indexOf('src'));
+exports.packFile = function (options) {
+	var root = options.file.slice(0, options.file.indexOf('src'));
 
 	Globals.paths = PathHelper.roots(root);
 	Globals.options = options;
@@ -26,7 +26,7 @@ exports.packFile = function (path, options) {
 	return Fsep.ensureDir(Globals.paths.src).then(function () {
 		return Fsep.ensureDir(Globals.paths.dist);
 	}).then(function () {
-		return file(path, Globals.paths.src, Config.ignoreables);
+		return file(options.file, Globals.paths.src, Config.ignoreables);
 	}).catch(function (error) { throw error; });
 };
 
@@ -45,7 +45,7 @@ function directory (src, ignoreables) {
 
 	return Fsep.walk(options).then(function (paths) {
 
-		for (var i = 0; i < paths.length; i++) {
+		for (var i = 0, l = paths.length; i < l; i++) {
 			var path = paths[i];
 
 			var pathData = PathHelper.parse(path, src);
@@ -60,6 +60,7 @@ function directory (src, ignoreables) {
 		}
 
 		var promises = [];
+
 		for (var ext in pathsByExtension) {
 			if (pathsByExtension.hasOwnProperty(ext)) promises.push(PathHandler(pathsByExtension[ext]));
 		}
