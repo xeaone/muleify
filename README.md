@@ -47,14 +47,14 @@ TODOs
 - `file.v.html` **view** extension inserted into layout
 
 ##### JS #####
-- `file.es6.js` **ES6** compiles to ES5
+- `file.e.js` **ES6** compiles to ES5
 
 
 #### Special File Names ####
 - `bundle.css` bundles imports
 - `bundle.scss` bundles imports
 - `bundle.js` bundles modules (AMD, CJS, ES, UMD) to ES
-- `bundle.es6.js` bundles modules (AMD, CJS, ES, UMD) to IIFE
+- `bundle.e.js` bundles modules (AMD, CJS, ES, UMD) to IIFE
 
 #### Includes/Imports/Partials/Layouts ####
 
