@@ -1,5 +1,5 @@
 
-import two from './two.es6.js';
+import two from './two.e.js';
 
 // function say (cb) {
 // 	cb(two);

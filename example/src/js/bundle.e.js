@@ -1,4 +1,4 @@
-import one from './one.es6.js';
+import one from './one.e.js';
 
 console.log(one);
 

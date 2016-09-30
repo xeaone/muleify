@@ -1,5 +1,6 @@
 {
 	"ignoreables": [
+		"dist",
 		"ignore",
 		"(.*?).p.html",
 		"node_modules",
