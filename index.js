@@ -52,7 +52,7 @@ function directory (src, ignoreables) {
 			var extension = pathData.extensionFull;
 			var absolute = pathData.absolute;
 
-			if (pathData.extensionFull === '.l.html') Globals.layout = Fs.readFileSync(absolute, 'binary');
+			if (pathData.extension === 'l.html') Globals.layout = Fs.readFileSync(absolute, 'binary');
 			else {
 				if (!pathsByExtension[extension]) pathsByExtension[extension] = [];
 				pathsByExtension[extension].push(path);
@@ -85,9 +85,9 @@ function file (pathChange, src, ignoreables) {
 		for (var i = 0; i < paths.length; i++) {
 			var pathCurrent = PathHelper.parse(paths[i], src);
 
-			if (pathCurrent.extensionFull === '.l.html') Globals.layout = Fs.readFileSync(pathCurrent.absolute, 'binary');
+			if (pathCurrent.extension === 'l.html') Globals.layout = Fs.readFileSync(pathCurrent.absolute, 'binary');
 
-			if (pathChange.extensionPost === '.html' && pathCurrent.extensionPost === '.html') pathChanges.push(pathCurrent.relative);
+			if (pathChange.extensionLast === 'html' && pathCurrent.extensionLast === 'html') pathChanges.push(pathCurrent.relative);
 			else if (pathChange.extensionFull === pathCurrent.extensionFull) pathChanges.push(pathCurrent.relative);
 		}
 
