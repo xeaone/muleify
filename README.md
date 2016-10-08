@@ -6,7 +6,7 @@ Static Site Generator / Website bundler / Asset Compiler / HTML Templating
 
 
 ## Overview ##
-The `pack` command automatically handles many tasks such as compiling scss, less, ES6 to ES5, and bundling all of these are optional. Muleify uses file names and extensions to automatically handle tasks such as compiling/transpiling and bundling. Muleify has almost zero configuration. If there is a feature you want let me know or make a PR.
+The `pack` command automatically handles many tasks such as compiling scss, less, ES6 to ES5, and bundling all of these are optional. Muleify uses extensions sub-extensions to automatically handle tasks such as compiling/transpiling and bundling. Muleify has almost zero configuration. If there is a feature you want let me know or make a PR.
 
 Another static asset generator you might say.
 - zero configuration
@@ -40,6 +40,15 @@ TODOs
 
 
 #### Sub Extensions ####
+Sub extensions are period seperated files names. They can be combined in any order or combination.
+
+##### Options #####
+- `l` - (html)
+- `p` - (html)
+- `v` - (html)
+- `e` - (js)
+- `b` - (js, css, scss)
+- `i` - (any) ignore the file/folder 
 
 ##### HTML #####
 - `file.l.html` **layout** extension imports all view files
@@ -48,13 +57,11 @@ TODOs
 
 ##### JS #####
 - `file.e.js` **ES6** compiles to ES5
+- `file.b.js` bundles modules (AMD, CJS, ES, UMD) to ES
+- `file.b.e.js` bundles modules (AMD, CJS, ES, UMD) to IIFE
 
-
-#### Special File Names ####
-- `bundle.css` bundles imports
-- `bundle.scss` bundles imports
-- `bundle.js` bundles modules (AMD, CJS, ES, UMD) to ES
-- `bundle.e.js` bundles modules (AMD, CJS, ES, UMD) to IIFE
+##### CSS #####
+- `file.b.css` bundles imports
 
 #### Includes/Imports/Partials/Layouts ####
 
