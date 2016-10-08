@@ -1,97 +1,93 @@
+require('when/monitor/console');
+
+const Path = require('path');
 const Fsep = require('fsep');
-const Fs = require('fs');
-const When = require('when');
+const Promise = require('when');
 const Globals = require('./lib/globals');
-const Config = require('./lib/config');
-const PathHelper = require('./lib/helper-path');
-const PathHandler = require('./lib/handler-path');
+const Utility = require('./lib/utility');
+const Transform = require('./lib/transform');
 
 exports.pack = function (options) {
 	Globals.options = options;
-	Globals.paths = PathHelper.roots(options.path);
+	Globals.paths = Utility.pathRoots(options.path);
 
-	return Fsep.ensureDir(Globals.paths.src).then(function () {
+	return Promise.resolve().then(function () {
+		return Fsep.ensureDir(Globals.paths.src);
+	}).then(function () {
 		return Fsep.ensureDir(Globals.paths.dist);
 	}).then(function () {
-		return directory(Globals.paths.src, Config.ignoreables);
-	}).catch(function (error) { throw error; });
-};
-
-exports.packFile = function (options) {
-	var root = options.file.slice(0, options.file.indexOf('src'));
-
-	Globals.paths = PathHelper.roots(root);
-	Globals.options = options;
-
-	return Fsep.ensureDir(Globals.paths.src).then(function () {
-		return Fsep.ensureDir(Globals.paths.dist);
-	}).then(function () {
-		return file(options.file, Globals.paths.src, Config.ignoreables);
-	}).catch(function (error) { throw error; });
+		if (!options.file) return directory(Globals.paths.src);
+		else return file(Globals.paths.src, options.file);
+	}).catch(function (error) {
+		throw error;
+	});
 };
 
 /*
 	internal
 */
 
-function directory (src, ignoreables) {
-	const options = {
-		path: src,
-		filters: ignoreables,
-		ignoreDot: true
-	};
+function getPrePaths (paths) {
+	return paths.filter(function (path) {
+		return /(\.l\.)|(\.b\.)/g.test(path);
+	});
+}
 
-	var pathsByExtension = {};
+function getPostPaths (paths) {
+	return paths.filter(function (path) {
+		return !/(\.l\.)|(\.b\.)/g.test(path);
+	});
+}
 
-	return Fsep.walk(options).then(function (paths) {
+function handlePaths (paths, src) {
+	var prePaths = getPrePaths(paths);
+	var postPaths = getPostPaths(paths);
 
-		for (var i = 0, l = paths.length; i < l; i++) {
-			var path = paths[i];
+	return Promise.resolve().then(function () {
 
-			var pathData = PathHelper.parse(path, src);
-			var extension = pathData.extensionFull;
-			var absolute = pathData.absolute;
+		return Promise.all(prePaths.map(function (path) {
+			var parsedPath = Utility.parsePath(path, src);
 
-			if (pathData.extension === 'l.html') Globals.layout = Fs.readFileSync(absolute, 'binary');
-			else {
-				if (!pathsByExtension[extension]) pathsByExtension[extension] = [];
-				pathsByExtension[extension].push(path);
-			}
-		}
+			return Transform({ paths: parsedPath });
+		}));
 
-		var promises = [];
+	}).then(function () {
 
-		for (var ext in pathsByExtension) {
-			if (pathsByExtension.hasOwnProperty(ext)) promises.push(PathHandler(pathsByExtension[ext]));
-		}
+		return Promise.all(postPaths.map(function (path) {
+			var parsedPath = Utility.parsePath(path, src);
 
-		return When.all(promises);
+			return Transform({ paths: parsedPath });
+		}));
 
 	}).catch(function (error) { throw error; });
 }
 
-function file (pathChange, src, ignoreables) {
-	const options = {
-		path: src,
-		filters: ignoreables,
-		ignoreDot: true
-	};
+function directory (src) {
 
-	pathChange = PathHelper.parse(pathChange, src);
-	var pathChanges = [];
+	Globals.walk.path = src;
 
-	return Fsep.walk(options).then(function (paths) {
+	return Fsep.walk(Globals.walk).then(function (paths) {
 
-		for (var i = 0; i < paths.length; i++) {
-			var pathCurrent = PathHelper.parse(paths[i], src);
+		return handlePaths(paths, src);
 
-			if (pathCurrent.extension === 'l.html') Globals.layout = Fs.readFileSync(pathCurrent.absolute, 'binary');
+	}).catch(function (error) { throw error; });
+}
 
-			if (pathChange.extensionLast === 'html' && pathCurrent.extensionLast === 'html') pathChanges.push(pathCurrent.relative);
-			else if (pathChange.extensionFull === pathCurrent.extensionFull) pathChanges.push(pathCurrent.relative);
-		}
+function file (src, file) {
 
-		return PathHandler(pathChanges);
+	var pathRegExp = new RegExp(
+		Path.extname(file), 'g'
+	);
+
+	Globals.walk.path = src;
+
+	return Fsep.walk(Globals.walk).then(function (paths) {
+
+		paths = paths.filter(function (path) {
+			return pathRegExp.test(path);
+		});
+
+		return handlePaths(paths, src);
 
 	}).catch(function (error) { throw error; });
 }

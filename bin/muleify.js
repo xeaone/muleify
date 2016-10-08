@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 
-const Server = require('../server');
 const Muleify = require('../index.js');
 const Commander = require('commander');
+const Server = require('../server');
 const Chalk = require('chalk');
 const Path = require('path');
 
 Commander
-.version('1.1.1')
+.version('1.5.4')
 .usage('<command> [options]');
 
 Commander
@@ -34,8 +34,7 @@ Commander
 		console.log(Chalk.green('\nMule Is Packed'));
 		console.log(Chalk.magenta('From: ' + Path.join(path, 'src')));
 		console.log(Chalk.magenta('To: ' + Path.join(path, output)));
-	})
-	.catch(function (error) {
+	}).catch(function (error) {
 		console.log(Chalk.red(error));
 	});
 });
@@ -64,16 +63,14 @@ Commander
 		Server(options, function (file) {
 			options.file = file;
 
-			Muleify.packFile(options).then(function () {
+			Muleify.pack(options).then(function () {
 				console.log(Chalk.green('\nMule Is Packed'));
 				console.log(Chalk.magenta('Changed: ' + file));
-			})
-			.catch(function (error) {
+			}).catch(function (error) {
 				console.log(Chalk.red(error));
 			});
 		});
-	})
-	.catch(function (error) {
+	}).catch(function (error) {
 		console.log(Chalk.red(error));
 	});
 });
