@@ -9,15 +9,32 @@ const Transform = require('./lib/transform');
 
 exports.pack = function (options) {
 	Globals.options = options;
-	Globals.paths = Utility.pathRoots(options.path);
+	Globals.file = options.file;
+	Globals.paths = Utility.rootPath(options.path);
+	Globals.walk.path = Globals.paths.src;
 
 	return Promise.resolve().then(function () {
 		return Fsep.ensureDir(Globals.paths.src);
 	}).then(function () {
 		return Fsep.ensureDir(Globals.paths.dist);
 	}).then(function () {
-		if (!options.file) return directory(Globals.paths.src);
-		else return file(Globals.paths.src, options.file);
+		if (!options.file) return directory(Globals);
+		else return file(Globals);
+	}).catch(function (error) {
+		throw error;
+	});
+};
+
+exports.scaffold = function (options) {
+	Globals.options = options;
+	Globals.path = options.path;
+
+	return Promise.resolve().then(function () {
+		return Fsep.ensureDir(Globals.paths.src);
+	}).then(function () {
+		return Fsep.ensureDir(Globals.paths.dist);
+	}).then(function () {
+		return scaffold(Globals);
 	}).catch(function (error) {
 		throw error;
 	});
@@ -47,7 +64,6 @@ function handlePaths (paths, src) {
 
 		return Promise.all(prePaths.map(function (path) {
 			var parsedPath = Utility.parsePath(path, src);
-
 			return Transform({ paths: parsedPath });
 		}));
 
@@ -55,33 +71,31 @@ function handlePaths (paths, src) {
 
 		return Promise.all(postPaths.map(function (path) {
 			var parsedPath = Utility.parsePath(path, src);
-
 			return Transform({ paths: parsedPath });
 		}));
 
 	}).catch(function (error) { throw error; });
 }
 
-function directory (src) {
+function directory (options) {
+	var src = options.paths.src;
+	var walk = options.walk;
 
-	Globals.walk.path = src;
-
-	return Fsep.walk(Globals.walk).then(function (paths) {
+	return Fsep.walk(walk).then(function (paths) {
 
 		return handlePaths(paths, src);
 
 	}).catch(function (error) { throw error; });
 }
 
-function file (src, file) {
+function file (options) {
+	var src = options.paths.src;
+	var walk = options.walk;
+	var file = options.file;
 
-	var pathRegExp = new RegExp(
-		Path.extname(file), 'g'
-	);
+	var pathRegExp = new RegExp(Path.extname(file), 'g');
 
-	Globals.walk.path = src;
-
-	return Fsep.walk(Globals.walk).then(function (paths) {
+	return Fsep.walk(walk).then(function (paths) {
 
 		paths = paths.filter(function (path) {
 			return pathRegExp.test(path);
@@ -90,4 +104,13 @@ function file (src, file) {
 		return handlePaths(paths, src);
 
 	}).catch(function (error) { throw error; });
+}
+
+function scaffold (options) {
+	console.log(options);
+
+	return Fsep.valid(options.path).then(function (isValid) {
+		if (!isValid) throw new Error('path to json is not valid');
+		else console.log('valid');
+	});
 }

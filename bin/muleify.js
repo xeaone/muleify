@@ -6,6 +6,23 @@ const Server = require('../server');
 const Chalk = require('chalk');
 const Path = require('path');
 
+const Options = function (options) {
+	var output = options.output;
+	var path = options.path;
+	var cwd = process.cwd();
+
+	if (!output) output = 'dist';
+
+	if (!path) path = cwd;
+	if (!Path.isAbsolute(path)) path = Path.join(cwd, path);
+
+	return {
+		file: null,
+		path: path,
+		output: output
+	};
+};
+
 Commander
 .version('1.5.4')
 .usage('<command> [options]');
@@ -16,24 +33,14 @@ Commander
 .option('-o, --output <output>', 'Output file name')
 .description('Generates, bundles, and compiles files')
 .action(function (command) {
-	var path = command.path;
-	var output = command.output;
+	console.log(Chalk.underline.cyan('\n\t\tThe Mule Is Packing\t\t\n'));
 
-	if (!output) output = 'dist';
-	if (!path) path = process.cwd();
-	if (!Path.isAbsolute(path)) path = Path.join(process.cwd(), path);
-
-	console.log(Chalk.underline.cyan('\n\t\tPacking The Mule\t\t\n'));
-
-	var options = {
-		path: path,
-		output: output
-	};
+	var options = Options(command);
 
 	Muleify.pack(options).then(function () {
 		console.log(Chalk.green('\nMule Is Packed'));
-		console.log(Chalk.magenta('From: ' + Path.join(path, 'src')));
-		console.log(Chalk.magenta('To: ' + Path.join(path, output)));
+		console.log(Chalk.magenta('From: ' + Path.join(options.path, 'src')));
+		console.log(Chalk.magenta('To: ' + Path.join(options.path, options.output)));
 	}).catch(function (error) {
 		console.log(Chalk.red(error));
 	});
@@ -45,27 +52,18 @@ Commander
 .option('-o, --output <output>', 'Output file name')
 .description('Watches src directory and automatically packs')
 .action(function (command) {
-	var path = command.path;
-	var output = command.output;
-
-	if (!output) output = 'dist';
-	if (!path) path = process.cwd();
-	if (!Path.isAbsolute(path)) path = Path.join(process.cwd(), path);
-
 	console.log(Chalk.underline.cyan('\n\t\tThe Mule Is Serving\t\t\n'));
 
-	var options = {
-		path: path,
-		output: output
-	};
+	var options = Options(command);
 
 	Muleify.pack(options).then(function () {
 		Server(options, function (file) {
+
 			options.file = file;
 
 			Muleify.pack(options).then(function () {
 				console.log(Chalk.green('\nMule Is Packed'));
-				console.log(Chalk.magenta('Changed: ' + file));
+				console.log(Chalk.magenta('Changed: ' + options.file));
 			}).catch(function (error) {
 				console.log(Chalk.red(error));
 			});
@@ -74,5 +72,21 @@ Commander
 		console.log(Chalk.red(error));
 	});
 });
+
+Commander
+.command('scaffold <path>')
+.description('Creates folders and files based on a sitemap json file.')
+.action(function (path) {
+	console.log(Chalk.underline.cyan('\n\t\tThe Mule Is Scaffolding\t\t\n'));
+
+	var options = Options({ path: path });
+
+	Muleify.scaffold(options).then(function () {
+		console.log(Chalk.green('\nMule Is Scaffolded'));
+	}).catch(function (error) {
+		console.log(Chalk.red(error));
+	});
+});
+
 
 Commander.parse(process.argv);

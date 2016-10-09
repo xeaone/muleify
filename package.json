@@ -8,7 +8,9 @@
   },
   "scripts": {
     "serve": "node bin/muleify.js serve -p ./example -o dist",
-    "pack": "node bin/muleify.js pack -p ./example -o dev"
+	"pack": "node bin/muleify.js pack -p ./example -o dev",
+	"scaffold": "node bin/muleify.js scaffold ./example/sitemap.json",
+    "help": "node bin/muleify.js -h "
   },
   "repository": {
     "type": "git",
