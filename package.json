@@ -1,6 +1,6 @@
 {
   "name": "muleify",
-  "version": "1.6.5",
+  "version": "1.6.6",
   "description": "Website bundler. Static site generator.",
   "main": "index.js",
   "bin": {
