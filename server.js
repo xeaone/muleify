@@ -1,5 +1,3 @@
-require('when/monitor/console');
-
 const Path = require('path');
 const Hapi = require('hapi');
 const Chalk = require('chalk');

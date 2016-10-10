@@ -9,7 +9,7 @@
   "scripts": {
     "serve": "node bin/muleify.js serve -p ./example -o dist",
     "pack": "node bin/muleify.js pack -p ./example -o dev",
-	"encamp": "node bin/muleify.js encamp -d www.cool.com ./example/sitemap.json",
+    "encamp": "node bin/muleify.js encamp -d www.cool.com ./example/sitemap.json",
     "map": "node bin/muleify.js map -d www.cool.com ./example/sitemap.json",
     "help": "node bin/muleify.js -h "
   },
@@ -46,6 +46,7 @@
     "babel-core": "^6.17.0",
     "babel-preset-es2015": "^6.16.0",
     "chalk": "^1.1.3",
+    "clean-css": "^3.4.20",
     "commander": "^2.9.0",
     "css": "^2.2.1",
     "fsep": "^1.9.6",

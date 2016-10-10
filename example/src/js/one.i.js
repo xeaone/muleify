@@ -1,4 +1,4 @@
-import two from './two.e.i.js';
+import two from './two.i.js';
 console.log(two);
 
 var one = 1;

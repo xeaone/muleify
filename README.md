@@ -50,7 +50,7 @@ Sub extensions are period separated files names. They can be combined in any ord
 	- `p` - **partial** allows file to be imported
 - **JS**
 	- `e` - **es6** compiles to es5
-	- `b` - **bundle** modules (AMD, CJS, ES, UMD) to ES (or IIFE if used in conjunction with the `e` sub-extensions)
+	- `b` - **bundle** modules (AMD, CJS, ES, UMD) to IIFE
 - **CSS**
 	- `b` - **bundle** all imports
 
@@ -60,12 +60,12 @@ Sub extensions are period separated files names. They can be combined in any ord
 Note `partial` paths need to start at `src` root.
 
 - layout a placeholder: `<!-- { "layout": "*" } -->`
-- import a partial: `<!-- { "partial": "root/header.p.html" } -->` (TODO fix this to relative)
+- import a partial: `<!-- { "partial": "root/header.p.html" } -->`
 - define a variable: `<!-- { "title": "I Am Title" } -->`
 - import a variable: `<!-- { "variable": "title" } -->`
 
 ##### SCSS #####
-Note `@import` paths need to start at `src` root.
+Note `@import` relative path (file or src).
 
 ##### CSS #####
 Note `@import` relative path from file
