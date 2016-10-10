@@ -8,8 +8,8 @@
   },
   "scripts": {
     "serve": "node bin/muleify.js serve -p ./example -o dist",
-	"pack": "node bin/muleify.js pack -p ./example -o dev",
-	"scaffold": "node bin/muleify.js scaffold ./example/sitemap.json",
+    "pack": "node bin/muleify.js pack -p ./example -o dev",
+    "encamp": "node bin/muleify.js encamp -d www.cool.com ./example/sitemap.json",
     "help": "node bin/muleify.js -h "
   },
   "repository": {
@@ -47,7 +47,7 @@
     "chalk": "^1.1.3",
     "commander": "^2.9.0",
     "css": "^2.2.1",
-    "fsep": "^1.8.6",
+    "fsep": "^1.9.6",
     "hapi": "^14.2.0",
     "inert": "^4.0.2",
     "node-sass": "^3.10.1",

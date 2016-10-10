@@ -18,23 +18,62 @@ exports.pack = function (options) {
 	}).then(function () {
 		return Fsep.ensureDir(Globals.paths.dist);
 	}).then(function () {
-		if (!options.file) return directory(Globals);
-		else return file(Globals);
+		if (options.file) return file(Globals);
+		else return directory(Globals);
 	}).catch(function (error) {
 		throw error;
 	});
 };
 
-exports.scaffold = function (options) {
+exports.encamp = function (options) {
 	Globals.options = options;
-	Globals.path = options.path;
+	var sitemapPath = options.path;
+
+	var rootPath = options.path.substring(0, options.path.lastIndexOf('/'));
+	Globals.paths = Utility.rootPath(Globals.rootPath);
+
+	var sitemapObject = null;
 
 	return Promise.resolve().then(function () {
 		return Fsep.ensureDir(Globals.paths.src);
 	}).then(function () {
-		return Fsep.ensureDir(Globals.paths.dist);
+		return Fsep.valid(sitemapPath);
+	}).then(function (isValid) {
+		if (!isValid) throw new Error('path to json is not valid');
 	}).then(function () {
-		return scaffold(Globals);
+		return Fsep.readFile(sitemapPath);
+	}).then(function (data) {
+		sitemapObject = JSON.parse(data);
+		return Fsep.scaffold(rootPath, sitemapObject);
+	}).then(function () {
+		return Fsep.outputFile(
+			Path.join(rootPath, 'sitemap.xml'),
+			Utility.createSitemap(sitemapObject)
+		);
+	}).catch(function (error) {
+		throw error;
+	});
+};
+
+exports.map = function (options) {
+	Globals.options = options;
+
+	var sitemapPath = options.path;
+	var rootPath = options.path.substring(0, options.path.lastIndexOf('/'));
+
+	Globals.paths = Utility.rootPath(Globals.rootPath);
+
+	return Promise.resolve().then(function () {
+		return Fsep.valid(sitemapPath);
+	}).then(function (isValid) {
+		if (!isValid) throw new Error('path to json is not valid');
+		return Fsep.readFile(sitemapPath);
+	}).then(function (data) {
+		var sitemapObject = JSON.parse(data);
+		return Fsep.outputFile(
+			Path.join(rootPath, 'sitemap.xml'),
+			Utility.createSitemap(sitemapObject)
+		);
 	}).catch(function (error) {
 		throw error;
 	});
@@ -104,13 +143,4 @@ function file (options) {
 		return handlePaths(paths, src);
 
 	}).catch(function (error) { throw error; });
-}
-
-function scaffold (options) {
-	console.log(options);
-
-	return Fsep.valid(options.path).then(function (isValid) {
-		if (!isValid) throw new Error('path to json is not valid');
-		else console.log('valid');
-	});
 }

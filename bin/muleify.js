@@ -74,19 +74,37 @@ Commander
 });
 
 Commander
-.command('scaffold <path>')
-.description('Creates folders and files based on a sitemap json file.')
-.action(function (path) {
-	console.log(Chalk.underline.cyan('\n\t\tThe Mule Is Scaffolding\t\t\n'));
+.command('encamp <path>')
+.option('-d, --domain <domain>', 'The domain to use in the sitemap')
+.description('Creates folders, files, and sitemap.')
+.action(function (path, command) {
+	console.log(Chalk.underline.cyan('\n\t\tThe Mule Is Encamping\t\t\n'));
 
 	var options = Options({ path: path });
+	options.domain = command.domain;
 
-	Muleify.scaffold(options).then(function () {
-		console.log(Chalk.green('\nMule Is Scaffolded'));
+	Muleify.encamp(options).then(function () {
+		console.log(Chalk.green('\nMule Is Encamped'));
 	}).catch(function (error) {
 		console.log(Chalk.red(error));
 	});
 });
 
+Commander
+.command('map <path>')
+.option('-d, --domain <domain>', 'The domain to use in the sitemap')
+.description('Creates a sitemap.')
+.action(function (path, command) {
+	console.log(Chalk.underline.cyan('\n\t\tThe Mule Is Mapping\t\t\n'));
+
+	var options = Options({ path: path });
+	options.domain = command.domain;
+
+	Muleify.map(options).then(function () {
+		console.log(Chalk.green('\nMule Is Mapped'));
+	}).catch(function (error) {
+		console.log(Chalk.red(error));
+	});
+});
 
 Commander.parse(process.argv);
