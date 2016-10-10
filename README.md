@@ -6,19 +6,18 @@ Static Site Generator / Website bundler / Asset Compiler / HTML Templating
 
 
 ## Overview ##
-The `pack` command automatically handles many tasks such as compiling scss, less, ES6 to ES5, and bundling all of these are optional. Muleify uses extensions sub-extensions to automatically handle tasks such as compiling/transpiling and bundling. Muleify has almost zero configuration. If there is a feature you want let me know or make a PR.
+Muleify is the one stop shop for your front end needs, it is a command line tool that does or will handle all your website development needs. Muleify has a unique no configuration needed interface. It automatically handles many tasks such as compiling scss, less, ES6 to ES5, and bundling. Muleify uses extensions sub-extensions to automatically handle these tasks. With almost almost zero configuration or changes to existing projects you can get started. If there is a feature you want let me know or make a PR.
 
 Another static asset generator you might say.
 - zero configuration
-- based on extensions
+- based on extensions/sub-extensions
 - easy to use
-- almost no learning curve
+- no learning curve
 
 TODOs
 - less
 - minify
-- html template languages
-- more
+- more template languages
 
 ## Getting Started ##
 
@@ -33,35 +32,27 @@ TODOs
 - `muleify serve` development server recompiles on save
 	- `-p, --path <path>` path to working directory
 	- `-o, --o <output>` output directory name (defaults to "dist")
-
-
-#### Requirements ####
-- src: **required**
+- `muleify encamp <path>` creates a new site's file and folder structure (requires a JSON file)
+	- `-d, --domain <url>` domain to be used in the automatically generated sitemap
+- `muleify map <path>` generates a sitemap.xml (requires a JSON file)
+	- `-d, --domain <url>` domain to be used in the automatically generated sitemap
 
 
 #### Sub Extensions ####
-Sub extensions are period seperated files names. They can be combined in any order or combination.
+Sub extensions are period separated files names. They can be combined in any order or combination. The generated file will not contain the sub-extensions. For example a file in the src directory could be named `file.b.e.js` and the dist directory it would be named `file.js`.
 
 ##### Options #####
-- `l` - (html)
-- `p` - (html)
-- `v` - (html)
-- `e` - (js)
-- `b` - (js, css, scss)
-- `i` - (any) ignore the file/folder 
-
-##### HTML #####
-- `file.l.html` **layout** extension imports all view files
-- `file.p.html` **partial** extension allows file to be imported
-- `file.v.html` **view** extension inserted into layout
-
-##### JS #####
-- `file.e.js` **ES6** compiles to ES5
-- `file.b.js` bundles modules (AMD, CJS, ES, UMD) to ES
-- `file.b.e.js` bundles modules (AMD, CJS, ES, UMD) to IIFE
-
-##### CSS #####
-- `file.b.css` bundles imports
+- **ALL**
+	- `i` - ignore
+- **HTML**
+	- `v` - **view** inserted into layout
+	- `l` - **layout** wraps all view files
+	- `p` - **partial** allows file to be imported
+- **JS**
+	- `e` - **es6** compiles to es5
+	- `b` - **bundle** modules (AMD, CJS, ES, UMD) to ES (or IIFE if used in conjunction with the `e` sub-extensions)
+- **CSS**
+	- `b` - **bundle** all imports
 
 #### Includes/Imports/Partials/Layouts ####
 
@@ -74,7 +65,7 @@ Note `partial` paths need to start at `src` root.
 - import a variable: `<!-- { "variable": "title" } -->`
 
 ##### SCSS #####
-Note `@import` paths need to start at `src` root. (TODO fix this to relative)
+Note `@import` paths need to start at `src` root.
 
 ##### CSS #####
 Note `@import` relative path from file
