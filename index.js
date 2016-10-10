@@ -26,16 +26,14 @@ exports.pack = function (options) {
 };
 
 exports.encamp = function (options) {
-	Globals.options = options;
-	var sitemapPath = options.path;
-
-	var rootPath = options.path.substring(0, options.path.lastIndexOf('/'));
-	Globals.paths = Utility.rootPath(Globals.rootPath);
-
 	var sitemapObject = null;
+	var domain = options.domain;
+	var sitemapPath = options.path;
+	var rootPath = options.path.substring(0, options.path.lastIndexOf('/'));
+	var srcPath = Path.join(rootPath, 'src');
 
 	return Promise.resolve().then(function () {
-		return Fsep.ensureDir(Globals.paths.src);
+		return Fsep.ensureDir(srcPath);
 	}).then(function () {
 		return Fsep.valid(sitemapPath);
 	}).then(function (isValid) {
@@ -44,11 +42,11 @@ exports.encamp = function (options) {
 		return Fsep.readFile(sitemapPath);
 	}).then(function (data) {
 		sitemapObject = JSON.parse(data);
-		return Fsep.scaffold(rootPath, sitemapObject);
+		return Fsep.scaffold(srcPath, sitemapObject);
 	}).then(function () {
 		return Fsep.outputFile(
 			Path.join(rootPath, 'sitemap.xml'),
-			Utility.createSitemap(sitemapObject)
+			Utility.createSitemap(sitemapObject, domain)
 		);
 	}).catch(function (error) {
 		throw error;
@@ -56,12 +54,10 @@ exports.encamp = function (options) {
 };
 
 exports.map = function (options) {
-	Globals.options = options;
-
+	var sitemapObject = null;
+	var domain = options.domain;
 	var sitemapPath = options.path;
 	var rootPath = options.path.substring(0, options.path.lastIndexOf('/'));
-
-	Globals.paths = Utility.rootPath(Globals.rootPath);
 
 	return Promise.resolve().then(function () {
 		return Fsep.valid(sitemapPath);
@@ -69,10 +65,10 @@ exports.map = function (options) {
 		if (!isValid) throw new Error('path to json is not valid');
 		return Fsep.readFile(sitemapPath);
 	}).then(function (data) {
-		var sitemapObject = JSON.parse(data);
+		sitemapObject = JSON.parse(data);
 		return Fsep.outputFile(
 			Path.join(rootPath, 'sitemap.xml'),
-			Utility.createSitemap(sitemapObject)
+			Utility.createSitemap(sitemapObject, domain)
 		);
 	}).catch(function (error) {
 		throw error;

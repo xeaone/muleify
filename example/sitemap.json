@@ -1,8 +1,10 @@
 {
-	"home": "index.html",
-	"about": "index.html",
-	"more": {
-		"one": "index.html",
-		"two": "index.html"
+	"sitemap": {
+		"home": "index.html",
+		"about": "index.html",
+		"more": {
+			"one": "index.html",
+			"two": "index.html"
+		}
 	}
 }

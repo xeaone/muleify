@@ -9,7 +9,8 @@
   "scripts": {
     "serve": "node bin/muleify.js serve -p ./example -o dist",
     "pack": "node bin/muleify.js pack -p ./example -o dev",
-    "encamp": "node bin/muleify.js encamp -d www.cool.com ./example/sitemap.json",
+	"encamp": "node bin/muleify.js encamp -d www.cool.com ./example/sitemap.json",
+    "map": "node bin/muleify.js map -d www.cool.com ./example/sitemap.json",
     "help": "node bin/muleify.js -h "
   },
   "repository": {
