@@ -1,5 +1,5 @@
-import two from './two.i.js';
-console.log(two);
+import { two } from './two.i.js';
 
 var one = 1;
-export default one;
+
+export { one, two };

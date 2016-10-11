@@ -127,8 +127,9 @@ function file (options) {
 	var src = options.paths.src;
 	var walk = options.walk;
 	var file = options.file;
+	var extension = file.split('.').pop();
 
-	var pathRegExp = new RegExp(Path.extname(file), 'g');
+	var pathRegExp = new RegExp(extension, 'g');
 
 	return Fsep.walk(walk).then(function (paths) {
 
