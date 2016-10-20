@@ -74,6 +74,24 @@ Commander
 });
 
 Commander
+.command('component <path>')
+.description('Generates a JavaScript component')
+.action(function (path, command) {
+	console.log(Chalk.underline.cyan('\n\t\tThe Mule Is Componentizing\t\t\n'));
+
+	var options = Options(command);
+	options.path = path;
+
+	Muleify.component(options).then(function () {
+		console.log(Chalk.green('\nMule Is Componentized'));
+		console.log(Chalk.magenta('From: ' + Path.join(options.path, 'src')));
+		console.log(Chalk.magenta('To: ' + Path.join(options.path, options.output)));
+	}).catch(function (error) {
+		console.log(Chalk.red(error));
+	});
+});
+
+Commander
 .command('encamp <path>')
 .option('-d, --domain <domain>', 'The domain to use in the sitemap')
 .description('Creates folders, files, and sitemap.')
