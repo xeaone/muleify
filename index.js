@@ -84,13 +84,13 @@ exports.map = function (options) {
 
 function getPrePaths (paths) {
 	return paths.filter(function (path) {
-		return /(\.l\.)|(\.b\.)/g.test(path);
+		return /(\.l\.)|(\.b\.)/.test(path);
 	});
 }
 
 function getPostPaths (paths) {
 	return paths.filter(function (path) {
-		return !/(\.l\.)|(\.b\.)/g.test(path);
+		return !/(\.l\.)|(\.b\.)/.test(path);
 	});
 }
 
@@ -132,13 +132,16 @@ function file (options) {
 	var file = options.file;
 	var extension = file.split('.').pop();
 
-	var pathRegExp = new RegExp(extension, 'g');
+	// something weird happens when using the g option
+	var pathRegExp = new RegExp(extension);
 
 	return Fsep.walk(walk).then(function (paths) {
 
-		paths = paths.filter(function (path) {
+		var isMatchingExtension = function (path) {
 			return pathRegExp.test(path);
-		});
+		};
+
+		paths = paths.filter(isMatchingExtension);
 
 		return handlePaths(paths, src);
 
