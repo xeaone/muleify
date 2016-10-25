@@ -1,1 +1,1 @@
-.two-scss{color:red}.one-scss{color:#00f}.bundle-scss{background:green}
+@import './one.i.scss';.bundle-scss{background:#90ee90}

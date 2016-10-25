@@ -25,6 +25,17 @@ exports.pack = function (options) {
 	});
 };
 
+exports.component = function (options) {
+
+	return Promise.resolve().then(function () {
+		return Fsep.readFile(options.path, 'binary');
+	}).then(function (text) {
+		console.log(text);
+	}).catch(function (error) {
+		throw error;
+	});
+};
+
 exports.encamp = function (options) {
 	var sitemapObject = null;
 	var domain = options.domain;

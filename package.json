@@ -1,6 +1,6 @@
 {
   "name": "muleify",
-  "version": "1.6.8",
+  "version": "1.6.9",
   "description": "Website bundler. Static site generator.",
   "main": "index.js",
   "bin": {
@@ -8,7 +8,8 @@
   },
   "scripts": {
     "serve": "node bin/muleify.js serve -p ./example -o dist",
-    "pack": "node bin/muleify.js pack -p ./example -o dev",
+	"pack": "node bin/muleify.js pack -p ./example -o dev",
+    "component": "node bin/muleify.js component ./example/component.html",
     "encamp": "node bin/muleify.js encamp -d www.cool.com ./example/sitemap.json",
     "map": "node bin/muleify.js map -d www.cool.com ./example/sitemap.json",
     "help": "node bin/muleify.js -h "
@@ -56,8 +57,5 @@
     "node-watch": "^0.4.0",
     "rollup": "^0.34.13",
     "when": "^3.7.7"
-  },
-  "devDependencies": {
-    "pretty-monitor": "^0.3.2"
   }
 }
