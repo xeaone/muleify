@@ -20,9 +20,7 @@ exports.pack = function (options) {
 	}).then(function () {
 		if (options.file) return file(Globals);
 		else return directory(Globals);
-	}).catch(function (error) {
-		throw error;
-	});
+	}).catch(function (error) { throw error; });
 };
 
 exports.component = function (options) {
@@ -31,9 +29,7 @@ exports.component = function (options) {
 		return Fsep.readFile(options.path, 'binary');
 	}).then(function (text) {
 		console.log(text);
-	}).catch(function (error) {
-		throw error;
-	});
+	}).catch(function (error) { throw error; });
 };
 
 exports.encamp = function (options) {
@@ -59,9 +55,7 @@ exports.encamp = function (options) {
 			Path.join(rootPath, 'sitemap.xml'),
 			Utility.createSitemap(sitemapObject, domain)
 		);
-	}).catch(function (error) {
-		throw error;
-	});
+	}).catch(function (error) { throw error; });
 };
 
 exports.map = function (options) {
@@ -81,9 +75,7 @@ exports.map = function (options) {
 			Path.join(rootPath, 'sitemap.xml'),
 			Utility.createSitemap(sitemapObject, domain)
 		);
-	}).catch(function (error) {
-		throw error;
-	});
+	}).catch(function (error) { throw error; });
 };
 
 /*
