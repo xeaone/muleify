@@ -42,7 +42,7 @@ Commander
 		console.log(Chalk.magenta('From: ' + Path.join(options.path, 'src')));
 		console.log(Chalk.magenta('To: ' + Path.join(options.path, options.output)));
 	}).catch(function (error) {
-		console.log(Chalk.red(error));
+		console.log(Chalk.red(error.stack));
 	});
 });
 
@@ -69,7 +69,7 @@ Commander
 			});
 		});
 	}).catch(function (error) {
-		console.log(Chalk.red(error));
+		console.log(Chalk.red(error.stack));
 	});
 });
 
@@ -87,7 +87,7 @@ Commander
 		console.log(Chalk.magenta('From: ' + Path.join(options.path, 'src')));
 		console.log(Chalk.magenta('To: ' + Path.join(options.path, options.output)));
 	}).catch(function (error) {
-		console.log(Chalk.red(error));
+		console.log(Chalk.red(error.stack));
 	});
 });
 
@@ -104,7 +104,7 @@ Commander
 	Muleify.encamp(options).then(function () {
 		console.log(Chalk.green('\nMule Is Encamped'));
 	}).catch(function (error) {
-		console.log(Chalk.red(error));
+		console.log(Chalk.red(error.stack));
 	});
 });
 
@@ -121,7 +121,7 @@ Commander
 	Muleify.map(options).then(function () {
 		console.log(Chalk.green('\nMule Is Mapped'));
 	}).catch(function (error) {
-		console.log(Chalk.red(error));
+		console.log(Chalk.red(error.stack));
 	});
 });
 
