@@ -5,8 +5,6 @@ const Globals = require('./lib/globals');
 const Utility = require('./lib/utility');
 const Transform = require('./lib/transform');
 
-// type error from clean css
-
 exports.pack = function (options) {
 	Globals.options = options;
 	Globals.file = options.file;
