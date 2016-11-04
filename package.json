@@ -1,6 +1,6 @@
 {
   "name": "muleify",
-  "version": "1.7.2",
+  "version": "1.7.3",
   "description": "Website bundler. Static site generator.",
   "main": "index.js",
   "bin": {
@@ -45,7 +45,7 @@
   },
   "homepage": "https://github.com/AlexanderElias/muleify#readme",
   "dependencies": {
-    "babel-core": "^6.17.0",
+    "babel-core": "^6.18.2",
     "babel-preset-es2015": "^6.16.0",
     "chalk": "^1.1.3",
     "clean-css": "^3.4.20",
@@ -54,7 +54,7 @@
     "fsep": "^1.9.7",
     "hapi": "^14.2.0",
     "inert": "^4.0.2",
-    "node-sass": "^3.10.1",
+    "node-sass": "^3.11.1",
     "node-watch": "^0.4.0",
     "rollup": "^0.34.13",
     "when": "^3.7.7"

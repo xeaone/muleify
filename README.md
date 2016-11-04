@@ -1,23 +1,56 @@
+<script src="https://buttons.github.io/buttons.js"></script>
+
+<style>
+	.github-button {
+		margin: 8px;
+		display: inline-block;
+	}
+</style>
+
+<!-- Watch -->
+<a class="github-button" href="https://github.com/AlexanderElias/muleify"
+data-icon="octicon-eye"
+data-style="mega"
+data-count-href="/AlexanderElias/muleify/watchers"
+data-count-api="/repos/AlexanderElias/muleify#subscribers_count"
+data-count-aria-label="# watchers on GitHub"
+aria-label="Watch AlexanderElias/muleify on GitHub">Watch</a>
+<!-- Star -->
+<a class="github-button" href="https://github.com/AlexanderElias/muleify"
+data-icon="octicon-star"
+data-style="mega"
+data-count-href="/AlexanderElias/muleify/stargazers"
+data-count-api="/repos/AlexanderElias/muleify#stargazers_count" data-count-aria-label="# stargazers on GitHub"
+aria-label="Star AlexanderElias/muleify on GitHub">Star</a>
+<!-- Issue -->
+<a class="github-button"
+href="https://github.com/AlexanderElias/muleify/issues"
+data-icon="octicon-issue-opened"
+data-style="mega"
+data-count-api="/repos/AlexanderElias/muleify#open_issues_count"
+data-count-aria-label="# issues on GitHub"
+aria-label="Issue AlexanderElias/muleify on GitHub">Issue</a>
+
 # Muleify #
 
-Front end generation tool.
+Front end generation command line tool.
 
-Static Site Generator / Website bundler / Asset Compiler / HTML Templating
+Static Site Generator / Website Bundler / Asset Compiler / HTML Templating / Web Components
 
 
 ## Overview ##
-Muleify is the one stop shop for your front end needs, it is a command line tool that does or will handle all your website development needs. Muleify has a unique no configuration needed interface. It automatically handles many tasks such as compiling scss, less, ES6 to ES5, and bundling. Muleify uses extensions sub-extensions to automatically handle these tasks. With almost almost zero configuration or changes to existing projects you can get started. If there is a feature you want let me know or make a PR.
+Muleify is the one stop shop for your web front end needs, it is a command line tool that handles all your website development needs. Muleify has a unique no configuration required interface. It automatically handles many tasks such as compiling scss, less, ES6 to ES5, bundling, and minifing. Muleify uses extensions and sub-extensions to automatically handle these tasks. With almost almost zero configuration or changes to existing projects you can get started. If there is a feature you want let me know or make a PR.
 
 Another static asset generator you might say.
+- quick and easy
+- no learning curve
 - zero configuration
 - based on extensions/sub-extensions
-- easy to use
-- no learning curve
 
-TODOs
+TODOS
 - less
-- minify
-- more template languages
+- minify (partially completed)
+- other template languages
 
 ## Getting Started ##
 
@@ -48,30 +81,38 @@ Sub extensions are period separated files names. They can be combined in any ord
 	- `v` - **view** inserted into layout
 	- `l` - **layout** wraps all view files
 	- `p` - **partial** allows file to be imported
+	- `m` - **minify** minify code (under development)
 - **JS**
-	- `e` - **es6** compiles to es5
-	- `b` - **bundle** modules (AMD, CJS, ES, UMD) to IIFE
+	- `e` - **es** compiles to es5
+	- `b` - **bundle** modules (AMD, CJS, UMD, ES) to IIFE
+	- `m` - **minify** minify code
 - **CSS**
 	- `b` - **bundle** all imports
+	- `m` - **minify** minify code
+- **SCSS**
+	- `m` - **minify** minify code
 
 #### Includes/Imports/Partials/Layouts ####
+For consistency it is best to start all paths with `./`.
 
 ##### HTML #####
-Note `partial` paths need to start at `src` root.
+Note `partial` relative path from file
 
 - layout a placeholder: `<!-- { "layout": "*" } -->`
-- import a partial: `<!-- { "partial": "root/header.p.html" } -->`
+- import a partial: `<!-- { "partial": "./root/header.p.html" } -->`
 - define a variable: `<!-- { "title": "I Am Title" } -->`
 - import a variable: `<!-- { "variable": "title" } -->`
 
-##### SCSS #####
-Note `@import` relative path (file or src).
+##### JS #####
+Note ES6 `import` relative path from file
 
 ##### CSS #####
 Note `@import` relative path from file
 
-##### JS #####
-Note ES6 `import` relative path from file
+##### SCSS #####
+Sass automatically bundles imports.
+Note `@import` relative path from file
+
 
 
 ## License ##
