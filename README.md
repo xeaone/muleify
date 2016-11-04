@@ -1,35 +1,4 @@
-<script src="https://buttons.github.io/buttons.js"></script>
-
-<style>
-	.github-button {
-		margin: 8px;
-		display: inline-block;
-	}
-</style>
-
-<!-- Watch -->
-<a class="github-button" href="https://github.com/AlexanderElias/muleify"
-data-icon="octicon-eye"
-data-style="mega"
-data-count-href="/AlexanderElias/muleify/watchers"
-data-count-api="/repos/AlexanderElias/muleify#subscribers_count"
-data-count-aria-label="# watchers on GitHub"
-aria-label="Watch AlexanderElias/muleify on GitHub">Watch</a>
-<!-- Star -->
-<a class="github-button" href="https://github.com/AlexanderElias/muleify"
-data-icon="octicon-star"
-data-style="mega"
-data-count-href="/AlexanderElias/muleify/stargazers"
-data-count-api="/repos/AlexanderElias/muleify#stargazers_count" data-count-aria-label="# stargazers on GitHub"
-aria-label="Star AlexanderElias/muleify on GitHub">Star</a>
-<!-- Issue -->
-<a class="github-button"
-href="https://github.com/AlexanderElias/muleify/issues"
-data-icon="octicon-issue-opened"
-data-style="mega"
-data-count-api="/repos/AlexanderElias/muleify#open_issues_count"
-data-count-aria-label="# issues on GitHub"
-aria-label="Issue AlexanderElias/muleify on GitHub">Issue</a>
+[Star Issue Like Watch](https://github.com/AlexanderElias/muleify)
 
 # Muleify #
 
