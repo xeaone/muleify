@@ -1,6 +1,5 @@
 const Path = require('path');
 const Fsep = require('fsep');
-const Promise = require('when');
 const Globals = require('./lib/globals');
 const Utility = require('./lib/utility');
 const Transform = require('./lib/transform');
