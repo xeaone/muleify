@@ -1,7 +1,10 @@
 const Path = require('path');
 const Hapi = require('hapi');
 const Chalk = require('chalk');
+const Porty = require('porty');
 const NodeWatch = require('node-watch');
+
+const PORT = 8080;
 
 module.exports = function (options, callback) {
 	const output = Path.join(options.path, options.output);
@@ -29,30 +32,35 @@ module.exports = function (options, callback) {
 
 	const server = new Hapi.Server();
 
-	server.connection({
-		host: 'localhost',
-		port: 8080,
-		routes: {
-			cors: true
-		}
-	});
+	Porty.get(PORT, function (port) {
 
-	server.register(register, function(error) { if (error) throw error; });
-	server.route(routes);
-
-	server.start(function () {
-
-		console.log(Chalk.green('Web: ' + server.info.uri));
-		console.log(Chalk.magenta('From: ' + src));
-		console.log(Chalk.magenta('To: ' + output));
-
-		const options = {
-			recursive: true,
-			followSymLinks: false
-		};
-
-		NodeWatch(src, options, function (file) {
-			callback(file);
+		server.connection({
+			host: 'localhost',
+			port: port,
+			routes: {
+				cors: true
+			}
 		});
+
+		server.register(register, function(error) {
+			if (error) throw error;
+		});
+		
+		server.route(routes);
+
+		server.start(function () {
+			console.log(Chalk.green('Web: ' + server.info.uri));
+			console.log(Chalk.magenta('From: ' + src));
+			console.log(Chalk.magenta('To: ' + output));
+
+			NodeWatch(src, {
+				recursive: true,
+				followSymLinks: false
+			}, function (file) {
+				callback(file);
+			});
+		});
+
 	});
+
 };
