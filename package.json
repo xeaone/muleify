@@ -67,7 +67,7 @@
     "inert": "^4.0.2",
     "node-sass": "^3.11.1",
     "node-watch": "^0.4.0",
-    "porty": "^1.0.1",
+    "porty": "^1.0.2",
     "rollup": "^0.34.13",
     "uglify-js": "^2.7.4"
   }
