@@ -1,6 +1,6 @@
 {
   "name": "muleify",
-  "version": "1.8.1",
+  "version": "1.8.2",
   "description": "Website bundler. Static site generator.",
   "main": "index.js",
   "bin": {
@@ -65,6 +65,7 @@
     "fsep": "^1.9.7",
     "hapi": "^14.2.0",
     "inert": "^4.0.2",
+    "less": "^2.7.1",
     "node-sass": "^3.11.1",
     "node-watch": "^0.4.0",
     "porty": "^1.0.2",

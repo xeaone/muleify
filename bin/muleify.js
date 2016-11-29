@@ -24,7 +24,7 @@ const Options = function (options) {
 };
 
 Commander
-.version('1.8.1')
+.version('1.8.2')
 .usage('<command> [options]');
 
 Commander

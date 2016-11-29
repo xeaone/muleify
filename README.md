@@ -17,8 +17,6 @@ Another static asset generator you might say.
 - based on extensions/sub-extensions
 
 TODOS
-- less
-- minify (partially completed)
 - other template languages
 
 ## Getting Started ##
@@ -60,6 +58,8 @@ Sub extensions are period separated files names. They can be combined in any ord
 	- `m` - **minify** minify code
 - **SCSS**
 	- `m` - **minify** minify code
+- **LESS**
+	- `m` - **minify** minify code
 
 #### Includes/Imports/Partials/Layouts ####
 For consistency it is best to start all paths with `./`.
@@ -82,6 +82,9 @@ Note `@import` relative path from file
 Sass automatically bundles imports.
 Note `@import` relative path from file
 
+##### LESS #####
+Less automatically bundles imports.
+Note `@import` relative path from file
 
 
 ## License ##
