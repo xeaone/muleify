@@ -1,10 +1,10 @@
 {
-	"sitemap": {
-		"home": "index.html",
-		"about": "index.html",
-		"more": {
-			"one": "index.html",
-			"two": "index.html"
+	"encamped": {
+		"one": {
+			"/": "index.v.html",
+			"two": {
+				"/": "index.v.html"
+			}
 		}
 	}
 }

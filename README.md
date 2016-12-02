@@ -1,5 +1,7 @@
 [Star Issue Like Watch](https://github.com/AlexanderElias/muleify)
 
+**CLI Changes in 2.0.0**
+
 # Muleify #
 
 Front end generation command line tool.
@@ -26,16 +28,19 @@ TODOS
 
 
 #### CLI ####
-- `muleify pack` compiles and bundles src to an output directory
-	- `-p, --path <path>` path to working directory
-	- `-o, --o <output>` output directory name (defaults to "dist")
-- `muleify serve` development server recompiles on save
-	- `-p, --path <path>` path to working directory
-	- `-o, --o <output>` output directory name (defaults to "dist")
-- `muleify encamp <path>` creates a new site's file and folder structure (requires a JSON file)
-	- `-d, --domain <url>` domain to be used in the automatically generated sitemap
-- `muleify map <path>` generates a sitemap.xml (requires a JSON file)
-	- `-d, --domain <url>` domain to be used in the automatically generated sitemap
+- `muleify pack <input> <output>` compiles and bundles from the input folder to the output folder
+	- `input` path to a directory to compile and bundle
+	- `output` path to a directory to generate the content
+- `muleify serve <input> <output>` development server recompiles on save
+	- `input` path to a directory to compile and bundle
+	- `output` path to a directory to serve the content
+- `muleify encamp <input> <output>` generates a file and folder structure (scaffold). If you encamp again it will not overwrite your files. Backup just to be safe though.
+	- `input` path to a JSON file
+	- `output` path to a directory
+- `muleify map <input> <output>` generates a XML sitemap
+	- `input` path to a JSON file
+	- `output` path to a directory to output a sitemap.xml
+	- `-d, --domain <url>` domain to be inserted into the sitemap
 
 
 #### Sub Extensions ####

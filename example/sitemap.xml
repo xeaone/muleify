@@ -1,11 +1,8 @@
 
 	<?xml version="1.0" encoding="UTF-8"?>
 	<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-		xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
-		xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
-	<url><loc>www.cool.com/sitemap/home/index.html</loc></url>
-	<url><loc>www.cool.com/sitemap/about/index.html</loc></url>
-	<url><loc>www.cool.com/sitemap/more/one/index.html</loc></url>
-	<url><loc>www.cool.com/sitemap/more/two/index.html</loc></url>
+			xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+			xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+		<url><loc>/encamped/one/index.v.html</loc></url>
+		<url><loc>/encamped/one/two/index.v.html</loc></url>
 	</urlset>
-	
