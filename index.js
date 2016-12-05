@@ -2,6 +2,7 @@ const Path = require('path');
 const Fsep = require('fsep');
 const Config = require('./lib/config');
 const Utility = require('./lib/utility');
+const Globals = require('./lib/globals');
 const Transform = require('./lib/transform');
 
 function getPrePaths (paths) {
@@ -75,6 +76,9 @@ function file (input, output, change) {
 }
 
 exports.pack = function (input, output, change) {
+	Globals.input = input;
+	Globals.output = output;
+
 	return Promise.resolve().then(function () {
 		return Fsep.valid(input);
 	}).then(function (isValid) {
