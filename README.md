@@ -73,7 +73,7 @@ For consistency it is best to start all paths with `./`.
 Note `partial` relative path from file
 
 - layout a placeholder: `<!-- { "layout": "*" } -->`
-- import a partial: `<!-- { "partial": "./root/header.p.html" } -->`
+- import a partial: `<!-- { "partial": "./header.p.html" } -->`
 - define a variable: `<!-- { "title": "I Am Title" } -->`
 - import a variable: `<!-- { "variable": "title" } -->`
 
