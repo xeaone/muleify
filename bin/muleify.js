@@ -13,7 +13,7 @@ const fix = function (path) {
 };
 
 Commander
-.version('2.0.2')
+.version('2.0.3')
 .usage('[options] <command>');
 
 Commander
