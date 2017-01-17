@@ -1,19 +1,14 @@
 {
   "name": "muleify",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "Website bundler. Static site generator.",
   "main": "index.js",
   "bin": {
-    "muleify": "bin/muleify.js"
+    "muleify": "bin/index.js"
   },
   "scripts": {
-    "serve": "node bin/muleify.js serve example/src example/dist",
-    "pack": "node bin/muleify.js pack example/src example/dist",
-	"encamp": "node bin/muleify.js encamp example/sitemap.json example",
-	"map": "node bin/muleify.js map example/sitemap.json example",
-    "component": "node bin/muleify.js component ./example/component.html",
-    "help": "node bin/muleify.js -h "
-  },
+    "muleify": "node bin/index.js"
+ },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/AlexanderElias/muleify.git"
@@ -61,7 +56,7 @@
     "clean-css": "^3.4.20",
     "commander": "^2.9.0",
     "css": "^2.2.1",
-    "fsep": "^1.9.7",
+    "fsep": "^1.9.9",
     "hapi": "^14.2.0",
     "inert": "^4.0.2",
     "less": "^2.7.1",

@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+const Package = require('../package.json');
 const Muleify = require('../index.js');
 const Commander = require('commander');
 const Server = require('../server');
@@ -13,7 +14,7 @@ const fix = function (path) {
 };
 
 Commander
-.version('2.0.3')
+.version(Package.version)
 .usage('[options] <command>');
 
 Commander
