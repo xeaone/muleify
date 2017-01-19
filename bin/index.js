@@ -12,6 +12,8 @@ Commander
 
 Commander
 .command('pack <input> <output>')
+.option('-m, --map <sitemap>', 'Gernates a sitemap')
+.option('-d, --domain <domain>', 'The domain to use in the sitemap')
 .description('Generates, bundles, and compiles files')
 .action(function (input, output) {
 	console.log(Chalk.underline.cyan('\n\t\tMule Is Packing\t\t\n'));
@@ -30,7 +32,9 @@ Commander
 });
 
 Commander
-.command('serve [input] [output]')
+.command('serve <input> <output>')
+.option('-m, --map <sitemap>', 'Gernates a sitemap')
+.option('-d, --domain <domain>', 'The domain to use in the sitemap')
 .description('Watches src directory and automatically packs')
 .action(function (input, output) {
 
@@ -66,10 +70,11 @@ Commander
 .action(function (input, output) {
 	console.log(Chalk.underline.cyan('\n\t\tMule Is Encamping\t\t\n'));
 
-	input = fixPath(input);
-	output = fixPath(output);
-
-	Muleify.encamp(input, output).then(function () {
+	Promise.resolve().then(function () {
+		return Utility.io(input, output);
+	}).then(function (result) {
+		return Muleify.encamp(result.input, result.output);
+	}).then(function () {
 		console.log(Chalk.green('\nMule Is Encamped'));
 		console.log(Chalk.magenta('From: ' + input));
 		console.log(Chalk.magenta('To: ' + output));
@@ -85,10 +90,11 @@ Commander
 .action(function (input, output, options) {
 	console.log(Chalk.underline.cyan('\n\t\tMule Is Mapping\t\t\n'));
 
-	input = fixPath(input);
-	output = fixPath(output);
-
-	Muleify.map(input, output, options.domain).then(function () {
+	Promise.resolve().then(function () {
+		return Utility.io(input, output);
+	}).then(function (result) {
+		return Muleify.map(result.input, result.output, options.domain);
+	}).then(function () {
 		console.log(Chalk.green('\nMule Is Mapped'));
 		console.log(Chalk.magenta('From: ' + input));
 		console.log(Chalk.magenta('To: ' + output));

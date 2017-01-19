@@ -148,10 +148,10 @@ exports.serve = function (input, output, start, stop, change) {
 		return Fsep.valid(input);
 	}).then(function (isValid) {
 		if (!isValid) throw new Error(`Input path does not exist: ${input}`);
-	// }).then(function () {
-	// 	return Fsep.valid(output);
-	// }).then(function (isValid) {
-	// 	if (!isValid) throw new Error(`Output path does not exist: ${output}`);
+	}).then(function () {
+		return Fsep.valid(output);
+	}).then(function (isValid) {
+		if (!isValid) throw new Error(`Output path does not exist: ${output}`);
 	}).then(function () {
 		return pack(input, output);
 	}).then(function () {
