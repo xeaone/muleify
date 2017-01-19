@@ -4,6 +4,7 @@
 		"dev",
 		"dist",
 		"ignore",
+		"node_modules",
 		".DS_Store",
 		".git",
 		"(\\.p\\.)",

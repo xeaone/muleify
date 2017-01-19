@@ -1,9 +1,11 @@
+const Transform = require('./lib/transform');
+const Utility = require('./lib/utility');
+const Server = require('./lib/server');
+const Config = require('./lib/config');
 const Path = require('path');
 const Fsep = require('fsep');
-const Config = require('./lib/config');
-const Utility = require('./lib/utility');
-const Globals = require('./lib/globals');
-const Transform = require('./lib/transform');
+
+const IGNOREABLES = Config.ignoreables;
 
 function getPrePaths (paths) {
 	return paths.filter(function (path) {
@@ -18,21 +20,19 @@ function getPostPaths (paths) {
 }
 
 function handlePaths (input, output, paths) {
+	// TODO sort paths instead
+
 	var prePaths = getPrePaths(paths);
 	var postPaths = getPostPaths(paths);
 
 	return Promise.resolve().then(function () {
-
 		return Promise.all(prePaths.map(function (path) {
-			return Transform(path, input, output);
+			return Transform(Path.join(input, path), Path.join(output, path));
 		}));
-
 	}).then(function () {
-
 		return Promise.all(postPaths.map(function (path) {
-			return Transform(path, input, output);
+			return Transform(Path.join(input, path), Path.join(output, path));
 		}));
-
 	}).catch(function (error) {
 		throw error;
 	});
@@ -42,8 +42,9 @@ function directory (input, output) {
 	const options = {
 		path: input,
 		ignoreDot: true,
-		filters: Config.ignoreables
+		filters: IGNOREABLES
 	};
+
 	return Fsep.walk(options).then(function (paths) {
 		return handlePaths(input, output, paths);
 	}).catch(function (error) {
@@ -51,50 +52,110 @@ function directory (input, output) {
 	});
 }
 
-function file (input, output, change) {
-	const options = {
-		path: input,
-		ignoreDot: true,
-		filters: Config.ignoreables
-	};
+function file (input, output) {
+	return Transform(input, output);
 
-	var extension = change.split('.').pop();
-	var pathRegExp = new RegExp(extension); // something weird happens when using the g option
+	// var dist = output.split(Path.sep).indexOf('dist');
+	// var src = input.split(Path.sep).indexOf('src');
+	// var extension = Path.extname(input);
+	//
+	// if (src !== -1) {
+	// 	input = input.split(Path.sep);
+	// 	input = input.splice(0, src+1);
+	// 	input = input.join(Path.sep);
+	// } else {
+	// 	input = Path.dirname(input);
+	// }
+	//
+	// if (dist !== -1) {
+	// 	output = output.split(Path.sep);
+	// 	output = output.splice(0, dist+1);
+	// 	output = output.join(Path.sep);
+	// } else {
+	// 	output = Path.dirname(output);
+	// }
+	//
+	// const options = {
+	// 	path: input,
+	// 	ignoreDot: true,
+	// 	filters: IGNOREABLES
+	// };
+	//
+	// return Fsep.walk(options).then(function (paths) {
+	//
+	// 	paths = paths.filter(function (path) {
+	// 		return Path.extname(path) === extension;
+	// 	});
+	//
+	// 	return handlePaths(input, output, paths);
+	// }).catch(function (error) {
+	// 	throw error;
+	// });
+}
 
-	return Fsep.walk(options).then(function (paths) {
-
-		var isMatchingExtension = function (path) {
-			return pathRegExp.test(path);
-		};
-
-		paths = paths.filter(isMatchingExtension);
-		return handlePaths(input, output, paths);
-
+function pack (input, output) {
+	return Promise.resolve().then(function () {
+		return Utility.io(input, output);
+	}).then(function (result) {
+		if (result.isFile) return file(input, output);
+		else if (result.isDirectory) return directory(input, output);
+		else throw new Error(`Input is not a file or direcotry ${input}`);
 	}).catch(function (error) {
 		throw error;
 	});
 }
 
-exports.pack = function (input, output, change) {
-	Globals.input = input;
-	Globals.output = output;
+function serve (input, output, start, stop, change) {
+	return new Promise(function(resolve, reject) {
+		Server(input, output, start, stop,
+			function (e) {
+				reject(e);
+			},
+			function (path) {
+				Promise.resolve().then(function () {
+				// 	return Utility.io(input, output);
+				// }).then(function (result) {
+					// return pack(result.input, result.output);
+					return pack(input, output);
+				}).then(function () {
+					change(path);
+				}).catch(function (error) {
+					return reject(error);
+				});
+			}
+		);
+	});
+}
 
+exports.pack = function (input, output) {
 	return Promise.resolve().then(function () {
 		return Fsep.valid(input);
 	}).then(function (isValid) {
-		if (!isValid) throw new Error('input path is not valid');
+		if (!isValid) throw new Error(`Input path does not exist: ${input}`);
 	}).then(function () {
 		return Fsep.valid(output);
 	}).then(function (isValid) {
-		if (!isValid) throw new Error('output path is not valid');
+		if (!isValid) throw new Error(`Output path does not exist: ${output}`);
 	}).then(function () {
+		return pack(input, output);
+	}).catch(function (error) {
+		throw error;
+	});
+};
 
-		if (change) {
-			return file(input, output, change);
-		} else {
-			return directory(input, output);
-		}
-
+exports.serve = function (input, output, start, stop, change) {
+	return Promise.resolve().then(function () {
+		return Fsep.valid(input);
+	}).then(function (isValid) {
+		if (!isValid) throw new Error(`Input path does not exist: ${input}`);
+	// }).then(function () {
+	// 	return Fsep.valid(output);
+	// }).then(function (isValid) {
+	// 	if (!isValid) throw new Error(`Output path does not exist: ${output}`);
+	}).then(function () {
+		return pack(input, output);
+	}).then(function () {
+		return serve(input, output, start, stop, change);
 	}).catch(function (error) {
 		throw error;
 	});
@@ -104,11 +165,11 @@ exports.encamp = function (input, output) {
 	return Promise.resolve().then(function () {
 		return Fsep.valid(input);
 	}).then(function (isValid) {
-		if (!isValid) throw new Error('input path is not valid');
+		if (!isValid) throw new Error(`Input path does not exist: ${input}`);
 	}).then(function () {
 		return Fsep.valid(output);
 	}).then(function (isValid) {
-		if (!isValid) throw new Error('output path is not valid');
+		if (!isValid) throw new Error(`Output path does not exist: ${output}`);
 	}).then(function () {
 		return Fsep.readFile(input);
 	}).then(function (data) {
@@ -123,7 +184,7 @@ exports.map = function (input, output, domain) {
 	return Promise.resolve().then(function () {
 		return Fsep.valid(input);
 	}).then(function (isValid) {
-		if (!isValid) throw new Error('input path is not valid');
+		if (!isValid) throw new Error(`Input path does not exist: ${input}`);
 	}).then(function () {
 		return Fsep.readFile(input);
 	}).then(function (data) {

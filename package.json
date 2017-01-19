@@ -7,8 +7,9 @@
     "muleify": "bin/index.js"
   },
   "scripts": {
-    "muleify": "node bin/index.js"
- },
+	  "muleify": "node bin/index.js",
+	"test": "node bin/index.js serve example/src example/dist"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/AlexanderElias/muleify.git"
@@ -63,6 +64,7 @@
     "node-sass": "^3.11.1",
     "node-watch": "^0.4.0",
     "porty": "^1.0.2",
+    "promise-tool": "^1.0.1",
     "rollup": "^0.34.13",
     "uglify-js": "^2.7.4"
   }

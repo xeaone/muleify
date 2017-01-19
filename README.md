@@ -50,13 +50,13 @@ Sub extensions are period separated files names. They can be combined in any ord
 - **ALL**
 	- `i` - ignore
 - **HTML**
-	- `v` - **view** inserted into layout
 	- `l` - **layout** wraps all view files
+	- `v` - **view** inserted into layout
 	- `p` - **partial** allows file to be imported
 	- `m` - **minify** minify code (under development)
 - **JS**
-	- `e` - **es** compiles to es5
 	- `b` - **bundle** modules (AMD, CJS, UMD, ES) to IIFE
+	- `e` - **es** compiles to es5
 	- `m` - **minify** minify code
 - **CSS**
 	- `b` - **bundle** all imports
