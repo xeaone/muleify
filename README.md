@@ -37,6 +37,8 @@ TODOS
 	- `output` path to a directory to output a sitemap.xml
 	- `-d, --domain <domain>` domain to be inserted into the sitemap
 
+#### Preprocessor Types ####
+JavaScript, CSS, SCSS, SASS, LESS, HTML, MD
 
 #### Sub Extensions ####
 Sub extensions are period separated files names. They can be combined in any order or combination. The generated file will not contain the sub-extensions. For example a file in the src directory could be named `file.b.e.js` and the dist directory it would be named `file.js`.
@@ -49,6 +51,8 @@ Sub extensions are period separated files names. They can be combined in any ord
 	- `v` - **view** inserted into layout
 	- `p` - **partial** allows file to be imported
 	- `m` - **minify** minify code (under development)
+- **MD**
+
 - **JS**
 	- `b` - **bundle** modules (AMD, CJS, UMD, ES) to IIFE
 	- `e` - **es** compiles to es5
@@ -71,6 +75,9 @@ Note `partial` relative path from file
 - import a partial: `<!-- { "partial": "./header.p.html" } -->`
 - define a variable: `<!-- { "title": "I Am Title" } -->`
 - import a variable: `<!-- { "variable": "title" } -->`
+
+##### MD #####
+Converts to HTML.
 
 ##### JS #####
 Note ES6 `import` relative path from file
