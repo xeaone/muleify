@@ -1,14 +1,14 @@
 {
   "name": "muleify",
-  "version": "2.2.5",
+  "version": "2.2.6",
   "description": "Static Site Generator | Website Bundler | Asset Compiler | HTML Templating | Web Components | Preproccessor",
   "main": "index.js",
   "bin": {
     "muleify": "bin/index.js"
   },
   "scripts": {
-	"muleify": "node bin/index.js",
-	"test": "node bin/index.js serve example/src example/dist"
+    "muleify": "node bin/index.js",
+    "test": "node bin/index.js serve example/src example/dist"
   },
   "repository": {
     "type": "git",
@@ -61,6 +61,7 @@
     "hapi": "^14.2.0",
     "inert": "^4.0.2",
     "less": "^2.7.1",
+    "marked": "^0.3.6",
     "node-sass": "^3.11.1",
     "node-watch": "^0.4.0",
     "porty": "^1.0.2",
