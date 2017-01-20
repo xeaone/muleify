@@ -43,6 +43,8 @@ function file (input, output) {
 }
 
 exports.pack = function (input, output) {
+	Globals.input = input; // TODO find a way to remove this
+
 	return Promise.resolve().then(function () {
 		return Utility.io(input, output);
 	}).then(function (result) {

@@ -5,31 +5,39 @@
 		<lastmod>2017-1-19</lastmod>
 	</url>
 	<url>
-		<loc>http://www.stuff.com/header.jpg</loc>
+		<loc>http://test.com/header.jpg</loc>
 		<lastmod>2017-1-19</lastmod>
 	</url>
 	<url>
-		<loc>http://www.stuff.com/index.html</loc>
+		<loc>http://test.com/index.html</loc>
 		<lastmod>2017-1-19</lastmod>
 	</url>
 	<url>
-		<loc>http://www.stuff.com/js/index.js</loc>
+		<loc>http://test.com/js/index.js</loc>
 		<lastmod>2017-1-19</lastmod>
 	</url>
 	<url>
-		<loc>http://www.stuff.com/js/zero.js</loc>
+		<loc>http://test.com/js/zero.js</loc>
 		<lastmod>2017-1-19</lastmod>
 	</url>
 	<url>
-		<loc>http://www.stuff.com/less/index.css</loc>
+		<loc>http://test.com/less/index.css</loc>
 		<lastmod>2017-1-19</lastmod>
 	</url>
 	<url>
-		<loc>http://www.stuff.com/scss/index.css</loc>
+		<loc>http://test.com/md/index.html</loc>
 		<lastmod>2017-1-19</lastmod>
 	</url>
 	<url>
-		<loc>http://www.stuff.com/test.txt</loc>
+		<loc>http://test.com/scss/index.css</loc>
+		<lastmod>2017-1-19</lastmod>
+	</url>
+	<url>
+		<loc>http://test.com/sitemap.xml</loc>
+		<lastmod>2017-1-19</lastmod>
+	</url>
+	<url>
+		<loc>http://test.com/test.txt</loc>
 		<lastmod>2017-1-19</lastmod>
 	</url>
 </urlset>
