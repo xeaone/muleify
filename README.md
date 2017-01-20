@@ -1,16 +1,11 @@
 [Star Issue Like Watch](https://github.com/AlexanderElias/muleify)
 
-**CLI Changes in 2.0.0**
-
 # Muleify #
-
-Front end generation command line tool.
-
-Static Site Generator / Website Bundler / Asset Compiler / HTML Templating / Web Components
+Static Site Generator | Website Bundler | Asset Compiler | HTML Templating | Web Components | Preproccessor
 
 
 ## Overview ##
-Muleify is the one stop shop for your web front end needs, it is a command line tool that handles all your website development needs. Muleify has a unique no configuration required interface. It automatically handles many tasks such as compiling scss, less, ES6 to ES5, bundling, and minifing. Muleify uses extensions and sub-extensions to automatically handle these tasks. With almost almost zero configuration or changes to existing projects you can get started. If there is a feature you want let me know or make a PR. Confirmed node versions are 4LTS and 6LTS
+Muleify is the one stop shop for your web front end needs, it is a command line tool that handles all your website development needs. Muleify has a unique no configuration required interface. It automatically handles many tasks such as compiling sass, scss, less, css, ES6 to ES5, bundling, and minifing. Muleify uses extensions and sub-extensions to automatically handle these tasks. With almost almost zero configuration or changes to existing projects you can get started. If there is a feature you want let me know or make a PR. Confirmed node versions are 4LTS and 6LTS
 
 Another static asset generator you might say.
 - quick and easy
@@ -34,13 +29,13 @@ TODOS
 - `muleify serve <input> <output>` development server recompiles on save
 	- `input` path to a directory to compile and bundle
 	- `output` path to a directory to serve the content
-- `muleify encamp <input> <output>` generates a file and folder structure (scaffold). If you encamp again it will not overwrite your files. Backup just to be safe though.
+- `muleify encamp <input> <output>` generates files and folder based on a json document structure (scaffold).
 	- `input` path to a JSON file
 	- `output` path to a directory
 - `muleify map <input> <output>` generates a XML sitemap
-	- `input` path to a JSON file
+	- `input` path to a directory to generate the sitemap
 	- `output` path to a directory to output a sitemap.xml
-	- `-d, --domain <url>` domain to be inserted into the sitemap
+	- `-d, --domain <domain>` domain to be inserted into the sitemap
 
 
 #### Sub Extensions ####

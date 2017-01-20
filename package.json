@@ -1,13 +1,13 @@
 {
   "name": "muleify",
-  "version": "2.0.4",
-  "description": "Website bundler. Static site generator.",
+  "version": "2.1.4",
+  "description": "Static Site Generator | Website Bundler | Asset Compiler | HTML Templating | Web Components | Preproccessor",
   "main": "index.js",
   "bin": {
     "muleify": "bin/index.js"
   },
   "scripts": {
-	  "muleify": "node bin/index.js",
+	"muleify": "node bin/index.js",
 	"test": "node bin/index.js serve example/src example/dist"
   },
   "repository": {

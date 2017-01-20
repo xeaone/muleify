@@ -1,42 +1,11 @@
 const Transform = require('./lib/transform');
 const Utility = require('./lib/utility');
-const Server = require('./lib/server');
-const Config = require('./lib/config');
+const Globals = require('./lib/globals');
 const Path = require('path');
 const Fsep = require('fsep');
 
-const IGNOREABLES = Config.ignoreables;
-
-function getPrePaths (paths) {
-	return paths.filter(function (path) {
-		return /(\.l\.)|(\.b\.)/.test(path);
-	});
-}
-
-function getPostPaths (paths) {
-	return paths.filter(function (path) {
-		return !/(\.l\.)|(\.b\.)/.test(path);
-	});
-}
-
-function handlePaths (input, output, paths) {
-	// TODO sort paths instead
-
-	var prePaths = getPrePaths(paths);
-	var postPaths = getPostPaths(paths);
-
-	return Promise.resolve().then(function () {
-		return Promise.all(prePaths.map(function (path) {
-			return Transform(Path.join(input, path), Path.join(output, path));
-		}));
-	}).then(function () {
-		return Promise.all(postPaths.map(function (path) {
-			return Transform(Path.join(input, path), Path.join(output, path));
-		}));
-	}).catch(function (error) {
-		throw error;
-	});
-}
+const LB = Globals.lb;
+const IGNOREABLES = Globals.ignoreables;
 
 function directory (input, output) {
 	const options = {
@@ -45,8 +14,25 @@ function directory (input, output) {
 		filters: IGNOREABLES
 	};
 
-	return Fsep.walk(options).then(function (paths) {
-		return handlePaths(input, output, paths);
+	var lb = LB;
+	var beforePaths = [];
+	var afterPaths = [];
+
+	return Promise.resolve().then(function () {
+		return Fsep.walk(options);
+	}).then(function (paths) {
+		paths.forEach(function (path) {
+			if (lb.test(path)) beforePaths.push(path);
+			else afterPaths.push(path);
+		});
+	}).then(function () {
+		return Promise.all(beforePaths.map(function (path) {
+			return Transform(Path.join(input, path), Path.join(output, path));
+		}));
+	}).then(function () {
+		return Promise.all(afterPaths.map(function (path) {
+			return Transform(Path.join(input, path), Path.join(output, path));
+		}));
 	}).catch(function (error) {
 		throw error;
 	});
@@ -54,46 +40,9 @@ function directory (input, output) {
 
 function file (input, output) {
 	return Transform(input, output);
-
-	// var dist = output.split(Path.sep).indexOf('dist');
-	// var src = input.split(Path.sep).indexOf('src');
-	// var extension = Path.extname(input);
-	//
-	// if (src !== -1) {
-	// 	input = input.split(Path.sep);
-	// 	input = input.splice(0, src+1);
-	// 	input = input.join(Path.sep);
-	// } else {
-	// 	input = Path.dirname(input);
-	// }
-	//
-	// if (dist !== -1) {
-	// 	output = output.split(Path.sep);
-	// 	output = output.splice(0, dist+1);
-	// 	output = output.join(Path.sep);
-	// } else {
-	// 	output = Path.dirname(output);
-	// }
-	//
-	// const options = {
-	// 	path: input,
-	// 	ignoreDot: true,
-	// 	filters: IGNOREABLES
-	// };
-	//
-	// return Fsep.walk(options).then(function (paths) {
-	//
-	// 	paths = paths.filter(function (path) {
-	// 		return Path.extname(path) === extension;
-	// 	});
-	//
-	// 	return handlePaths(input, output, paths);
-	// }).catch(function (error) {
-	// 	throw error;
-	// });
 }
 
-function pack (input, output) {
+exports.pack = function (input, output) {
 	return Promise.resolve().then(function () {
 		return Utility.io(input, output);
 	}).then(function (result) {
@@ -103,74 +52,10 @@ function pack (input, output) {
 	}).catch(function (error) {
 		throw error;
 	});
-}
-
-function serve (input, output, start, stop, change) {
-	return new Promise(function(resolve, reject) {
-		Server(input, output, start, stop,
-			function (e) {
-				reject(e);
-			},
-			function (path) {
-				Promise.resolve().then(function () {
-				// 	return Utility.io(input, output);
-				// }).then(function (result) {
-					// return pack(result.input, result.output);
-					return pack(input, output);
-				}).then(function () {
-					change(path);
-				}).catch(function (error) {
-					return reject(error);
-				});
-			}
-		);
-	});
-}
-
-exports.pack = function (input, output) {
-	return Promise.resolve().then(function () {
-		return Fsep.valid(input);
-	}).then(function (isValid) {
-		if (!isValid) throw new Error(`Input path does not exist: ${input}`);
-	}).then(function () {
-		return Fsep.valid(output);
-	}).then(function (isValid) {
-		if (!isValid) throw new Error(`Output path does not exist: ${output}`);
-	}).then(function () {
-		return pack(input, output);
-	}).catch(function (error) {
-		throw error;
-	});
-};
-
-exports.serve = function (input, output, start, stop, change) {
-	return Promise.resolve().then(function () {
-		return Fsep.valid(input);
-	}).then(function (isValid) {
-		if (!isValid) throw new Error(`Input path does not exist: ${input}`);
-	}).then(function () {
-		return Fsep.valid(output);
-	}).then(function (isValid) {
-		if (!isValid) throw new Error(`Output path does not exist: ${output}`);
-	}).then(function () {
-		return pack(input, output);
-	}).then(function () {
-		return serve(input, output, start, stop, change);
-	}).catch(function (error) {
-		throw error;
-	});
 };
 
 exports.encamp = function (input, output) {
 	return Promise.resolve().then(function () {
-		return Fsep.valid(input);
-	}).then(function (isValid) {
-		if (!isValid) throw new Error(`Input path does not exist: ${input}`);
-	}).then(function () {
-		return Fsep.valid(output);
-	}).then(function (isValid) {
-		if (!isValid) throw new Error(`Output path does not exist: ${output}`);
-	}).then(function () {
 		return Fsep.readFile(input);
 	}).then(function (data) {
 		data = JSON.parse(data);
@@ -181,28 +66,59 @@ exports.encamp = function (input, output) {
 };
 
 exports.map = function (input, output, domain) {
+	const options = {
+		path: input,
+		ignoreDot: true,
+		filters: IGNOREABLES
+	};
+
 	return Promise.resolve().then(function () {
-		return Fsep.valid(input);
-	}).then(function (isValid) {
-		if (!isValid) throw new Error(`Input path does not exist: ${input}`);
-	}).then(function () {
-		return Fsep.readFile(input);
-	}).then(function (data) {
-		data = JSON.parse(data);
-		return Fsep.outputFile(Path.join(output, 'sitemap.xml'), Utility.createSitemap(data, domain));
+		return Fsep.walk(options);
+	}).then(function (paths) {
+		var path = Path.join(output, 'sitemap.xml');
+		var text = Utility.createSitemap(paths, domain);
+		return Fsep.outputFile(path, text);
 	}).catch(function (error) {
 		throw error;
 	});
 };
 
-// exports.component = function (input, output) {
-// 	throw new Error('Feature not ready');
+
+// function file (input, output) {
+// 	var dist = output.split(Path.sep).indexOf('dist');
+// 	var src = input.split(Path.sep).indexOf('src');
+// 	var extension = Path.extname(input);
 //
-// 	return Promise.resolve().then(function () {
-// 		return Fsep.readFile(options.path, 'binary');
-// 	}).then(function (text) {
-// 		console.log(text);
+// 	if (src !== -1) {
+// 		input = input.split(Path.sep);
+// 		input = input.splice(0, src+1);
+// 		input = input.join(Path.sep);
+// 	} else {
+// 		input = Path.dirname(input);
+// 	}
+//
+// 	if (dist !== -1) {
+// 		output = output.split(Path.sep);
+// 		output = output.splice(0, dist+1);
+// 		output = output.join(Path.sep);
+// 	} else {
+// 		output = Path.dirname(output);
+// 	}
+//
+// 	const options = {
+// 		path: input,
+// 		ignoreDot: true,
+// 		filters: IGNOREABLES
+// 	};
+//
+// 	return Fsep.walk(options).then(function (paths) {
+//
+// 		paths = paths.filter(function (path) {
+// 			return Path.extname(path) === extension;
+// 		});
+//
+// 		return handlePaths(input, output, paths);
 // 	}).catch(function (error) {
 // 		throw error;
 // 	});
-// };
+// }
