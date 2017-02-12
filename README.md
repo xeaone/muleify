@@ -1,17 +1,21 @@
 [Star Issue Like Watch](https://github.com/AlexanderElias/muleify)
 
 # Muleify #
-Static Site Generator | Website Bundler | Asset Compiler | HTML Templating | Web Components | Preproccessor
+Static Site Generator | Website Bundler | Asset Compiler | HTML Templates | Preprocessor
 
 
 ## Overview ##
-Muleify is the one stop shop for your web front end needs, it is a command line tool that handles all your website development needs. Muleify has a unique no configuration required interface. It automatically handles many tasks such as compiling sass, scss, less, css, ES6 to ES5, bundling, and minifing. Muleify uses extensions and sub-extensions to automatically handle these tasks. With almost almost zero configuration or changes to existing projects you can get started. If there is a feature you want let me know or make a PR. Confirmed node versions are 4LTS and 6LTS
+Muleify is the one stop shop for your web front end needs, it is a command line tool that handles all your website development needs. Muleify has a unique no configuration required interface. It automatically handles many tasks such as compiling Sass, Scss, Less, Css, ES6 to ES5, bundling, and minifying. Muleify uses extensions and sub-extensions to automatically handle these tasks. With almost almost zero configuration or changes to existing projects you can get started. If there is a feature you want let me know or make a PR. Confirmed node versions are 4LTS and 6LTS
 
-Another static asset generator you might say.
+
+## Features ##
+Another static site and asset generator you might say.
+- zero configuration
 - quick and easy
 - no learning curve
-- zero configuration
-- based on extensions/sub-extensions
+- based on extensions and sub-extensions
+- imports, includes, partials, and layouts
+- servers single page applications (spa)
 
 TODOS
 - other template languages
@@ -22,13 +26,21 @@ TODOS
 `npm install muleify -g`
 
 
+#### Update ####
+`npm uninstall muleify -g`
+`npm install muleify -g`
+
+
 #### CLI ####
 - `muleify pack <input> <output>` compiles and bundles from the input folder to the output folder
 	- `input` path to a directory to compile and bundle
 	- `output` path to a directory to generate the content
+
 - `muleify serve <input> <output>` development server recompiles on save
 	- `input` path to a directory to compile and bundle
 	- `output` path to a directory to serve the content
+	- `-s, --spa [Boolean]` this option enables single page application mode. Use 'assets' and 'public' to serve files. Other wise it will serve all request with an index.html in the root. 
+
 - `muleify encamp <input> <output>` generates files and folder based on a json document structure (scaffold).
 	- `input` path to a JSON file
 	- `output` path to a directory

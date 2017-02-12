@@ -1,7 +1,7 @@
 {
   "name": "muleify",
-  "version": "2.2.9",
-  "description": "Static Site Generator | Website Bundler | Asset Compiler | HTML Templating | Web Components | Preproccessor",
+  "version": "2.3.0",
+  "description": "A zero configuration static site generator and asset preprocessor compiler.",
   "main": "index.js",
   "bin": {
     "muleify": "bin/index.js"

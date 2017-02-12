@@ -1,0 +1,8 @@
+Hey all I wrote a static site generator and I am looking for some constructive criticism or and feature suggestions. If anyone is interested in reviewing the project I would really appreciate it.
+
+The project is called Muleify and it is hosted on Github and available on NPM. It is open source with MPL-2.0 incense.
+
+I think it is rather unique since it requires almost zero configuration.
+
+NPM Link: https://www.npmjs.com/package/muleify
+Github Link: https://github.com/AlexanderElias/muleify

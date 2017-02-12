@@ -34,8 +34,9 @@ Commander
 
 Commander
 .command('serve <input> <output>')
+.option('-s, --spa [true]', 'Serve the site as a sigle page application', false)
 .description('Watches a file or directory and muleifies it upon saves.')
-.action(function (input, output) {
+.action(function (input, output, options) {
 	console.log(Chalk.underline.cyan('\n\t\tMule Is Serving\t\t\n'));
 
 	Promise.resolve().then(function () {
@@ -45,7 +46,7 @@ Commander
 		output = result.output;
 	}).then(function () {
 
-		Server(input, output,
+		Server(input, output, options,
 			function start (server) {
 				Muleify.pack(input, output).then(function () {
 					console.log(Chalk.green('Web: ' + server.info.uri));
