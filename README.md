@@ -1,8 +1,7 @@
 [Star Issue Like Watch](https://github.com/AlexanderElias/muleify)
 
 # Muleify #
-Static Site Generator | Website Bundler | Asset Compiler | HTML Templates | Preprocessor
-
+**Static Site Generator | Website Bundler | Asset Compiler | Templating | Preproccessor**
 
 ## Overview ##
 Muleify is the one stop shop for your web front end needs, it is a command line tool that handles all your website development needs. Muleify has a unique no configuration required interface. It automatically handles many tasks such as compiling Sass, Scss, Less, Css, ES6 to ES5, bundling, and minifying. Muleify uses extensions and sub-extensions to automatically handle these tasks. With almost almost zero configuration or changes to existing projects you can get started. If there is a feature you want let me know or make a PR. Confirmed node versions are 4LTS and 6LTS
@@ -39,7 +38,7 @@ TODOS
 - `muleify serve <input> <output>` development server recompiles on save
 	- `input` path to a directory to compile and bundle
 	- `output` path to a directory to serve the content
-	- `-s, --spa [Boolean]` this option enables single page application mode. Use 'assets' and 'public' to serve files. Other wise it will serve all request with an index.html in the root. 
+	- `-s, --spa [Boolean]` this option enables single page application mode. Use 'assets' and 'public' to serve files. Other wise it will serve all request with an index.html in the root.
 
 - `muleify encamp <input> <output>` generates files and folder based on a json document structure (scaffold).
 	- `input` path to a JSON file
