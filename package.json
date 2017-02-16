@@ -1,6 +1,6 @@
 {
   "name": "muleify",
-  "version": "2.4.5",
+  "version": "2.4.6",
   "description": "A zero configuration static site generator and asset preprocessor compiler.",
   "main": "index.js",
   "bin": {
@@ -67,9 +67,7 @@
     "porty": "^1.0.2",
     "promise-tool": "^1.0.1",
     "rollup": "^0.34.13",
-    "uglify-js": "^2.7.4"
-  },
-  "devDependencies": {
-    "rollup-plugin-node-resolve": "^2.0.0"
+    "uglify-js": "^2.7.4",
+	"rollup-plugin-node-resolve": "^2.0.0"
   }
 }
