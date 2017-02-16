@@ -9,4 +9,4 @@ console.log(`${sum}`);
 
 console.log('bundle');
 
-window.add = add;
+export default add;

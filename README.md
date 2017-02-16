@@ -65,7 +65,7 @@ Sub extensions are period separated files names. They can be combined in any ord
 - **MD**
 
 - **JS**
-	- `b` - **bundle** modules (AMD, CJS, UMD, ES) to IIFE
+	- `b` - **bundle** modules ESM to UMD
 	- `e` - **es** compiles to es5
 	- `m` - **minify** minify code
 - **CSS**
@@ -91,7 +91,7 @@ Note `partial` relative path from file
 Converts to HTML.
 
 ##### JS #####
-Note ES6 `import` relative path from file
+Supports ESM `import` relative path from file and also the node resolution algorithm. For node resolution it will search the `node_modules` package.js files for `"module": "file"` or `main: "file"`.
 
 ##### CSS #####
 Note `@import` relative path from file

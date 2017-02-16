@@ -68,5 +68,8 @@
     "promise-tool": "^1.0.1",
     "rollup": "^0.34.13",
     "uglify-js": "^2.7.4"
+  },
+  "devDependencies": {
+    "rollup-plugin-node-resolve": "^2.0.0"
   }
 }
