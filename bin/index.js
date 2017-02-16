@@ -12,8 +12,9 @@ Commander
 
 Commander
 .command('pack <input> <output>')
+.option('-m, --minify [true]', 'Minify the the output.', false)
 .description('Processes a file or directory and muleifies.')
-.action(function (input, output) {
+.action(function (input, output, options) {
 	console.log(Chalk.underline.cyan('\n\t\tMule Is Packing\t\t\n'));
 
 	Promise.resolve().then(function () {
@@ -22,7 +23,7 @@ Commander
 		input = result.input;
 		output = result.output;
 	}).then(function () {
-		return Muleify.pack(input, output);
+		return Muleify.pack(input, output, options);
 	}).then(function () {
 		console.log(Chalk.green('\nMule Is Packed'));
 		console.log(Chalk.magenta('From: ' + input));
@@ -34,6 +35,7 @@ Commander
 
 Commander
 .command('serve <input> <output>')
+.option('-m, --minify [true]', 'Minify the the output.', false)
 .option('-s, --spa [true]', 'Serve the site as a sigle page application', false)
 .description('Watches a file or directory and muleifies it upon saves.')
 .action(function (input, output, options) {
@@ -48,7 +50,7 @@ Commander
 
 		Server(input, output, options,
 			function start (server) {
-				Muleify.pack(input, output).then(function () {
+				Muleify.pack(input, output, options).then(function () {
 					console.log(Chalk.green('Web: ' + server.info.uri));
 					console.log(Chalk.magenta('From: ' + input));
 					console.log(Chalk.magenta('To: ' + output));
@@ -60,7 +62,7 @@ Commander
 				console.log(Chalk.underline.yellow('\n\t\tMule Is Stopping\t\t\n'));
 			},
 			function change (path) {
-				Muleify.pack(input, output).then(function () {
+				Muleify.pack(input, output, options).then(function () {
 					console.log(Chalk.green('\nMule Is Packed'));
 					console.log(Chalk.magenta('Change: ' + path));
 				}).catch(function (error) {
