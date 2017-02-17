@@ -8,7 +8,7 @@
   },
   "scripts": {
     "muleify": "node bin/index.js",
-    "test": "node bin/index.js serve example/src example/dist"
+    "test": "echo coming soon"
   },
   "repository": {
     "type": "git",
