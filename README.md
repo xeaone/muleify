@@ -3,6 +3,8 @@
 # Muleify #
 **Static Site Generator | Website Bundler | Asset Compiler | Templating | Preprocessor**
 
+[![Build Status](https://travis-ci.org/AlexanderElias/muleify.svg?branch=master)](https://travis-ci.org/AlexanderElias/muleify)
+
 ## Overview ##
 Muleify is the one stop shop for your web front end needs, it is a command line tool that handles all your website development needs. Muleify has a unique no configuration required interface. It automatically handles many tasks such as compiling Sass, Scss, Less, Css, ES6 to ES5, bundling, and minifying. Muleify uses extensions and sub-extensions to automatically handle these tasks. With almost almost zero configuration or changes to existing projects you can get started. If there is a feature you want let me know or make a PR. Confirmed node versions are 4LTS and 6LTS
 
