@@ -38,7 +38,7 @@ TODOS
 - `muleify serve <input> <output>` development server recompiles on save
 	- `input` path to a directory to compile and bundle
 	- `output` path to a directory to serve the content
-	- `-s, --spa [Boolean]` enables single page application mode. Server directs all '.html', '.htm', and any other request without a extension to the root 'index.html'.
+	- `-s, --spa [Boolean]` enables single page application mode. Serves all request for '.html', '.htm' and file to the root 'index.html'. All other files types and assets/public directories are served as normal.
 
 - `muleify encamp <input> <output>` generates files and folder based on a json document structure (scaffold).
 	- `input` path to a JSON file
