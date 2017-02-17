@@ -57,24 +57,31 @@ Sub extensions are period separated files names. They can be combined in any ord
 ##### Options #####
 - **ALL**
 	- `i` - ignore
+
 - **HTML**
 	- `l` - **layout** wraps all view files
 	- `v` - **view** inserted into layout
 	- `p` - **partial** allows file to be imported
 	- `m` - **minify** minify code (under development)
+
 - **MD**
 
 - **JS**
 	- `b` - **bundle** modules ESM to UMD
 	- `e` - **es** compiles to es5
 	- `m` - **minify** minify code
+		- `@preserve` will persist comments.
+
 - **CSS**
 	- `b` - **bundle** all imports
 	- `m` - **minify** minify code
+
 - **SCSS**
 	- `m` - **minify** minify code
+
 - **LESS**
 	- `m` - **minify** minify code
+
 
 #### Includes/Imports/Partials/Layouts ####
 For consistency it is best to start all paths with `./`.
