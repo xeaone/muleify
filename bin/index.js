@@ -1,4 +1,4 @@
-#!/usr/bin/node
+#!/usr/bin/env node
 
 const Utility = require('../lib/utility');
 const Server = require('../lib/server');
