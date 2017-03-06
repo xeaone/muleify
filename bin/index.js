@@ -7,11 +7,9 @@ const Package = require('../package');
 const Muleify = require('../index');
 const Chalk = require('chalk');
 
-Commander
-.version(Package.version);
+Commander.version(Package.version);
 
-Commander
-.command('pack <input> <output>')
+Commander.command('pack <input> <output>')
 .option('-m, --minify [true]', 'Minify the the output.', false)
 .description('Processes a file or directory and muleifies.')
 .action(function (input, output, options) {
@@ -33,8 +31,7 @@ Commander
 	});
 });
 
-Commander
-.command('serve <input> <output>')
+Commander.command('serve <input> <output>')
 .option('-m, --minify [true]', 'Minify the the output.', false)
 .option('-s, --spa [true]', 'Serve the site as a sigle page application', false)
 .description('Watches a file or directory and muleifies it upon saves.')
@@ -79,8 +76,7 @@ Commander
 	});
 });
 
-Commander
-.command('map <input> <output>')
+Commander.command('map <input> <output>')
 .option('-d, --domain <domain>', 'The domain to use in the sitemap')
 .description('Creates a sitemap from an input directory.')
 .action(function (input, output, options) {
@@ -102,8 +98,7 @@ Commander
 	});
 });
 
-Commander
-.command('encamp <input> <output>')
+Commander.command('encamp <input> <output>')
 .description('Creates folders and files based on json')
 .action(function (input, output) {
 	console.log(Chalk.underline.cyan('\n\t\tMule Is Encamping\t\t\n'));
