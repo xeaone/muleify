@@ -48,7 +48,7 @@ Commander.command('serve <input> <output>')
 		Server(input, output, options,
 			function start (server) {
 				Muleify.pack(input, output, options).then(function () {
-					console.log(Chalk.green('Web: ' + server.info.uri));
+					console.log(Chalk.green('Web: ' + server.hostname + ':' + server.port));
 					console.log(Chalk.magenta('From: ' + input));
 					console.log(Chalk.magenta('To: ' + output));
 				}).catch(function (error) {

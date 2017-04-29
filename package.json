@@ -7,7 +7,7 @@
     "muleify": "bin/index.js"
   },
   "scripts": {
-    "muleify": "node bin/index.js",
+    "muleify": "node bin",
     "test": "echo coming soon"
   },
   "repository": {
@@ -70,6 +70,8 @@
     "promise-tool": "^1.0.1",
     "rollup": "^0.41.4",
     "rollup-plugin-commonjs": "^7.0.0",
-    "rollup-plugin-node-resolve": "^2.0.0"
+    "rollup-plugin-node-resolve": "^2.0.0",
+    "servey": "^1.0.2",
+    "uglify-js": "^2.8.22"
   }
 }
