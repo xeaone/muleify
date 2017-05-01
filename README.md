@@ -36,7 +36,7 @@ TODOS
 - `muleify pack [options] <input> <output>` Packs folder/file and muleifies
 	- `input` path to folder or file
 	- `output` path to folder or file
-	- `-w, --watch` Watches the input
+	- `-w, --watch` Watches the input (if file it will watch the folder)
 	- `-m, --minify` Minifies the output
 
 - `muleify serve [options] <input> [output]` Serves a folder and muleifies

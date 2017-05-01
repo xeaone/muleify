@@ -9,8 +9,9 @@ const Chalk = require('chalk');
 Commander.version(Package.version);
 
 Commander.command('pack <input> <output>')
-.option('-w, --watch', 'Watches the input')
 .option('-m, --minify', 'Minifies the output')
+.option('-w, --watch', 'Watches a file or folder')
+.option('-p, --path <path>', 'Defines the path to watch')
 .description('Packs folder/file and muleifies')
 .action(function (input, output, options) {
 	console.log(Chalk.underline.cyan('\n\t\tMule Is Packing\t\t\n'));
@@ -46,7 +47,7 @@ Commander.command('pack <input> <output>')
 });
 
 Commander.command('serve <input> [output]')
-.option('-w, --watch', 'Watches the output')
+.option('-w, --watch', 'Watches the input')
 .option('-m, --minify', 'Minifies the output')
 .option('-s, --spa', 'Enables sigle page application mode')
 .option('-c, --cors', 'Enables cross origin resource sharing mode')

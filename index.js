@@ -88,14 +88,13 @@ exports.map = function (input, output, domain) {
 
 exports.watcher = function (input, output, options, change, error) {
 	var self = this;
-
-	var watcher = Chokidar.watch(input);
+	var watcher = Chokidar.watch(options.path || input);
 
 	watcher.on('error', function (e) {
 		if (error) error(e);
 	});
 
-	watcher.on('change', function (path) {
+	watcher.on('change', function (path) {		
 		self.pack(input, output, options).then(function () {
 			if (change) change(path);
 		}).catch(function (e) {
