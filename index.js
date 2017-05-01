@@ -86,14 +86,30 @@ exports.map = function (input, output, domain) {
 	});
 };
 
-exports.watcher = function (input, options, change, error) {
-	if (!options.watch) return;
-	return Chokidar.watch(input).on('error', error).on('change', change);
+exports.watcher = function (input, output, options, change, error) {
+	var self = this;
+
+	var watcher = Chokidar.watch(input);
+
+	watcher.on('error', function (e) {
+		if (error) error(e);
+	});
+
+	watcher.on('change', function (path) {
+		self.pack(input, output, options).then(function () {
+			if (change) change(path);
+		}).catch(function (e) {
+			if (error) error(e);
+		});
+	});
+
+	return watcher;
 };
 
 exports.server = function (input, output, options, start, stop, error) {
 	const server = Servey({
 		spa: options.spa,
+		cors: options.cors,
 		directory: output || input
 	});
 

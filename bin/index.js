@@ -27,21 +27,19 @@ Commander.command('pack <input> <output>')
 		console.log(Chalk.magenta('From: ' + input));
 		console.log(Chalk.magenta('To: ' + output));
 
-		const watcher = Muleify.watcher(input, options,
-			function (path) {
-				Muleify.pack(input, output, options).then(function () {
+		if (options.watch) {
+			var watcher = Muleify.watcher(input, output, options,
+				function (path) {
 					console.log(Chalk.green('\nMule Is Packed'));
 					console.log(Chalk.magenta('Change: ' + path));
-				}).catch(function (error) {
+				},
+				function (error) {
 					if (watcher) watcher.close();
 					console.log(Chalk.red(error.stack));
-				});
-			},
-			function (error) {
-				if (watcher) watcher.close();
-				console.log(Chalk.red(error.stack));
-			}
-		);
+				}
+			);
+		}
+
 	}).catch(function (error) {
 		console.log(Chalk.red(error.stack));
 	});
@@ -51,6 +49,7 @@ Commander.command('serve <input> [output]')
 .option('-w, --watch', 'Watches the output')
 .option('-m, --minify', 'Minifies the output')
 .option('-s, --spa', 'Enables sigle page application mode')
+.option('-c, --cors', 'Enables cross origin resource sharing mode')
 .description('Serves folder and muleifies')
 .action(function (input, output, options) {
 	console.log(Chalk.underline.cyan('\n\t\tMule Is Serving\t\t\n'));
@@ -63,28 +62,7 @@ Commander.command('serve <input> [output]')
 	}).then(function () {
 		if (output) return Muleify.pack(input, output, options);
 	}).then(function () {
-		var watcher;
-		var server;
-
-		if (output) {
-			watcher = Muleify.watcher(input, options,
-				function (path) {
-					Muleify.pack(input, output, options).then(function () {
-						console.log(Chalk.green('\nMule Is Packed'));
-						console.log(Chalk.magenta('Change: ' + path));
-					}).catch(function (error) {
-						if (server) server.close();
-						if (watcher) watcher.close();
-						console.log(Chalk.red(error.stack));
-					});
-				},
-				function (error) {
-					if (server) server.close();
-					if (watcher) watcher.close();
-					console.log(Chalk.red(error.stack));
-				}
-			);
-		}
+		var server, watcher;
 
 		server = Muleify.server(input, output, options,
 			function () {
@@ -103,6 +81,20 @@ Commander.command('serve <input> [output]')
 				console.log(Chalk.red(error.stack));
 			}
 		);
+
+		if (output && options.watch) {
+			watcher = Muleify.watcher(input, output, options,
+				function (path) {
+					console.log(Chalk.green('\nMule Is Packed'));
+					console.log(Chalk.magenta('Change: ' + path));
+				},
+				function (error) {
+					if (server) server.close();
+					if (watcher) watcher.close();
+					console.log(Chalk.red(error.stack));
+				}
+			);
+		}
 
 	}).catch(function (error) {
 		console.log(Chalk.red(error.stack));

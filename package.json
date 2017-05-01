@@ -1,6 +1,6 @@
 {
   "name": "muleify",
-  "version": "2.5.90",
+  "version": "2.5.91",
   "description": "A zero configuration static site generator and asset preprocessor compiler.",
   "main": "index.js",
   "bin": {
@@ -70,6 +70,6 @@
     "rollup": "^0.41.4",
     "rollup-plugin-commonjs": "^7.0.0",
     "rollup-plugin-node-resolve": "^2.0.0",
-    "servey": "^1.0.2"
+    "servey": "^1.0.3"
   }
 }

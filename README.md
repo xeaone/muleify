@@ -44,6 +44,7 @@ TODOS
 	- `output` path to folder
 	- `-w, --watch` Watches the input
 	- `-m, --minify` Minifies the output
+	- `-c, --cors` Enables cross origin resource sharing mode
 	- `-s, --spa` Enables sigle page application mode (files/folders that do not exist will server the root index.html)
 
 - `muleify map [options] <input> <output>` Creates XML sitemap
