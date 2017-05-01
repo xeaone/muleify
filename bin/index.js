@@ -47,7 +47,7 @@ Commander.command('pack <input> <output>')
 	});
 });
 
-Commander.command('serve <input> <output>')
+Commander.command('serve <input> [output]')
 .option('-w, --watch', 'Watches the output')
 .option('-m, --minify', 'Minifies the output')
 .option('-s, --spa', 'Enables sigle page application mode')
@@ -61,31 +61,36 @@ Commander.command('serve <input> <output>')
 		input = result.input;
 		output = result.output;
 	}).then(function () {
-		return Muleify.pack(input, output, options);
+		if (output) return Muleify.pack(input, output, options);
 	}).then(function () {
-		const watcher = Muleify.watcher(input, options,
-			function (path) {
-				Muleify.pack(input, output, options).then(function () {
-					console.log(Chalk.green('\nMule Is Packed'));
-					console.log(Chalk.magenta('Change: ' + path));
-				}).catch(function (error) {
+		var watcher;
+		var server;
+
+		if (output) {
+			watcher = Muleify.watcher(input, options,
+				function (path) {
+					Muleify.pack(input, output, options).then(function () {
+						console.log(Chalk.green('\nMule Is Packed'));
+						console.log(Chalk.magenta('Change: ' + path));
+					}).catch(function (error) {
+						if (server) server.close();
+						if (watcher) watcher.close();
+						console.log(Chalk.red(error.stack));
+					});
+				},
+				function (error) {
 					if (server) server.close();
 					if (watcher) watcher.close();
 					console.log(Chalk.red(error.stack));
-				});
-			},
-			function (error) {
-				if (server) server.close();
-				if (watcher) watcher.close();
-				console.log(Chalk.red(error.stack));
-			}
-		);
+				}
+			);
+		}
 
-		const server = Muleify.server(input, output, options,
+		server = Muleify.server(input, output, options,
 			function () {
 				console.log(Chalk.green('Web: ' + server.hostname + ':' + server.port));
 				console.log(Chalk.magenta('From: ' + input));
-				console.log(Chalk.magenta('To: ' + output));
+				if (output) console.log(Chalk.magenta('To: ' + output));
 			},
 			function () {
 				if (server) server.close();

@@ -33,34 +33,34 @@ TODOS
 
 
 #### CLI ####
-- `muleify pack [options] <input> <output>` Packs directory/file and muleifies
-	- `input` path to directory or file
-	- `output` path to directory or file
+- `muleify pack [options] <input> <output>` Packs folder/file and muleifies
+	- `input` path to folder or file
+	- `output` path to folder or file
 	- `-w, --watch` Watches the input
 	- `-m, --minify` Minifies the output
 
-- `muleify serve [options] <input> <output>` Serves a directory and muleifies
-	- `input` path to directory
-	- `output` path to directory
+- `muleify serve [options] <input> [output]` Serves a folder and muleifies
+	- `input` path to folder
+	- `output` path to folder
 	- `-w, --watch` Watches the input
 	- `-m, --minify` Minifies the output
-	- `-s, --spa` Enables sigle page application mode (files/directories that do not exist will server the root index.html)
+	- `-s, --spa` Enables sigle page application mode (files/folders that do not exist will server the root index.html)
 
 - `muleify map [options] <input> <output>` Creates XML sitemap
-	- `input` path to a directory to generate the sitemap
-	- `output` path to a directory to output sitemap.xml
+	- `input` path to a folder to generate the sitemap
+	- `output` path to a folder to output sitemap.xml
 	- `-d, --domain <domain>` Inserts domain into sitemap
 
 - `muleify encamp [options] <input.json> <output>` Creates folders and files
 	- `input` path to a JSON file
-	- `output` path to a directory
+	- `output` path to a folder
 
 
 #### Preprocessor Types ####
 JavaScript, CSS, SCSS, SASS, LESS, HTML, MD
 
 #### Sub Extensions ####
-Sub extensions are period separated files names. They can be combined in any order or combination. The generated file will not contain the sub-extensions. For example a file in the src directory could be named `file.b.e.js` and the dist directory it would be named `file.js`.
+Sub extensions are period separated files names. They can be combined in any order or combination. The generated file will not contain the sub-extensions. For example a file in the src folder could be named `file.b.e.js` and the dist folder it would be named `file.js`.
 
 ##### Options #####
 - **ALL**

@@ -2,6 +2,8 @@ const Transform = require('./lib/transform');
 const Utility = require('./lib/utility');
 const Globals = require('./lib/globals');
 const Chokidar = require('chokidar');
+const Servey = require('servey');
+const Porty = require('porty');
 const Path = require('path');
 const Fsep = require('fsep');
 
@@ -89,13 +91,10 @@ exports.watcher = function (input, options, change, error) {
 	return Chokidar.watch(input).on('error', error).on('change', change);
 };
 
-const Servey = require('servey');
-const Porty = require('porty');
-
 exports.server = function (input, output, options, start, stop, error) {
 	const server = Servey({
 		spa: options.spa,
-		directory: output
+		directory: output || input
 	});
 
 	server.on('open', start);
