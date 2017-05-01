@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 const Utility = require('../lib/utility');
-const Server = require('../lib/server');
 const Commander = require('commander');
 const Package = require('../package');
 const Muleify = require('../index');
@@ -10,8 +9,9 @@ const Chalk = require('chalk');
 Commander.version(Package.version);
 
 Commander.command('pack <input> <output>')
-.option('-m, --minify [true]', 'Minify the the output.', false)
-.description('Processes a file or directory and muleifies.')
+.option('-w, --watch', 'Watches the input')
+.option('-m, --minify', 'Minifies the output')
+.description('Packs folder/file and muleifies')
 .action(function (input, output, options) {
 	console.log(Chalk.underline.cyan('\n\t\tMule Is Packing\t\t\n'));
 
@@ -26,15 +26,32 @@ Commander.command('pack <input> <output>')
 		console.log(Chalk.green('\nMule Is Packed'));
 		console.log(Chalk.magenta('From: ' + input));
 		console.log(Chalk.magenta('To: ' + output));
+
+		const watcher = Muleify.watcher(input, options,
+			function (path) {
+				Muleify.pack(input, output, options).then(function () {
+					console.log(Chalk.green('\nMule Is Packed'));
+					console.log(Chalk.magenta('Change: ' + path));
+				}).catch(function (error) {
+					if (watcher) watcher.close();
+					console.log(Chalk.red(error.stack));
+				});
+			},
+			function (error) {
+				if (watcher) watcher.close();
+				console.log(Chalk.red(error.stack));
+			}
+		);
 	}).catch(function (error) {
 		console.log(Chalk.red(error.stack));
 	});
 });
 
 Commander.command('serve <input> <output>')
-.option('-m, --minify [true]', 'Minify the the output.', false)
-.option('-s, --spa [true]', 'Serve the site as a sigle page application', false)
-.description('Watches a file or directory and muleifies it upon saves.')
+.option('-w, --watch', 'Watches the output')
+.option('-m, --minify', 'Minifies the output')
+.option('-s, --spa', 'Enables sigle page application mode')
+.description('Serves folder and muleifies')
 .action(function (input, output, options) {
 	console.log(Chalk.underline.cyan('\n\t\tMule Is Serving\t\t\n'));
 
@@ -44,29 +61,40 @@ Commander.command('serve <input> <output>')
 		input = result.input;
 		output = result.output;
 	}).then(function () {
-
-		Server(input, output, options,
-			function start (server) {
-				Muleify.pack(input, output, options).then(function () {
-					console.log(Chalk.green('Web: ' + server.hostname + ':' + server.port));
-					console.log(Chalk.magenta('From: ' + input));
-					console.log(Chalk.magenta('To: ' + output));
-				}).catch(function (error) {
-					console.log(Chalk.red(error.stack));
-				});
-			},
-			function stop () {
-				console.log(Chalk.underline.yellow('\n\t\tMule Is Stopping\t\t\n'));
-			},
-			function change (path) {
+		return Muleify.pack(input, output, options);
+	}).then(function () {
+		const watcher = Muleify.watcher(input, options,
+			function (path) {
 				Muleify.pack(input, output, options).then(function () {
 					console.log(Chalk.green('\nMule Is Packed'));
 					console.log(Chalk.magenta('Change: ' + path));
 				}).catch(function (error) {
+					if (server) server.close();
+					if (watcher) watcher.close();
 					console.log(Chalk.red(error.stack));
 				});
 			},
-			function error (error) {
+			function (error) {
+				if (server) server.close();
+				if (watcher) watcher.close();
+				console.log(Chalk.red(error.stack));
+			}
+		);
+
+		const server = Muleify.server(input, output, options,
+			function () {
+				console.log(Chalk.green('Web: ' + server.hostname + ':' + server.port));
+				console.log(Chalk.magenta('From: ' + input));
+				console.log(Chalk.magenta('To: ' + output));
+			},
+			function () {
+				if (server) server.close();
+				if (watcher) watcher.close();
+				console.log(Chalk.underline.yellow('\n\t\tMule Is Stopping\t\t\n'));
+			},
+			function (error) {
+				if (server) server.close();
+				if (watcher) watcher.close();
 				console.log(Chalk.red(error.stack));
 			}
 		);
@@ -77,8 +105,8 @@ Commander.command('serve <input> <output>')
 });
 
 Commander.command('map <input> <output>')
-.option('-d, --domain <domain>', 'The domain to use in the sitemap')
-.description('Creates a sitemap from an input directory.')
+.option('-d, --domain <domain>', 'Inserts domain into sitemap')
+.description('Creates XML sitemap')
 .action(function (input, output, options) {
 	console.log(Chalk.underline.cyan('\n\t\tMule Is Mapping\t\t\n'));
 
@@ -98,8 +126,8 @@ Commander.command('map <input> <output>')
 	});
 });
 
-Commander.command('encamp <input> <output>')
-.description('Creates folders and files based on json')
+Commander.command('encamp <input.json> <output>')
+.description('Creates folders and files')
 .action(function (input, output) {
 	console.log(Chalk.underline.cyan('\n\t\tMule Is Encamping\t\t\n'));
 
@@ -117,6 +145,11 @@ Commander.command('encamp <input> <output>')
 	}).catch(function (error) {
 		console.log(Chalk.red(error.stack));
 	});
+});
+
+Commander.command('*')
+.action(function () {
+	console.log(Commander.help());
 });
 
 Commander.parse(process.argv);

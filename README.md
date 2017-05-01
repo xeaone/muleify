@@ -33,22 +33,28 @@ TODOS
 
 
 #### CLI ####
-- `muleify pack <input> <output>` compiles and bundles from the input folder to the output folder
-	- `input` path to a directory to compile and bundle
-	- `output` path to a directory to generate the content
+- `muleify pack [options] <input> <output>` Packs directory/file and muleifies
+	- `input` path to directory or file
+	- `output` path to directory or file
+	- `-w, --watch` Watches the input
+	- `-m, --minify` Minifies the output
 
-- `muleify serve <input> <output>` development server recompiles on save
-	- `input` path to a directory to compile and bundle
-	- `output` path to a directory to serve the content
-	- `-s, --spa [Boolean]` enables single page application mode. Serves all request for '.html', '.htm' and file to the root 'index.html'. All other files types and assets/public directories are served as normal.
+- `muleify serve [options] <input> <output>` Serves a directory and muleifies
+	- `input` path to directory
+	- `output` path to directory
+	- `-w, --watch` Watches the input
+	- `-m, --minify` Minifies the output
+	- `-s, --spa` Enables sigle page application mode (files/directories that do not exist will server the root index.html)
 
-- `muleify encamp <input> <output>` generates files and folder based on a json document structure (scaffold).
+- `muleify map [options] <input> <output>` Creates XML sitemap
+	- `input` path to a directory to generate the sitemap
+	- `output` path to a directory to output sitemap.xml
+	- `-d, --domain <domain>` Inserts domain into sitemap
+
+- `muleify encamp [options] <input.json> <output>` Creates folders and files
 	- `input` path to a JSON file
 	- `output` path to a directory
-- `muleify map <input> <output>` generates a XML sitemap
-	- `input` path to a directory to generate the sitemap
-	- `output` path to a directory to output a sitemap.xml
-	- `-d, --domain <domain>` domain to be inserted into the sitemap
+
 
 #### Preprocessor Types ####
 JavaScript, CSS, SCSS, SASS, LESS, HTML, MD
@@ -73,6 +79,7 @@ Sub extensions are period separated files names. They can be combined in any ord
 	- `e` - **es** compiles to es5
 	- `m` - **minify** minify code
 		- `@preserve` will persist comments.
+		- `@banner` will place comment at document start.
 
 - **CSS**
 	- `b` - **bundle** all imports

@@ -1,6 +1,7 @@
 const Transform = require('./lib/transform');
 const Utility = require('./lib/utility');
 const Globals = require('./lib/globals');
+const Chokidar = require('chokidar');
 const Path = require('path');
 const Fsep = require('fsep');
 
@@ -83,42 +84,39 @@ exports.map = function (input, output, domain) {
 	});
 };
 
+exports.watcher = function (input, options, change, error) {
+	if (!options.watch) return;
+	return Chokidar.watch(input).on('error', error).on('change', change);
+};
 
-// function file (input, output) {
-// 	var dist = output.split(Path.sep).indexOf('dist');
-// 	var src = input.split(Path.sep).indexOf('src');
-// 	var extension = Path.extname(input);
-//
-// 	if (src !== -1) {
-// 		input = input.split(Path.sep);
-// 		input = input.splice(0, src+1);
-// 		input = input.join(Path.sep);
-// 	} else {
-// 		input = Path.dirname(input);
-// 	}
-//
-// 	if (dist !== -1) {
-// 		output = output.split(Path.sep);
-// 		output = output.splice(0, dist+1);
-// 		output = output.join(Path.sep);
-// 	} else {
-// 		output = Path.dirname(output);
-// 	}
-//
-// 	const options = {
-// 		path: input,
-// 		ignoreDot: true,
-// 		filters: IGNOREABLES
-// 	};
-//
-// 	return Fsep.walk(options).then(function (paths) {
-//
-// 		paths = paths.filter(function (path) {
-// 			return Path.extname(path) === extension;
-// 		});
-//
-// 		return handlePaths(input, output, paths);
-// 	}).catch(function (error) {
-// 		throw error;
-// 	});
-// }
+const Servey = require('servey');
+const Porty = require('porty');
+
+exports.server = function (input, output, options, start, stop, error) {
+	const server = Servey({
+		spa: options.spa,
+		directory: output
+	});
+
+	server.on('open', start);
+	server.on('close', stop);
+
+	Porty.get(8080, function (port) {
+
+		server.port = port;
+		server.open();
+
+		process.on('SIGINT', function () {
+			if (stop) stop();
+			process.exit();
+		});
+
+		process.on('uncaughtException', function (e) {
+			if (error) error(e);
+			process.exit();
+		});
+
+	});
+
+	return server;
+};
