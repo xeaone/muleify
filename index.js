@@ -1,7 +1,7 @@
 const Transform = require('./lib/transform');
 const Utility = require('./lib/utility');
 const Globals = require('./lib/globals');
-const Chokidar = require('chokidar');
+const NodeWatch = require('node-watch');
 const Servey = require('servey');
 const Porty = require('porty');
 const Path = require('path');
@@ -88,13 +88,13 @@ exports.map = function (input, output, domain) {
 
 exports.watcher = function (input, output, options, change, error) {
 	var self = this;
-	var watcher = Chokidar.watch(options.path || input);
+	var watcher = NodeWatch(options.path || input, { recursive: true });
 
 	watcher.on('error', function (e) {
 		if (error) error(e);
 	});
 
-	watcher.on('change', function (path) {		
+	watcher.on('change', function (type, path) {
 		self.pack(input, output, options).then(function () {
 			if (change) change(path);
 		}).catch(function (e) {
