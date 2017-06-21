@@ -9,6 +9,7 @@ const Chalk = require('chalk');
 Commander.version(Package.version);
 
 Commander.command('pack <input> <output>')
+.option('-b, --bundle', 'Bundles the output')
 .option('-m, --minify', 'Minifies the output')
 .option('-w, --watch', 'Watches a file or folder')
 .option('-p, --path <path>', 'Defines the path to watch')
