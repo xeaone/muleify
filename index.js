@@ -68,18 +68,16 @@ exports.encamp = function (input, output) {
 	});
 };
 
-exports.map = function (input, output, domain) {
-	const options = {
-		path: input,
-		ignoreDot: true,
-		filters: IGNOREABLES
-	};
-
+exports.map = function (input, output, options) {
 	return Promise.resolve().then(function () {
-		return Fsep.walk(options);
+		return Fsep.walk({
+			path: input,
+			ignoreDot: true,
+			filters: IGNOREABLES
+		});
 	}).then(function (paths) {
 		var path = Path.join(output, 'sitemap.xml');
-		var text = Utility.createSitemap(paths, domain);
+		var text = Utility.createSitemap(paths, options.domain);
 		return Fsep.outputFile(path, text);
 	}).catch(function (error) {
 		throw error;

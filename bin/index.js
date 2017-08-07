@@ -115,7 +115,7 @@ Commander.command('map <input> <output>')
 		input = result.input;
 		output = result.output;
 	}).then(function () {
-		return Muleify.map(input, output, options.domain);
+		return Muleify.map(input, output, options);
 	}).then(function () {
 		console.log(Chalk.green('\nMule Is Mapped'));
 		console.log(Chalk.magenta('From: ' + input));
