@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+const Terminal = require('../lib/terminal');
 const Utility = require('../lib/utility');
 const Commander = require('commander');
 const Package = require('../package');
@@ -147,6 +148,17 @@ Commander.command('encamp <input.json> <output>')
 		console.log(Chalk.red(error.stack));
 	});
 });
+
+Commander.command('install-node-sass')
+.description('Installs node-sass for sass/scss files')
+.action(function () {
+	return Terminal('npm i node-sass@4.5.3').then(function (stdout, stderr) {
+		return console.log(Chalk.white(stdout || stderr));
+	}).catch(function (error) {
+		console.log(Chalk.red(error.stack));
+	});
+});
+
 
 Commander.command('*')
 .action(function () {

@@ -17,8 +17,11 @@ Another static site and asset generator you might say.
 - imports, includes, partials, and layouts
 - serves single page applications (spa's)
 
+## Changes
+- 2.7.0 removes default sass/scss support. After install if you want to use sass run `muleify install-node-sass`.
+
 ## Issues
-The node-sass package tends to have issues. If you experience this let me know. Or try out Less, because its More. 
+The node-sass package tends to have issues. If you experience this let me know. Or try out Less, because its More.
 
 ## Getting Started ##
 
