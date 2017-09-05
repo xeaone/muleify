@@ -9,6 +9,7 @@ const Chalk = require('chalk');
 Commander.version(Package.version);
 
 Commander.command('pack <input> <output>')
+.option('-e, --es', 'Transpile to ES5')
 .option('-b, --bundle', 'Bundles the output')
 .option('-m, --minify', 'Minifies the output')
 .option('-w, --watch', 'Watches a file or folder')
@@ -48,6 +49,7 @@ Commander.command('pack <input> <output>')
 });
 
 Commander.command('serve <input> [output]')
+.option('-e, --es', 'Transpiles to ES5')
 .option('-w, --watch', 'Watches the input')
 .option('-m, --minify', 'Minifies the output')
 .option('-s, --spa', 'Enables sigle page application mode')
