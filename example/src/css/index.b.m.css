@@ -1,5 +1,8 @@
 @import './one.i.css';
 
+/*
+	hello world
+*/
 .bundle-css {
-	background: gray;
+	background: gray !important;
 }
