@@ -1,6 +1,6 @@
 {
   "name": "muleify",
-  "version": "2.7.2",
+  "version": "2.7.3",
   "description": "A zero configuration static site generator and asset preprocessor compiler.",
   "main": "index.js",
   "bin": {
@@ -60,7 +60,6 @@
     "inert": "^4.2.1",
     "less": "^2.7.2",
     "marked": "^0.3.6",
-    "node-watch": "^0.5.5",
     "porty": "^1.0.2",
     "promise-tool": "^1.0.1",
     "rollup": "^0.41.6",

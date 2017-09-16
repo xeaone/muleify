@@ -1,7 +1,7 @@
 const Transform = require('./lib/transform');
 const Utility = require('./lib/utility');
 const Globals = require('./lib/globals');
-const NodeWatch = require('node-watch');
+const Watcher = require('./lib/watcher');
 const Servey = require('servey');
 const Porty = require('porty');
 const Path = require('path');
@@ -11,7 +11,6 @@ const LB = Globals.lb;
 const IGNOREABLES = Globals.ignoreables;
 
 function directory (input, output, options) {
-	var lb = LB;
 	var beforePaths = [];
 	var afterPaths = [];
 
@@ -23,7 +22,7 @@ function directory (input, output, options) {
 		});
 	}).then(function (paths) {
 		paths.forEach(function (path) {
-			if (lb.test(path)) beforePaths.push(path);
+			if (LB.test(path)) beforePaths.push(path);
 			else afterPaths.push(path);
 		});
 	}).then(function () {
@@ -84,21 +83,51 @@ exports.map = function (input, output, options) {
 	});
 };
 
-exports.watcher = function (input, output, options, change, error) {
+exports.watcher = function (input, output, options, error, change, remove) {
 	var self = this;
-	var watcher = NodeWatch(options.path || input, { recursive: true });
+	var watcher = new Watcher();
+
+	// NOTE find a way to resolve input and output
 
 	watcher.on('error', function (e) {
-		if (error) error(e);
+		if (error) error.call(watcher, e);
 	});
 
-	watcher.on('change', function (type, path) {
-		self.pack(input, output, options).then(function () {
-			if (change) change(path);
+	watcher.on('change', function (path) {
+		Promise.resolve().then(function () {
+			// FIXME find a way to just update path
+			return self.pack(input, output, options);
+		}).then(function () {
+			if (change) change.call(watcher, path);
 		}).catch(function (e) {
-			if (error) error(e);
+			if (error) error.call(watcher, e);
 		});
 	});
+
+	// watcher.on('remove', function (path) {
+	// 	// FIXME path needs to be the output equivelent
+	// 	Fsep.stat(path).then(function (stat) {
+	// 		watcher.find(path).close();
+	//
+	// 		if (stat.isFile()) {
+	// 			console.log(path);
+	// 			console.log(input);
+	// 			console.log(output);
+	// 			// return Fsep.unlink(path);
+	// 		} else if (stat.isDirectory()) {
+	// 			console.log(path);
+	// 			console.log(input);
+	// 			console.log(output);
+	// 			// return Fsep.rmdir(path);
+	// 		}
+	// 	}).then(function () {
+	// 		if (remove) remove.call(watcher, path);
+	// 	}).catch(function (e) {
+	// 		if (error) error.call(watcher, e);
+	// 	});
+	// });
+
+	watcher.open(options.path || input);
 
 	return watcher;
 };

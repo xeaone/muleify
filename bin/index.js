@@ -10,14 +10,14 @@ const Chalk = require('chalk');
 Commander.version(Package.version);
 
 Commander.command('pack <input> <output>')
-.option('-e, --es', 'Transpile to ES5')
+.option('-e, --es', 'ES transpile the output')
 .option('-b, --bundle', 'Bundles the output')
 .option('-m, --minify', 'Minifies the output')
 .option('-w, --watch', 'Watches a file or folder')
 .option('-p, --path <path>', 'Defines the path to watch')
 .description('Packs folder/file and muleifies')
 .action(function (input, output, options) {
-	console.log(Chalk.underline.cyan('\n\t\tMule Is Packing\t\t\n'));
+	console.log(Chalk.underline.cyan('\nMuleify Packing\n'));
 
 	Promise.resolve().then(function () {
 		return Utility.io(input, output);
@@ -27,37 +27,37 @@ Commander.command('pack <input> <output>')
 	}).then(function () {
 		return Muleify.pack(input, output, options);
 	}).then(function () {
-		console.log(Chalk.green('\nMule Is Packed'));
-		console.log(Chalk.magenta('From: ' + input));
-		console.log(Chalk.magenta('To: ' + output));
+		var watcher;
 
 		if (options.watch) {
-			var watcher = Muleify.watcher(input, output, options,
-				function (path) {
-					console.log(Chalk.green('\nMule Is Packed'));
-					console.log(Chalk.magenta('Change: ' + path));
-				},
+			watcher = Muleify.watcher(input, output, options,
 				function (error) {
 					if (watcher) watcher.close();
 					console.log(Chalk.red(error.stack));
+				},
+				function (path) {
+					console.log(Chalk.magenta('Changed: ' + path));
 				}
 			);
 		}
 
+		console.log(Chalk.magenta(`Input: ${input}`));
+		console.log(Chalk.magenta(`To: ${output}`));
 	}).catch(function (error) {
 		console.log(Chalk.red(error.stack));
 	});
 });
 
 Commander.command('serve <input> [output]')
-.option('-e, --es', 'Transpiles to ES5')
-.option('-w, --watch', 'Watches the input')
+.option('-e, --es', 'ES transpile the output')
+.option('-b, --bundle', 'Bundles the output')
 .option('-m, --minify', 'Minifies the output')
+.option('-w, --watch', 'Watches the input')
 .option('-s, --spa', 'Enables sigle page application mode')
 .option('-c, --cors', 'Enables cross origin resource sharing mode')
 .description('Serves folder and muleifies')
 .action(function (input, output, options) {
-	console.log(Chalk.underline.cyan('\n\t\tMule Is Serving\t\t\n'));
+	console.log(Chalk.underline.cyan('\nMuleify Serving\n'));
 
 	Promise.resolve().then(function () {
 		return Utility.io(input, output);
@@ -71,14 +71,14 @@ Commander.command('serve <input> [output]')
 
 		server = Muleify.server(input, output, options,
 			function () {
-				console.log(Chalk.green('Web: ' + server.hostname + ':' + server.port));
-				console.log(Chalk.magenta('From: ' + input));
-				if (output) console.log(Chalk.magenta('To: ' + output));
+				console.log(Chalk.green(`Served: ${server.hostname}:${server.port}`));
+				console.log(Chalk.magenta(`Input: ${input}`));
+				if (output) console.log(Chalk.magenta(`Output: ${output}\n`));
 			},
 			function () {
 				if (server) server.close();
 				if (watcher) watcher.close();
-				console.log(Chalk.underline.yellow('\n\t\tMule Is Stopping\t\t\n'));
+				// console.log(Chalk.underline.yellow('\nMuleify Stopped\n'));
 			},
 			function (error) {
 				if (server) server.close();
@@ -89,14 +89,13 @@ Commander.command('serve <input> [output]')
 
 		if (output && options.watch) {
 			watcher = Muleify.watcher(input, output, options,
-				function (path) {
-					console.log(Chalk.green('\nMule Is Packed'));
-					console.log(Chalk.magenta('Change: ' + path));
-				},
 				function (error) {
 					if (server) server.close();
 					if (watcher) watcher.close();
 					console.log(Chalk.red(error.stack));
+				},
+				function (path) {
+					console.log(Chalk.magenta('Changed: ' + path));
 				}
 			);
 		}
@@ -110,7 +109,7 @@ Commander.command('map <input> <output>')
 .option('-d, --domain <domain>', 'Inserts domain into sitemap')
 .description('Creates XML sitemap')
 .action(function (input, output, options) {
-	console.log(Chalk.underline.cyan('\n\t\tMule Is Mapping\t\t\n'));
+	console.log(Chalk.underline.cyan('\nMuleify Mapping\n'));
 
 	Promise.resolve().then(function () {
 		return Utility.io(input, output);
@@ -120,9 +119,8 @@ Commander.command('map <input> <output>')
 	}).then(function () {
 		return Muleify.map(input, output, options);
 	}).then(function () {
-		console.log(Chalk.green('\nMule Is Mapped'));
-		console.log(Chalk.magenta('From: ' + input));
-		console.log(Chalk.magenta('To: ' + output));
+		console.log(Chalk.magenta('Input: ' + input));
+		console.log(Chalk.magenta('Output: ' + output));
 	}).catch(function (error) {
 		console.log(Chalk.red(error.stack));
 	});
@@ -131,7 +129,7 @@ Commander.command('map <input> <output>')
 Commander.command('encamp <input.json> <output>')
 .description('Creates folders and files')
 .action(function (input, output) {
-	console.log(Chalk.underline.cyan('\n\t\tMule Is Encamping\t\t\n'));
+	console.log(Chalk.underline.cyan('\nMuleify Encamping\n'));
 
 	Promise.resolve().then(function () {
 		return Utility.io(input, output);
@@ -141,9 +139,8 @@ Commander.command('encamp <input.json> <output>')
 	}).then(function () {
 		return Muleify.encamp(input, output);
 	}).then(function () {
-		console.log(Chalk.green('\nMule Is Encamped'));
-		console.log(Chalk.magenta('From: ' + input));
-		console.log(Chalk.magenta('To: ' + output));
+		console.log(Chalk.magenta('Input: ' + input));
+		console.log(Chalk.magenta('Output: ' + output));
 	}).catch(function (error) {
 		console.log(Chalk.red(error.stack));
 	});
