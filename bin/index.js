@@ -42,7 +42,7 @@ Commander.command('pack <input> <output>')
 		}
 
 		console.log(Chalk.magenta(`Input: ${input}`));
-		console.log(Chalk.magenta(`To: ${output}`));
+		console.log(Chalk.magenta(`Output: ${output}`));
 	}).catch(function (error) {
 		console.log(Chalk.red(error.stack));
 	});
