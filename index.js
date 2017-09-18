@@ -104,29 +104,6 @@ exports.watcher = function (input, output, options, error, change, remove) {
 		});
 	});
 
-	// watcher.on('remove', function (path) {
-	// 	// FIXME path needs to be the output equivelent
-	// 	Fsep.stat(path).then(function (stat) {
-	// 		watcher.find(path).close();
-	//
-	// 		if (stat.isFile()) {
-	// 			console.log(path);
-	// 			console.log(input);
-	// 			console.log(output);
-	// 			// return Fsep.unlink(path);
-	// 		} else if (stat.isDirectory()) {
-	// 			console.log(path);
-	// 			console.log(input);
-	// 			console.log(output);
-	// 			// return Fsep.rmdir(path);
-	// 		}
-	// 	}).then(function () {
-	// 		if (remove) remove.call(watcher, path);
-	// 	}).catch(function (e) {
-	// 		if (error) error.call(watcher, e);
-	// 	});
-	// });
-
 	watcher.open(options.path || input);
 
 	return watcher;

@@ -1,6 +1,6 @@
 {
   "name": "muleify",
-  "version": "2.7.3",
+  "version": "2.7.4",
   "description": "A zero configuration static site generator and asset preprocessor compiler.",
   "main": "index.js",
   "bin": {
@@ -56,7 +56,7 @@
     "babel-preset-minify": "^0.2.0",
     "chalk": "^1.1.3",
     "commander": "^2.11.0",
-    "fsep": "^1.4.6",
+    "fsep": "^1.4.7",
     "inert": "^4.2.1",
     "less": "^2.7.2",
     "marked": "^0.3.6",

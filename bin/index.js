@@ -15,7 +15,7 @@ Commander.command('pack <input> <output>')
 .option('-m, --minify', 'Minifies the output')
 .option('-w, --watch', 'Watches a file or folder')
 .option('-p, --path <path>', 'Defines the path to watch')
-.description('Packs folder/file and muleifies')
+.description('Packs folder or file and muleifies')
 .action(function (input, output, options) {
 	console.log(Chalk.underline.cyan('\nMuleify Packing\n'));
 
@@ -147,7 +147,7 @@ Commander.command('encamp <input.json> <output>')
 });
 
 Commander.command('install-node-sass')
-.description('Installs node-sass for sass/scss files')
+.description('Installs node-sass for sass or scss files')
 .action(function () {
 	return Terminal('npm i node-sass@4.5.3').then(function (stdout, stderr) {
 		return console.log(Chalk.white(stdout || stderr));
@@ -155,7 +155,6 @@ Commander.command('install-node-sass')
 		console.log(Chalk.red(error.stack));
 	});
 });
-
 
 Commander.command('*')
 .action(function () {
