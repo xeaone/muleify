@@ -94,14 +94,7 @@ exports.watcher = function (input, output, options, error, change, remove) {
 	});
 
 	watcher.on('change', function (path) {
-		Promise.resolve().then(function () {
-			// FIXME find a way to just update path
-			return self.pack(input, output, options);
-		}).then(function () {
-			if (change) change.call(watcher, path);
-		}).catch(function (e) {
-			if (error) error.call(watcher, e);
-		});
+		if (change) change.call(watcher, path);
 	});
 
 	watcher.open(options.path || input);
@@ -109,15 +102,15 @@ exports.watcher = function (input, output, options, error, change, remove) {
 	return watcher;
 };
 
-exports.server = function (input, output, options, start, stop, error) {
+exports.server = function (input, output, options, open, error) {
 	const server = Servey({
 		spa: options.spa,
 		cors: options.cors,
 		directory: output || input
 	});
 
-	server.on('open', start);
-	server.on('close', stop);
+	server.on('error', error);
+	server.on('open', open);
 
 	Porty.get(8080, function (port) {
 

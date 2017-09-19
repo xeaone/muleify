@@ -25,22 +25,24 @@ Commander.command('pack <input> <output>')
 		input = result.input;
 		output = result.output;
 	}).then(function () {
-		return Muleify.pack(input, output, options);
-	}).then(function () {
-		var watcher;
-
 		if (options.watch) {
-			watcher = Muleify.watcher(input, output, options,
+			Muleify.watcher(input, output, options,
 				function (error) {
-					if (watcher) watcher.close();
 					console.log(Chalk.red(error.stack));
 				},
 				function (path) {
-					console.log(Chalk.magenta('Changed: ' + path));
+					// FIXME update only path
+					Muleify.pack(input, output, options).then(function () {
+						console.log(Chalk.magenta('Changed: ' + path));
+					}).catch(function (error) {
+						console.log(Chalk.red(error.stack));
+					});
 				}
 			);
 		}
-
+	}).then(function () {
+		return Muleify.pack(input, output, options);
+	}).then(function () {
 		console.log(Chalk.magenta(`Input: ${input}`));
 		console.log(Chalk.magenta(`Output: ${output}`));
 	}).catch(function (error) {
@@ -67,35 +69,30 @@ Commander.command('serve <input> [output]')
 	}).then(function () {
 		if (output) return Muleify.pack(input, output, options);
 	}).then(function () {
-		var server, watcher;
 
-		server = Muleify.server(input, output, options,
+		Muleify.server(input, output, options,
 			function () {
-				console.log(Chalk.green(`Served: ${server.hostname}:${server.port}`));
+				console.log(Chalk.green(`Served: ${this.hostname}:${this.port}`));
 				console.log(Chalk.magenta(`Input: ${input}`));
 				if (output) console.log(Chalk.magenta(`Output: ${output}\n`));
 			},
-			function () {
-				if (server) server.close();
-				if (watcher) watcher.close();
-				// console.log(Chalk.underline.yellow('\nMuleify Stopped\n'));
-			},
 			function (error) {
-				if (server) server.close();
-				if (watcher) watcher.close();
 				console.log(Chalk.red(error.stack));
 			}
 		);
 
 		if (output && options.watch) {
-			watcher = Muleify.watcher(input, output, options,
+			Muleify.watcher(input, output, options,
 				function (error) {
-					if (server) server.close();
-					if (watcher) watcher.close();
 					console.log(Chalk.red(error.stack));
 				},
 				function (path) {
-					console.log(Chalk.magenta('Changed: ' + path));
+					// FIXME update only path
+					Muleify.pack(input, output, options).then(function () {
+						console.log(Chalk.magenta('Changed: ' + path));
+					}).catch(function (error) {
+						console.log(Chalk.red(error.stack));
+					});
 				}
 			);
 		}
