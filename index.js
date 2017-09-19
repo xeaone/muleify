@@ -118,12 +118,12 @@ exports.server = function (input, output, options, open, error) {
 		server.open();
 
 		process.on('SIGINT', function () {
-			if (stop) stop();
+			server.close();
 			process.exit();
 		});
 
 		process.on('uncaughtException', function (e) {
-			if (error) error(e);
+			server.close();
 			process.exit();
 		});
 

@@ -1,13 +1,13 @@
 {
   "name": "muleify",
-  "version": "2.7.8",
+  "version": "2.7.9",
   "description": "A zero configuration static site generator and asset preprocessor compiler.",
   "main": "index.js",
   "bin": {
     "muleify": "bin/index.js"
   },
   "scripts": {
-    "muleify": "node bin",
+    "serve": "node bin serve -w example/src example/dev",
     "test": "echo coming soon"
   },
   "repository": {
