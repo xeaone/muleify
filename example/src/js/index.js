@@ -8,7 +8,7 @@ import { add } from './add.i.js';
 
 /*
 	@preserve
-	I am still here.
+	I am still here again
 */
 
 var sum = add(one, two);
