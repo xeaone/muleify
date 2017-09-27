@@ -144,12 +144,19 @@ Commander.command('encamp <input.json> <output>')
 });
 
 Commander.command('install-node-sass')
-.description('Installs node-sass for sass or scss files')
+.description('Installs node-sass for sass or scss files. (Might require sudo)')
 .action(function () {
-	return Terminal('npm i node-sass@4.5.3').then(function (stdout, stderr) {
+	Promise.resolve().then(function () {
+		return console.log(Chalk.white('Installing...'));
+	}).then(function () {
+		return Terminal({
+			cmd: 'npm',
+			args: ['i', 'node-sass']
+		});
+	}).then(function (stdout, stderr) {
 		return console.log(Chalk.white(stdout || stderr));
 	}).catch(function (error) {
-		console.log(Chalk.red(error.stack));
+		console.log(Chalk.red(error));
 	});
 });
 
