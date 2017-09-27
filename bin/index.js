@@ -6,6 +6,7 @@ const Commander = require('commander');
 const Package = require('../package');
 const Muleify = require('../index');
 const Chalk = require('chalk');
+const Path = require('path');
 
 Commander.version(Package.version);
 
@@ -147,14 +148,15 @@ Commander.command('install-node-sass')
 .description('Installs node-sass for sass or scss files. (Might require sudo)')
 .action(function () {
 	Promise.resolve().then(function () {
-		return console.log(Chalk.white('Installing...'));
+		console.log(Chalk.white('Installing...'));
 	}).then(function () {
 		return Terminal({
 			cmd: 'npm',
-			args: ['i', 'node-sass']
+			args: ['i', 'node-sass'],
+			cwd: Path.join(__dirname, '../')
 		});
-	}).then(function (stdout, stderr) {
-		return console.log(Chalk.white(stdout || stderr));
+	}).then(function (result) {
+		console.log(Chalk.white(result));
 	}).catch(function (error) {
 		console.log(Chalk.red(error));
 	});
