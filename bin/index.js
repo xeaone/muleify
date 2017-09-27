@@ -144,15 +144,15 @@ Commander.command('encamp <input.json> <output>')
 	});
 });
 
-Commander.command('install-node-sass')
-.description('Installs node-sass for sass or scss files. (Might require sudo)')
+Commander.command('install-sass')
+.description('Installs sass/scss compiler. Might require sudo')
 .action(function () {
 	Promise.resolve().then(function () {
 		console.log(Chalk.white('Installing...'));
 	}).then(function () {
 		return Terminal({
 			cmd: 'npm',
-			args: ['i', 'node-sass'],
+			args: ['i', '--no-save', 'node-sass'],
 			cwd: Path.join(__dirname, '../')
 		});
 	}).then(function (result) {
