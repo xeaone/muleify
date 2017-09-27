@@ -23,33 +23,31 @@ Another static site and asset generator you might say.
 ## Issues
 The node-sass package tends to have issues. If you experience this let me know. Or try out Less, because its More.
 
-## Getting Started ##
+## Getting Started
 
-#### Install ####
-`npm install muleify -g`
-
-
-#### Update ####
-`npm uninstall muleify -g && npm install muleify -g`
+#### Install
+`npm i -g muleify`
 
 
-
-#### CLI ####
+#### CLI
 - `muleify pack [options] <input> <output>` Packs folder/file and muleifies
 	- `input` path to folder or file
 	- `output` path to folder or file
-	- `-e, --es` Transpile to ES5
-	- `-w, --watch` Watches the input (if file it will watch the folder)
+	- `-e, --es` ES transpile the output
+	- `-b, --bundle` Bundles the output
 	- `-m, --minify` Minifies the output
+	- `-w, --watch` Watches a file or folder
+	- `-p, --path <path>` Defines the path to watch
 
 - `muleify serve [options] <input> [output]` Serves a folder and muleifies
 	- `input` path to folder
 	- `output` path to folder
 	- `-e, --es` Transpile to ES5
-	- `-w, --watch` Watches the input
+	- `-b, --bundle` Bundles the output
 	- `-m, --minify` Minifies the output
+	- `-w, --watch` Watches a file or folder
+	- `-s, --spa` Enables single page application mode
 	- `-c, --cors` Enables cross origin resource sharing mode
-	- `-s, --spa` Enables sigle page application mode (files/folders that do not exist will server the root index.html)
 
 - `muleify map [options] <input> <output>` Creates XML sitemap
 	- `input` path to a folder to generate the sitemap
@@ -59,6 +57,8 @@ The node-sass package tends to have issues. If you experience this let me know. 
 - `muleify encamp [options] <input.json> <output>` Creates folders and files
 	- `input` path to a JSON file
 	- `output` path to a folder
+
+- `muleify install-sass` Installs sass/scss compiler. Might require sudo
 
 
 #### Preprocessor Types ####

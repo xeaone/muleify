@@ -1,6 +1,6 @@
 {
   "name": "muleify",
-  "version": "2.7.16",
+  "version": "2.7.17",
   "description": "A zero configuration static site generator and asset preprocessor compiler.",
   "main": "index.js",
   "bin": {
