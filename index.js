@@ -83,19 +83,8 @@ exports.map = function (input, output, options) {
 	});
 };
 
-exports.watcher = function (input, output, options, error, change, remove) {
-	var self = this;
+exports.watcher = function (input, output, options) {
 	var watcher = new Watcher();
-
-	// NOTE find a way to resolve input and output
-
-	watcher.on('error', function (e) {
-		if (error) error.call(watcher, e);
-	});
-
-	watcher.on('change', function (path) {
-		if (change) change.call(watcher, path);
-	});
 
 	watcher.open(options.path || input);
 

@@ -1,69 +1,72 @@
 {
-  "name": "muleify",
-  "version": "2.7.18",
-  "description": "A zero configuration static site generator and asset preprocessor compiler.",
-  "main": "index.js",
-  "bin": {
-    "muleify": "bin/index.js"
-  },
-  "scripts": {
-    "serve": "node bin serve -w example/src example/dev",
-    "test": "echo coming soon"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/AlexanderElias/muleify.git"
-  },
-  "keywords": [
-    "build",
-    "tool",
-    "web",
-    "components",
-    "html",
-    "css",
-    "js",
-    "cli",
-    "gulp",
-    "webpack",
-    "webpacker",
-    "webpacks",
-    "webbundle",
-    "webbundler",
-    "webbundles",
-    "web-pack",
-    "web-packer",
-    "web-packs",
-    "web-bundle",
-    "web-bundler",
-    "web-bundles",
-    "static",
-    "site",
-    "generator",
-    "static-site",
-    "static-site-generator",
-    "muleify",
-    "mule"
-  ],
-  "author": "Alexander Elias",
-  "license": "MPL-2.0",
-  "bugs": {
-    "url": "https://github.com/AlexanderElias/muleify/issues"
-  },
-  "homepage": "https://github.com/AlexanderElias/muleify#readme",
-  "dependencies": {
-    "babel-core": "^6.26.0",
-    "babel-preset-env": "^1.6.0",
-    "babel-preset-minify": "^0.2.0",
-    "chalk": "^1.1.3",
-    "commander": "^2.11.0",
-    "fsep": "^1.4.7",
-    "less": "^2.7.2",
-    "marked": "^0.3.6",
-    "porty": "^1.0.2",
-    "promise-tool": "^1.0.1",
-    "rollup": "^0.41.6",
-    "rollup-plugin-commonjs": "^7.1.0",
-    "rollup-plugin-node-resolve": "^2.1.1",
-    "servey": "^1.0.3"
-  }
+	"name": "muleify",
+	"version": "2.7.18",
+	"description": "A zero configuration static site generator and asset preprocessor compiler.",
+	"main": "index.js",
+	"engines": {
+		"node" : ">=7.6.0"
+	},
+	"bin": {
+		"muleify": "bin/index.js"
+	},
+	"scripts": {
+		"serve": "node bin serve -w example/src example/dev",
+		"test": "echo coming soon"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/AlexanderElias/muleify.git"
+	},
+	"keywords": [
+		"build",
+		"tool",
+		"web",
+		"components",
+		"html",
+		"css",
+		"js",
+		"cli",
+		"gulp",
+		"webpack",
+		"webpacker",
+		"webpacks",
+		"webbundle",
+		"webbundler",
+		"webbundles",
+		"web-pack",
+		"web-packer",
+		"web-packs",
+		"web-bundle",
+		"web-bundler",
+		"web-bundles",
+		"static",
+		"site",
+		"generator",
+		"static-site",
+		"static-site-generator",
+		"muleify",
+		"mule"
+	],
+	"author": "Alexander Elias",
+	"license": "MPL-2.0",
+	"bugs": {
+		"url": "https://github.com/AlexanderElias/muleify/issues"
+	},
+	"homepage": "https://github.com/AlexanderElias/muleify#readme",
+	"dependencies": {
+		"babel-core": "^6.26.0",
+		"babel-preset-env": "^1.6.1",
+		"babel-preset-minify": "^0.2.0",
+		"chalk": "^1.1.3",
+		"commander": "^2.11.0",
+		"fsep": "^1.9.9",
+		"less": "^2.7.2",
+		"marked": "^0.3.6",
+		"porty": "^1.0.2",
+		"promise-tool": "^1.1.1",
+		"rollup": "^0.41.6",
+		"rollup-plugin-commonjs": "^7.1.0",
+		"rollup-plugin-node-resolve": "^2.1.1",
+		"servey": "^1.0.3"
+	}
 }

@@ -17,38 +17,37 @@ Commander.command('pack <input> <output>')
 .option('-w, --watch', 'Watches a file or folder')
 .option('-p, --path <path>', 'Defines the path to watch')
 .description('Packs folder or file and muleifies')
-.action(function (input, output, options) {
-	console.log(Chalk.underline.cyan('\nMuleify Packing\n'));
+.action(async function (input, output, options) {
+	try {
+		
+		console.log(Chalk.underline.cyan('\nMuleify Packing\n'));
+		const result = await Utility.io(input, output);
+		await Muleify.pack(result.input, result.output, options);
 
-	Promise.resolve().then(function () {
-		return Utility.io(input, output);
-	}).then(function (result) {
-		input = result.input;
-		output = result.output;
-	}).then(function () {
 		if (options.watch) {
-			Muleify.watcher(input, output, options,
-				function (error) {
-					console.log(Chalk.red(error.stack));
-				},
-				function (path) {
+			const watcher = Muleify.watcher(result.input, result.output, options);
+
+			watcher.on('error', function (error) {
+				console.log(Chalk.red(error));
+			});
+
+			watcher.on('change', async function (path) {
+				try {
 					// FIXME update only path
-					Muleify.pack(input, output, options).then(function () {
-						console.log(Chalk.magenta('Changed: ' + path));
-					}).catch(function (error) {
-						console.log(Chalk.red(error.stack));
-					});
+					await Muleify.pack(result.input, result.output, options);
+					console.log(Chalk.magenta('Changed: ' + path));
+				} catch (error) {
+					console.log(Chalk.red(error.stack));
 				}
-			);
+			});
 		}
-	}).then(function () {
-		return Muleify.pack(input, output, options);
-	}).then(function () {
-		console.log(Chalk.magenta(`Input: ${input}`));
-		console.log(Chalk.magenta(`Output: ${output}`));
-	}).catch(function (error) {
-		console.log(Chalk.red(error.stack));
-	});
+
+		console.log(Chalk.magenta(`Input: ${result.input}`));
+		console.log(Chalk.magenta(`Output: ${result.output}`));
+
+	} catch (error) {
+		console.log(Chalk.red(error));
+	}
 });
 
 Commander.command('serve <input> [output]')
