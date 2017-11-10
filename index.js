@@ -1,105 +1,80 @@
 const Transform = require('./lib/transform');
 const Utility = require('./lib/utility');
-const Globals = require('./lib/globals');
+const Global = require('./lib/global');
 const Watcher = require('./lib/watcher');
 const Servey = require('servey');
 const Porty = require('porty');
 const Path = require('path');
 const Fsep = require('fsep');
 
-const LB = Globals.lb;
-const IGNOREABLES = Globals.ignoreables;
+const LB = Global.lb;
+const IGNOREABLES = Global.ignoreables;
 
-function directory (input, output, options) {
+const directory = async function (input, output, options) {
 	var beforePaths = [];
 	var afterPaths = [];
 
-	return Promise.resolve().then(function () {
-		return Fsep.walk({
-			path: input,
-			ignoreDot: true,
-			filters: IGNOREABLES
-		});
-	}).then(function (paths) {
-		paths.forEach(function (path) {
-			if (LB.test(path)) beforePaths.push(path);
-			else afterPaths.push(path);
-		});
-	}).then(function () {
-		return Promise.all(beforePaths.map(function (path) {
-			return Transform(Path.join(input, path), Path.join(output, path), options);
-		}));
-	}).then(function () {
-		return Promise.all(afterPaths.map(function (path) {
-			return Transform(Path.join(input, path), Path.join(output, path), options);
-		}));
-	}).catch(function (error) {
-		throw error;
+	const paths = await Fsep.walk({
+		path: input,
+		ignoreDot: true,
+		filters: IGNOREABLES
 	});
-}
 
-function file (input, output, options) {
-	return Transform(input, output, options);
-}
-
-exports.pack = function (input, output, options) {
-	Globals.input = input; // TODO find a way to remove this
-
-	return Promise.resolve().then(function () {
-		return Utility.io(input, output);
-	}).then(function (result) {
-		if (result.isFile) return file(input, output, options);
-		else if (result.isDirectory) return directory(input, output, options);
-		else throw new Error(`Input is not a file or direcotry ${input}`);
-	}).catch(function (error) {
-		throw error;
+	paths.forEach(function (path) {
+		if (LB.test(path)) beforePaths.push(path);
+		else afterPaths.push(path);
 	});
+
+	await Promise.all(beforePaths.map(async function (path) {
+		return await Transform(Path.join(input, path), Path.join(output, path), options);
+	}));
+
+	await Promise.all(afterPaths.map(async function (path) {
+		return await Transform(Path.join(input, path), Path.join(output, path), options);
+	}));
 };
 
-exports.encamp = function (input, output) {
-	return Promise.resolve().then(function () {
-		return Fsep.readFile(input);
-	}).then(function (data) {
-		data = JSON.parse(data);
-		return Fsep.scaffold(output, data);
-	}).catch(function (error) {
-		throw error;
-	});
+const file = async function (input, output, options) {
+	return await Transform(input, output, options);
 };
 
-exports.map = function (input, output, options) {
-	return Promise.resolve().then(function () {
-		return Fsep.walk({
-			path: input,
-			ignoreDot: true,
-			filters: IGNOREABLES
-		});
-	}).then(function (paths) {
-		var path = Path.join(output, 'sitemap.xml');
-		var text = Utility.createSitemap(paths, options.domain);
-		return Fsep.outputFile(path, text);
-	}).catch(function (error) {
-		throw error;
-	});
+exports.pack = async function (input, output, options) {
+	Global.input = input; // TODO find a way to remove this
+	const result = await Utility.io(input, output);
+	if (result.isFile) return await file(input, output, options);
+	else if (result.isDirectory) return await directory(input, output, options);
+	else throw new Error(`Input is not a file or direcotry ${input}`);
 };
 
-exports.watcher = function (input, output, options) {
+exports.encamp = async function (input, output) {
+	const data = await Fsep.readFile(input);
+	data = JSON.parse(data);
+	return await Fsep.scaffold(output, data);
+};
+
+exports.map = async function (input, output, options) {
+	const paths = await Fsep.walk({
+		path: input,
+		ignoreDot: true,
+		filters: IGNOREABLES
+	});
+	var path = Path.join(output, 'sitemap.xml');
+	var text = await Utility.createSitemap(paths, options.domain);
+	return await Fsep.outputFile(path, text);
+};
+
+exports.watcher = async function (input, output, options) {
 	var watcher = new Watcher();
-
 	watcher.open(options.path || input);
-
 	return watcher;
 };
 
-exports.server = function (input, output, options, open, error) {
+exports.server = async function (input, output, options, open, error) {
 	const server = Servey({
 		spa: options.spa,
 		cors: options.cors,
 		directory: output || input
 	});
-
-	server.on('error', error);
-	server.on('open', open);
 
 	Porty.get(8080, function (port) {
 

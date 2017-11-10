@@ -19,16 +19,16 @@ Commander.command('pack <input> <output>')
 .description('Packs folder or file and muleifies')
 .action(async function (input, output, options) {
 	try {
-		
 		console.log(Chalk.underline.cyan('\nMuleify Packing\n'));
+
 		const result = await Utility.io(input, output);
 		await Muleify.pack(result.input, result.output, options);
 
 		if (options.watch) {
-			const watcher = Muleify.watcher(result.input, result.output, options);
+			const watcher = await Muleify.watcher(result.input, result.output, options);
 
 			watcher.on('error', function (error) {
-				console.log(Chalk.red(error));
+				console.log(Chalk.red(error.stack));
 			});
 
 			watcher.on('change', async function (path) {
@@ -44,9 +44,8 @@ Commander.command('pack <input> <output>')
 
 		console.log(Chalk.magenta(`Input: ${result.input}`));
 		console.log(Chalk.magenta(`Output: ${result.output}`));
-
 	} catch (error) {
-		console.log(Chalk.red(error));
+		console.log(Chalk.red(error.stack));
 	}
 });
 
@@ -58,107 +57,100 @@ Commander.command('serve <input> [output]')
 .option('-s, --spa', 'Enables single page application mode')
 .option('-c, --cors', 'Enables cross origin resource sharing mode')
 .description('Serves folder and muleifies')
-.action(function (input, output, options) {
-	console.log(Chalk.underline.cyan('\nMuleify Serving\n'));
+.action(async function (input, output, options) {
+	try {
+		console.log(Chalk.underline.cyan('\nMuleify Serving\n'));
 
-	Promise.resolve().then(function () {
-		return Utility.io(input, output);
-	}).then(function (result) {
-		input = result.input;
-		output = result.output;
-	}).then(function () {
-		if (output) return Muleify.pack(input, output, options);
-	}).then(function () {
+		const result = await Utility.io(input, output);
 
-		Muleify.server(input, output, options,
-			function () {
-				console.log(Chalk.green(`Served: ${this.hostname}:${this.port}`));
-				console.log(Chalk.magenta(`Input: ${input}`));
-				if (output) console.log(Chalk.magenta(`Output: ${output}\n`));
-			},
-			function (error) {
-				console.log(Chalk.red(error.stack));
-			}
-		);
-
-		if (output && options.watch) {
-			Muleify.watcher(input, output, options,
-				function (error) {
-					console.log(Chalk.red(error.stack));
-				},
-				function (path) {
-					// FIXME update only path
-					Muleify.pack(input, output, options).then(function () {
-						console.log(Chalk.magenta('Changed: ' + path));
-					}).catch(function (error) {
-						console.log(Chalk.red(error.stack));
-					});
-				}
-			);
+		if (result.output) {
+			await Muleify.pack(result.input, result.output, options);
 		}
 
-	}).catch(function (error) {
+		const server = await Muleify.server(input, output, options);
+
+		server.on('error', function (error) {
+			console.log(Chalk.red(error.stack));
+		});
+
+		server.on('open', function () {
+			console.log(Chalk.green(`Served: ${this.hostname}:${this.port}`));
+			console.log(Chalk.magenta(`Input: ${input}`));
+			if (output) console.log(Chalk.magenta(`Output: ${output}\n`));
+		});
+
+		if (options.watch) {
+			const watcher = await Muleify.watcher(result.input, result.output, options);
+
+			watcher.on('error', function (error) {
+				console.log(Chalk.red(error.stack));
+			});
+
+			watcher.on('change', async function (path) {
+				try {
+					// FIXME update only path
+					await Muleify.pack(result.input, result.output, options);
+					console.log(Chalk.magenta(`Changed: ${path}`));
+				} catch (error) {
+					console.log(Chalk.red(error.stack));
+				}
+			});
+		}
+
+	} catch (error) {
 		console.log(Chalk.red(error.stack));
-	});
+	}
 });
 
 Commander.command('map <input> <output>')
 .option('-d, --domain <domain>', 'Inserts domain into sitemap')
 .description('Creates XML sitemap')
-.action(function (input, output, options) {
-	console.log(Chalk.underline.cyan('\nMuleify Mapping\n'));
+.action(async function (input, output, options) {
+	try {
+		console.log(Chalk.underline.cyan('\nMuleify Mapping\n'));
 
-	Promise.resolve().then(function () {
-		return Utility.io(input, output);
-	}).then(function (result) {
-		input = result.input;
-		output = result.output;
-	}).then(function () {
-		return Muleify.map(input, output, options);
-	}).then(function () {
-		console.log(Chalk.magenta('Input: ' + input));
-		console.log(Chalk.magenta('Output: ' + output));
-	}).catch(function (error) {
+		const result = await Utility.io(input, output);
+		await Muleify.map(result.input, result.output, options);
+
+		console.log(Chalk.magenta(`Input: ${result.input}`));
+		console.log(Chalk.magenta(`Output: ${result.output}`));
+	} catch (error) {
 		console.log(Chalk.red(error.stack));
-	});
+	}
 });
 
 Commander.command('encamp <input.json> <output>')
 .description('Creates folders and files')
-.action(function (input, output) {
-	console.log(Chalk.underline.cyan('\nMuleify Encamping\n'));
+.action(async function (input, output) {
+	try {
+		console.log(Chalk.underline.cyan('\nMuleify Encamping\n'));
 
-	Promise.resolve().then(function () {
-		return Utility.io(input, output);
-	}).then(function (result) {
-		input = result.input;
-		output = result.output;
-	}).then(function () {
-		return Muleify.encamp(input, output);
-	}).then(function () {
-		console.log(Chalk.magenta('Input: ' + input));
-		console.log(Chalk.magenta('Output: ' + output));
-	}).catch(function (error) {
+		const result = await Utility.io(input, output);
+		await Muleify.encamp(result.input, result.output);
+
+		console.log(Chalk.magenta(`Input: ${result.input}`));
+		console.log(Chalk.magenta(`Output: ${result.output}`));
+	} catch (error) {
 		console.log(Chalk.red(error.stack));
-	});
+	}
 });
 
 Commander.command('install-sass')
 .description('Installs sass/scss compiler. Might require sudo')
-.action(function () {
-	Promise.resolve().then(function () {
+.action(async function () {
+	try {
 		console.log(Chalk.white('Installing...'));
-	}).then(function () {
-		return Terminal({
+
+		const result = await Terminal({
 			cmd: 'npm',
 			args: ['i', '--no-save', 'node-sass'],
 			cwd: Path.join(__dirname, '../')
 		});
-	}).then(function (result) {
+
 		console.log(Chalk.white(result));
-	}).catch(function (error) {
-		console.log(Chalk.red(error));
-	});
+	} catch (error) {
+		console.log(Chalk.red(error.stack));
+	}
 });
 
 Commander.command('*')
