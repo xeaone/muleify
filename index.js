@@ -43,12 +43,14 @@ const file = async function (input, output, options) {
 };
 
 exports.pack = async function (input, output, options) {
-	Global.input = input; // TODO find a way to remove this
+	const result = await Utility.io(input, output);
 
-	if (options.isFile) {
-		await file(input, output, options);
-	} else if (options.isDirectory) {
-		await directory(input, output, options);
+	Global.input = result.input; // TODO find a way to remove this
+
+	if (result.isFile) {
+		await file(result.input, result.output, options);
+	} else if (result.isDirectory) {
+		await directory(result.input, result.output, options);
 	} else {
 		throw new Error(`Input is not a file or direcotry ${input}`);
 	}
@@ -77,7 +79,7 @@ exports.watcher = async function (input, output, options) {
 	return watcher;
 };
 
-exports.server = async function (input, output, options, open, error) {
+exports.server = async function (input, output, options) {
 	const server = Servey({
 		spa: options.spa,
 		cors: options.cors,

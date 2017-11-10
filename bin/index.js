@@ -22,10 +22,6 @@ Commander.command('pack <input> <output>')
 		console.log(Chalk.underline.cyan('\nMuleify Packing\n'));
 
 		const result = await Utility.io(input, output);
-
-		options.isFile = result.isFile;
-		options.isDirectory = result.isDirectory;
-
 		await Muleify.pack(result.input, result.output, options);
 
 		if (options.watch) {
