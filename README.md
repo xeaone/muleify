@@ -5,7 +5,7 @@
 
 [![Build Status](https://travis-ci.org/AlexanderElias/muleify.svg?branch=master)](https://travis-ci.org/AlexanderElias/muleify)
 
-## Overview
+### Overview
 Muleify is the one stop shop for your web front end needs, it is a command line tool that handles all your website development needs. Muleify has a unique no configuration required interface. It automatically handles many tasks such as compiling Sass, Scss, Less, Css, ES6 to ES5, bundling, and minifying. Muleify uses extensions and sub-extensions to automatically handle these tasks. With almost almost zero configuration or changes to existing projects you can get started. If there is a feature you want let me know or make a PR.
 
 ### Features
@@ -14,23 +14,18 @@ Another static site and asset generator you might say.
 - quick and easy
 - no learning curve
 - based on extensions and sub-extensions
-- imports, includes, partials, and layouts
-- serves single page applications (spa's)
+- single page applications support (spa's)
+- imports, includes, partials, templates, and layouts
+- preprocessor types JavaScript, CSS, SCSS, SASS, LESS, HTML, MD
+
+### Install
+`npm i -g muleify`
 
 ### Changes
 - 3.0.0 uses async/awiat so node version >=7.6.0
 - 2.7.0 removes default sass/scss support. After install if you want to use sass run `muleify install-node-sass`.
 
-### Issues
-The node-sass package tends to have issues. If you experience this let me know. Or try out Less, because its More.
-
-## Getting Started
-
-#### Install
-`npm i -g muleify`
-
-
-#### CLI
+## CLI
 - `muleify pack [options] <input> <output>` Packs folder/file and muleifies
 	- `input` path to folder or file
 	- `output` path to folder or file
@@ -42,7 +37,7 @@ The node-sass package tends to have issues. If you experience this let me know. 
 
 - `muleify serve [options] <input> [output]` Serves a folder and muleifies
 	- `input` path to folder
-	- `output` path to folder
+	- `output` path to folder (optional)
 	- `-e, --es` Transpile to ES5
 	- `-b, --bundle` Bundles the output
 	- `-m, --minify` Minifies the output
@@ -55,79 +50,77 @@ The node-sass package tends to have issues. If you experience this let me know. 
 	- `output` path to a folder to output sitemap.xml
 	- `-d, --domain <domain>` Inserts domain into sitemap
 
-- `muleify encamp [options] <input.json> <output>` Creates folders and files
+- `muleify encamp [options] <input> <output>` Creates folders and files from a json file
 	- `input` path to a JSON file
 	- `output` path to a folder
 
-- `muleify install-sass` Installs sass/scss compiler. Might require sudo
+- `muleify install-sass` Installs sass/scss compiler (might require sudo)
 
+## Extensions
+Muleify uses extensions and sub-extensions to process specail file types. Sub-extensions are period separated names. They can be combined in any order or combination. The generated file will not contain the sub-extensions. For example a file in the src folder could be named `file.b.e.js` and the dist folder it would be named `file.js`.
 
-#### Preprocessor Types ####
-JavaScript, CSS, SCSS, SASS, LESS, HTML, MD
+### Options
 
-#### Sub Extensions ####
-Sub extensions are period separated files names. They can be combined in any order or combination. The generated file will not contain the sub-extensions. For example a file in the src folder could be named `file.b.e.js` and the dist folder it would be named `file.js`.
+#### ALL
+- `i` - ignore
 
-##### Options #####
-- **ALL**
-	- `i` - ignore
+#### HTML
+- `l` - **layout** wraps all view files
+- `v` - **view** inserted into layout
+- `p` - **partial** allows file to be imported
+- `m` - **minify** minify code (under development)
 
-- **HTML**
-	- `l` - **layout** wraps all view files
-	- `v` - **view** inserted into layout
-	- `p` - **partial** allows file to be imported
-	- `m` - **minify** minify code (under development)
+#### MD
 
-- **MD**
+#### JS
+- `b` - **bundle** modules ESM to UMD
+- `e` - **es** transpile to ES5
+- `m` - **minify** minify code
+	- `@preserve` will persist comments.
+	- `@banner` will place comment at document start.
 
-- **JS**
-	- `b` - **bundle** modules ESM to UMD
-	- `e` - **es** transpile to ES5
-	- `m` - **minify** minify code
-		- `@preserve` will persist comments.
-		- `@banner` will place comment at document start.
+#### CSS
+- `b` - **bundle** all imports
+- `m` - **minify** minify code
 
-- **CSS**
-	- `b` - **bundle** all imports
-	- `m` - **minify** minify code
+#### SCSS
+- `m` - **minify** minify code
 
-- **SCSS**
-	- `m` - **minify** minify code
+#### LESS
+- `m` - **minify** minify code
 
-- **LESS**
-	- `m` - **minify** minify code
+## Includes/Imports/Partials/Layouts
+The path includes/imports/partials/layouts are relative from the input folder.
 
+### Options
 
-#### Includes/Imports/Partials/Layouts ####
-For consistency it is best to start all paths with `./`.
-
-##### HTML #####
+#### HTML
 Note `partial` relative path from file
-
 - layout a placeholder: `<!-- { "layout": "*" } -->`
 - import a partial: `<!-- { "partial": "./header.p.html" } -->`
 - define a variable: `<!-- { "title": "I Am Title" } -->`
 - import a variable: `<!-- { "variable": "title" } -->`
 
-##### MD #####
+#### MD
 Converts to HTML.
 
-##### JS #####
+#### JS
 Supports ESM `import` relative path from file and also the node resolution algorithm. For node resolution it will search the `node_modules` package.js files for `"module": "file"` or `main: "file"`.
 
-##### CSS #####
+#### CSS
 Note `@import` relative path from file
 
-##### SCSS #####
+#### SCSS
 Sass automatically bundles imports.
 Note `@import` relative path from file
 
-##### LESS #####
+#### LESS
 Less automatically bundles imports.
 Note `@import` relative path from file
 
+## Authors
+[AlexanderElias](https://github.com/AlexanderElias)
 
-## License ##
-Licensed Under MPL 2.0
-
-Copyright 2016 [Alexander Elias](https://github.com/AlexanderElias/)
+## License
+[Why You Should Choose MPL-2.0](http://veldstra.org/2016/12/09/yoo-should-choose-mpl2-for-your-opensource-project.html)
+This project is licensed under the MPL-2.0 License
