@@ -11,6 +11,7 @@ const LB = Global.lb;
 const IGNOREABLES = Global.ignoreables;
 
 const directory = async function (input, output, options) {
+	var i, l;
 	var beforePaths = [];
 	var afterPaths = [];
 
@@ -21,35 +22,42 @@ const directory = async function (input, output, options) {
 	});
 
 	paths.forEach(function (path) {
-		if (LB.test(path)) beforePaths.push(path);
-		else afterPaths.push(path);
+		if (LB.test(path)) {
+			beforePaths.push(path);
+		} else {
+			afterPaths.push(path);
+		}
 	});
 
 	await Promise.all(beforePaths.map(async function (path) {
-		return await Transform(Path.join(input, path), Path.join(output, path), options);
+		await Transform(Path.join(input, path), Path.join(output, path), options);
 	}));
 
 	await Promise.all(afterPaths.map(async function (path) {
-		return await Transform(Path.join(input, path), Path.join(output, path), options);
+		await Transform(Path.join(input, path), Path.join(output, path), options);
 	}));
 };
 
 const file = async function (input, output, options) {
-	return await Transform(input, output, options);
+	await Transform(input, output, options);
 };
 
 exports.pack = async function (input, output, options) {
 	Global.input = input; // TODO find a way to remove this
-	const result = await Utility.io(input, output);
-	if (result.isFile) return await file(input, output, options);
-	else if (result.isDirectory) return await directory(input, output, options);
-	else throw new Error(`Input is not a file or direcotry ${input}`);
+
+	if (options.isFile) {
+		await file(input, output, options);
+	} else if (options.isDirectory) {
+		await directory(input, output, options);
+	} else {
+		throw new Error(`Input is not a file or direcotry ${input}`);
+	}
 };
 
 exports.encamp = async function (input, output) {
 	const data = await Fsep.readFile(input);
 	data = JSON.parse(data);
-	return await Fsep.scaffold(output, data);
+	await Fsep.scaffold(output, data);
 };
 
 exports.map = async function (input, output, options) {
@@ -60,7 +68,7 @@ exports.map = async function (input, output, options) {
 	});
 	var path = Path.join(output, 'sitemap.xml');
 	var text = await Utility.createSitemap(paths, options.domain);
-	return await Fsep.outputFile(path, text);
+	await Fsep.outputFile(path, text);
 };
 
 exports.watcher = async function (input, output, options) {
