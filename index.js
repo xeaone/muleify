@@ -1,7 +1,9 @@
+'use strict';
+
 const Transform = require('./lib/transform');
-const Utility = require('./lib/utility');
-const Global = require('./lib/global');
 const Watcher = require('./lib/watcher');
+const Sitemap = require('./lib/sitemap');
+const Global = require('./lib/global');
 const Servey = require('servey');
 const Porty = require('porty');
 const Path = require('path');
@@ -43,14 +45,23 @@ const file = async function (input, output, options) {
 };
 
 exports.pack = async function (input, output, options) {
-	const result = await Utility.io(input, output);
 
-	Global.input = result.input; // TODO find a way to remove this
+	input = Path.resolve(process.cwd(), input);
 
-	if (result.isFile) {
-		await file(result.input, result.output, options);
-	} else if (result.isDirectory) {
-		await directory(result.input, result.output, options);
+	if (!Fsep.existsSync(input)) {
+		throw new Error(`Input path does not exist ${input}`);
+	}
+
+	output = Path.resolve(process.cwd(), output);
+
+	Global.input = input; // TODO find a way to remove this
+
+	const stat = await Fsep.stat(input);
+
+	if (stat.isFile) {
+		await file(input, output, options);
+	} else if (stat.isDirectory) {
+		await directory(input, output, options);
 	} else {
 		throw new Error(`Input is not a file or direcotry ${input}`);
 	}
@@ -68,9 +79,19 @@ exports.map = async function (input, output, options) {
 		ignoreDot: true,
 		filters: IGNOREABLES
 	});
-	var path = Path.join(output, 'sitemap.xml');
-	var text = await Utility.createSitemap(paths, options.domain);
-	await Fsep.outputFile(path, text);
+
+	const sitemap = Sitemap(paths, options.domain);
+	const path = Path.join(output, 'sitemap.xml');
+
+	await Fsep.outputFile(path, sitemap);
+};
+
+exports.sass = async function () {
+	return await Terminal({
+		cmd: 'npm',
+		args: ['i', '--no-save', 'node-sass'],
+		cwd: __dirname
+	});
 };
 
 exports.watcher = async function (input, output, options) {
@@ -80,27 +101,28 @@ exports.watcher = async function (input, output, options) {
 };
 
 exports.server = async function (input, output, options) {
-	const server = Servey({
+	console.log(input);
+	console.log(output);
+	const port = await Porty.find(8080);
+
+	const server = Servey.create({
+		port: port,
 		spa: options.spa,
 		cors: options.cors,
-		directory: output || input
+		folder: output || input
 	});
 
-	Porty.get(8080, function (port) {
+	await server.open();
 
-		server.port = port;
-		server.open();
+	process.on('SIGINT', async function () {
+		await server.close();
+		process.exit();
+	});
 
-		process.on('SIGINT', function () {
-			server.close();
-			process.exit();
-		});
-
-		process.on('uncaughtException', function (e) {
-			server.close();
-			process.exit();
-		});
-
+	process.on('uncaughtException', async function (error) {
+		await server.close();
+		process.exit();
+		throw error;
 	});
 
 	return server;

@@ -1,16 +1,15 @@
 #!/usr/bin/env node
 
-const Terminal = require('../lib/terminal');
-const Utility = require('../lib/utility');
-const Commander = require('commander');
 const Package = require('../package');
 const Muleify = require('../index');
+const Cmd = require('commander');
 const Chalk = require('chalk');
 const Path = require('path');
+const Fs = require('fs');
 
-Commander.version(Package.version);
+Cmd.version(Package.version);
 
-Commander.command('pack <input> <output>')
+Cmd.command('pack <input> <output>')
 .option('-e, --es', 'ES transpile the output')
 .option('-b, --bundle', 'Bundles the output')
 .option('-m, --minify', 'Minifies the output')
@@ -21,11 +20,18 @@ Commander.command('pack <input> <output>')
 	try {
 		console.log(Chalk.underline.cyan('\nMuleify Packing\n'));
 
-		const result = await Utility.io(input, output);
-		await Muleify.pack(result.input, result.output, options);
+		input = Path.resolve(process.cwd(), input);
+
+		if (!Fs.existsSync(input)) {
+			throw new Error(`Input path does not exist ${input}`);
+		}
+
+		output = Path.resolve(process.cwd(), output);
+
+		await Muleify.pack(input, output, options);
 
 		if (options.watch) {
-			const watcher = await Muleify.watcher(result.input, result.output, options);
+			const watcher = await Muleify.watcher(input, output, options);
 
 			watcher.on('error', function (error) {
 				console.log(Chalk.red(error.stack));
@@ -34,7 +40,7 @@ Commander.command('pack <input> <output>')
 			watcher.on('change', async function (path) {
 				try {
 					// FIXME update only path
-					await Muleify.pack(result.input, result.output, options);
+					await Muleify.pack(input, output, options);
 					console.log(Chalk.magenta('Changed: ' + path));
 				} catch (error) {
 					console.log(Chalk.red(error.stack));
@@ -42,14 +48,14 @@ Commander.command('pack <input> <output>')
 			});
 		}
 
-		console.log(Chalk.magenta(`Input: ${result.input}`));
-		console.log(Chalk.magenta(`Output: ${result.output}`));
+		console.log(Chalk.magenta(`Input: ${input}`));
+		console.log(Chalk.magenta(`Output: ${output}`));
 	} catch (error) {
 		console.log(Chalk.red(error.stack));
 	}
 });
 
-Commander.command('serve <input> [output]')
+Cmd.command('serve <input> [output]')
 .option('-e, --es', 'ES transpile the output')
 .option('-b, --bundle', 'Bundles the output')
 .option('-m, --minify', 'Minifies the output')
@@ -61,10 +67,15 @@ Commander.command('serve <input> [output]')
 	try {
 		console.log(Chalk.underline.cyan('\nMuleify Serving\n'));
 
-		const result = await Utility.io(input, output);
+		input = Path.resolve(process.cwd(), input);
 
-		if (result.output) {
-			await Muleify.pack(result.input, result.output, options);
+		if (!Fs.existsSync(input)) {
+			throw new Error(`Input path does not exist ${input}`);
+		}
+
+		if (output) {
+			output = Path.resolve(process.cwd(), output);
+			await Muleify.pack(input, output, options);
 		}
 
 		const server = await Muleify.server(input, output, options);
@@ -76,11 +87,14 @@ Commander.command('serve <input> [output]')
 		server.on('open', function () {
 			console.log(Chalk.green(`Served: ${this.hostname}:${this.port}`));
 			console.log(Chalk.magenta(`Input: ${input}`));
-			if (output) console.log(Chalk.magenta(`Output: ${output}\n`));
+
+			if (output) {
+				console.log(Chalk.magenta(`Output: ${output}\n`));
+			}
 		});
 
 		if (options.watch) {
-			const watcher = await Muleify.watcher(result.input, result.output, options);
+			const watcher = await Muleify.watcher(input, output, options);
 
 			watcher.on('error', function (error) {
 				console.log(Chalk.red(error.stack));
@@ -89,7 +103,7 @@ Commander.command('serve <input> [output]')
 			watcher.on('change', async function (path) {
 				try {
 					// FIXME update only path
-					await Muleify.pack(result.input, result.output, options);
+					await Muleify.pack(input, output, options);
 					console.log(Chalk.magenta(`Changed: ${path}`));
 				} catch (error) {
 					console.log(Chalk.red(error.stack));
@@ -102,30 +116,44 @@ Commander.command('serve <input> [output]')
 	}
 });
 
-Commander.command('map <input> <output>')
+Cmd.command('map <input> <output>')
 .option('-d, --domain <domain>', 'Inserts domain into sitemap')
 .description('Creates XML sitemap')
 .action(async function (input, output, options) {
 	try {
 		console.log(Chalk.underline.cyan('\nMuleify Mapping\n'));
 
-		const result = await Utility.io(input, output);
-		await Muleify.map(result.input, result.output, options);
+		input = Path.resolve(process.cwd(), input);
 
-		console.log(Chalk.magenta(`Input: ${result.input}`));
-		console.log(Chalk.magenta(`Output: ${result.output}`));
+		if (!Fs.existsSync(input)) {
+			throw new Error(`Input path does not exist ${input}`);
+		}
+
+		output = Path.resolve(process.cwd(), output);
+
+		await Muleify.map(input, output, options);
+
+		console.log(Chalk.magenta(`Input: ${input}`));
+		console.log(Chalk.magenta(`Output: ${output}`));
 	} catch (error) {
 		console.log(Chalk.red(error.stack));
 	}
 });
 
-Commander.command('encamp <input.json> <output>')
-.description('Creates folders and files')
+Cmd.command('encamp <input> <output>')
+.description('Creates folders and files from a json file')
 .action(async function (input, output) {
 	try {
 		console.log(Chalk.underline.cyan('\nMuleify Encamping\n'));
 
-		const result = await Utility.io(input, output);
+		input = Path.resolve(process.cwd(), input);
+
+		if (!Fs.existsSync(input)) {
+			throw new Error(`Input path does not exist ${input}`);
+		}
+
+		output = Path.resolve(process.cwd(), output);
+
 		await Muleify.encamp(result.input, result.output);
 
 		console.log(Chalk.magenta(`Input: ${result.input}`));
@@ -135,27 +163,21 @@ Commander.command('encamp <input.json> <output>')
 	}
 });
 
-Commander.command('install-sass')
-.description('Installs sass/scss compiler. Might require sudo')
+Cmd.command('install-sass')
+.description('Installs sass/scss compiler (might require sudo')
 .action(async function () {
 	try {
 		console.log(Chalk.white('Installing...'));
-
-		const result = await Terminal({
-			cmd: 'npm',
-			args: ['i', '--no-save', 'node-sass'],
-			cwd: Path.join(__dirname, '../')
-		});
-
+		const result = await Muleify.sass();
 		console.log(Chalk.white(result));
 	} catch (error) {
 		console.log(Chalk.red(error.stack));
 	}
 });
 
-Commander.command('*')
+Cmd.command('*')
 .action(function () {
-	console.log(Commander.help());
+	console.log(Cmd.help());
 });
 
-Commander.parse(process.argv);
+Cmd.parse(process.argv);
