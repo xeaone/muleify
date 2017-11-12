@@ -1,4 +1,4 @@
-[Star Issue Like Watch](https://github.com/AlexanderElias/muleify)
+[Star Issue Watch](https://github.com/AlexanderElias/muleify)
 
 # Muleify
 **Static Site Generator | Website Bundler | Asset Compiler | Templating | Preprocessor**
@@ -22,7 +22,7 @@ Another static site and asset generator you might say.
 `npm i -g muleify`
 
 ### Changes
-- 3.0.0 uses async/awiat so node version >=7.6.0
+- 3.x.x uses async/awiat so node version >=7.6.0
 - 2.7.0 removes default sass/scss support. After install if you want to use sass run `muleify install-node-sass`.
 
 ## CLI
@@ -122,5 +122,5 @@ Note `@import` relative path from file
 [AlexanderElias](https://github.com/AlexanderElias)
 
 ## License
-[Why You Should Choose MPL-2.0](http://veldstra.org/2016/12/09/yoo-should-choose-mpl2-for-your-opensource-project.html)
+[Why You Should Choose MPL-2.0](http://veldstra.org/2016/12/09/you-should-choose-mpl2-for-your-opensource-project.html)
 This project is licensed under the MPL-2.0 License

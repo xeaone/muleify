@@ -80,18 +80,12 @@ Cmd.command('serve <input> [output]')
 
 		const server = await Muleify.server(input, output, options);
 
-		server.on('error', function (error) {
-			console.log(Chalk.red(error.stack));
-		});
+		console.log(Chalk.green(`Served: ${server.hostname}:${server.port}`));
+		console.log(Chalk.magenta(`Input: ${input}`));
 
-		server.on('open', function () {
-			console.log(Chalk.green(`Served: ${this.hostname}:${this.port}`));
-			console.log(Chalk.magenta(`Input: ${input}`));
-
-			if (output) {
-				console.log(Chalk.magenta(`Output: ${output}\n`));
-			}
-		});
+		if (output) {
+			console.log(Chalk.magenta(`Output: ${output}\n`));
+		}
 
 		if (options.watch) {
 			const watcher = await Muleify.watcher(input, output, options);
@@ -104,7 +98,7 @@ Cmd.command('serve <input> [output]')
 				try {
 					// FIXME update only path
 					await Muleify.pack(input, output, options);
-					console.log(Chalk.magenta(`Changed: ${path}`));
+					console.log(Chalk.magenta('Changed: ' + path));
 				} catch (error) {
 					console.log(Chalk.red(error.stack));
 				}

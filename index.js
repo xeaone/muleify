@@ -1,9 +1,9 @@
 'use strict';
 
 const Transform = require('./lib/transform');
-const Watcher = require('./lib/watcher');
 const Sitemap = require('./lib/sitemap');
 const Global = require('./lib/global');
+const Observey = require('observey');
 const Servey = require('servey');
 const Porty = require('porty');
 const Path = require('path');
@@ -13,9 +13,8 @@ const LB = Global.lb;
 const IGNOREABLES = Global.ignoreables;
 
 const directory = async function (input, output, options) {
-	var i, l;
-	var beforePaths = [];
-	var afterPaths = [];
+	let beforePaths = [];
+	let afterPaths = [];
 
 	const paths = await Fsep.walk({
 		path: input,
@@ -38,6 +37,7 @@ const directory = async function (input, output, options) {
 	await Promise.all(afterPaths.map(async function (path) {
 		await Transform(Path.join(input, path), Path.join(output, path), options);
 	}));
+
 };
 
 const file = async function (input, output, options) {
@@ -58,9 +58,9 @@ exports.pack = async function (input, output, options) {
 
 	const stat = await Fsep.stat(input);
 
-	if (stat.isFile) {
+	if (stat.isFile()) {
 		await file(input, output, options);
-	} else if (stat.isDirectory) {
+	} else if (stat.isDirectory()) {
 		await directory(input, output, options);
 	} else {
 		throw new Error(`Input is not a file or direcotry ${input}`);
@@ -95,14 +95,14 @@ exports.sass = async function () {
 };
 
 exports.watcher = async function (input, output, options) {
-	var watcher = new Watcher();
-	watcher.open(options.path || input);
-	return watcher;
+	const observer = Observey.create({
+		path: options.path || input
+	});
+	await observer.open();
+	return observer;
 };
 
 exports.server = async function (input, output, options) {
-	console.log(input);
-	console.log(output);
 	const port = await Porty.find(8080);
 
 	const server = Servey.create({
@@ -113,17 +113,6 @@ exports.server = async function (input, output, options) {
 	});
 
 	await server.open();
-
-	process.on('SIGINT', async function () {
-		await server.close();
-		process.exit();
-	});
-
-	process.on('uncaughtException', async function (error) {
-		await server.close();
-		process.exit();
-		throw error;
-	});
 
 	return server;
 };
