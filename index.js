@@ -80,7 +80,7 @@ exports.map = async function (input, output, options) {
 		filters: IGNOREABLES
 	});
 
-	const sitemap = Sitemap(paths, options.domain);
+	const sitemap = await Sitemap(paths, options.domain);
 	const path = Path.join(output, 'sitemap.xml');
 
 	await Fsep.outputFile(path, sitemap);
