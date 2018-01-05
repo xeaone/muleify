@@ -29,18 +29,18 @@ Another static site and asset generator you might say.
 - `muleify pack [options] <input> <output>` Packs folder/file and muleifies
 	- `input` path to folder or file
 	- `output` path to folder or file
-	- `-e, --es` ES transpile the output
 	- `-b, --bundle` Bundles the output
 	- `-m, --minify` Minifies the output
+	- `-t, --transpile` Transpile the output
 	- `-w, --watch` Watches a file or folder
 	- `-p, --path <path>` Defines the path to watch
 
 - `muleify serve [options] <input> [output]` Serves a folder and muleifies
 	- `input` path to folder
 	- `output` path to folder (optional)
-	- `-e, --es` Transpile to ES5
 	- `-b, --bundle` Bundles the output
 	- `-m, --minify` Minifies the output
+	- `-t, --transpile` Transpile the output
 	- `-w, --watch` Watches a file or folder
 	- `-s, --spa` Enables single page application mode
 	- `-c, --cors` Enables cross origin resource sharing mode
@@ -74,13 +74,14 @@ Muleify uses extensions and sub-extensions to process specail file types. Sub-ex
 
 #### JS
 - `b` - **bundle** modules ESM to UMD
-- `e` - **es** transpile to ES5
+- `t` - **transpile** transpile to [> 1%, last 2 versions](http://browserl.ist/?q=%3E+1%25%2C+last+2+versions)
 - `m` - **minify** minify code
 	- `@preserve` will persist comments.
 	- `@banner` will place comment at document start.
 
 #### CSS
 - `b` - **bundle** all imports
+- `t` - **transpile** transpile to [> 1%, last 2 versions](http://browserl.ist/?q=%3E+1%25%2C+last+2+versions)
 - `m` - **minify** minify code
 
 #### SCSS

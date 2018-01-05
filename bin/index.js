@@ -10,9 +10,9 @@ const Fs = require('fs');
 Cmd.version(Package.version);
 
 Cmd.command('pack <input> <output>')
-.option('-e, --es', 'ES transpile the output')
 .option('-b, --bundle', 'Bundles the output')
 .option('-m, --minify', 'Minifies the output')
+.option('-t, --transpile', 'Transpile the output')
 .option('-w, --watch', 'Watches a file or folder')
 .option('-p, --path <path>', 'Defines the path to watch')
 .description('Packs folder or file and muleifies')
@@ -56,9 +56,9 @@ Cmd.command('pack <input> <output>')
 });
 
 Cmd.command('serve <input> [output]')
-.option('-e, --es', 'ES transpile the output')
 .option('-b, --bundle', 'Bundles the output')
 .option('-m, --minify', 'Minifies the output')
+.option('-t, --transpile', 'Transpile the output')
 .option('-w, --watch', 'Watches a file or folder')
 .option('-s, --spa', 'Enables single page application mode')
 .option('-c, --cors', 'Enables cross origin resource sharing mode')

@@ -1,0 +1,12 @@
+@import './one.i.css';
+
+:root {
+	--gray: gray;
+}
+
+/*
+	hello world
+*/
+.bundle-css {
+	background: var(--gray) !important;
+}
