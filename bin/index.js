@@ -37,14 +37,14 @@ Cmd.command('pack <input> <output>')
 				console.log(Chalk.red(error.stack));
 			});
 
-			watcher.on('change', async function (path) {
-				try {
-					// FIXME update only path
-					await Muleify.pack(input, output, options);
+			watcher.on('change', function (path) {
+				Promise.resolve().then(function () {
+					return Muleify.pack(input, output, options);
+				}).then(function () {
 					console.log(Chalk.magenta('Changed: ' + path));
-				} catch (error) {
+				}).catch(function (error) {
 					console.log(Chalk.red(error.stack));
-				}
+				});
 			});
 		}
 
@@ -99,6 +99,8 @@ Cmd.command('serve <input> [output]')
 					if (output) {
 						return Muleify.pack(input, output, options);
 					}
+				}).then(function () {
+					console.log(Chalk.magenta('Changed: ' + path));
 				}).catch(function (error) {
 					console.log(Chalk.red(error.stack));
 				});
