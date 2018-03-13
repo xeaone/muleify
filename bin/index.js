@@ -94,14 +94,14 @@ Cmd.command('serve <input> [output]')
 				console.log(Chalk.red(error.stack));
 			});
 
-			watcher.on('change', async function (path) {
-				try {
-					// FIXME update only path
-					await Muleify.pack(input, output, options);
-					console.log(Chalk.magenta('Changed: ' + path));
-				} catch (error) {
+			watcher.on('change', function (path) {
+				Promise.resolve().then(function () {
+					if (output) {
+						return Muleify.pack(input, output, options);
+					}
+				}).catch(function (error) {
 					console.log(Chalk.red(error.stack));
-				}
+				});
 			});
 		}
 
