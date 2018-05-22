@@ -95,22 +95,29 @@ exports.sass = async function () {
 };
 
 exports.watcher = async function (input, output, options) {
-	const observer = Observey.create({
+
+	const options = {
 		path: options.path || input
-	});
+	};
+
+	const observer = new Observey(options);
+
 	await observer.open();
+
 	return observer;
 };
 
 exports.server = async function (input, output, options) {
 	const port = await Porty.find(8080);
 
-	const server = Servey.create({
+	const options = {
 		port: port,
 		spa: options.spa,
 		cors: options.cors,
 		folder: output || input
-	});
+	};
+
+	const server = new Servey(options);
 
 	await server.open();
 

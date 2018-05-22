@@ -1,6 +1,6 @@
 {
 	"name": "muleify",
-	"version": "4.0.5",
+	"version": "4.0.6",
 	"description": "A zero configuration static site generator and asset preprocessor compiler.",
 	"main": "index.js",
 	"engines": {
@@ -62,14 +62,13 @@
 		"fsep": "^2.0.1",
 		"less": "^2.7.3",
 		"marked": "^0.3.9",
-		"observey": "^1.0.1",
+		"observey": "^2.0.0",
 		"porty": "^3.1.1",
 		"postcss": "^6.0.16",
 		"postcss-cssnext": "^3.0.2",
-		"promise-tool": "^1.1.5",
 		"rollup": "^0.41.6",
 		"rollup-plugin-commonjs": "^7.1.0",
 		"rollup-plugin-node-resolve": "^2.1.1",
-		"servey": "^2.1.7"
+		"servey": "^3.1.3"
 	}
 }
