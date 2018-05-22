@@ -96,11 +96,9 @@ exports.sass = async function () {
 
 exports.watcher = async function (input, output, options) {
 
-	const options = {
+	const observer = new Observey({
 		path: options.path || input
-	};
-
-	const observer = new Observey(options);
+	});
 
 	await observer.open();
 
@@ -110,14 +108,23 @@ exports.watcher = async function (input, output, options) {
 exports.server = async function (input, output, options) {
 	const port = await Porty.find(8080);
 
-	const options = {
+	const server = new Servey({
 		port: port,
-		spa: options.spa,
 		cors: options.cors,
-		folder: output || input
-	};
-
-	const server = new Servey(options);
+		routes: [
+			{
+				path: '*',
+				method: 'get',
+				handler: async function (context) {
+					return await context.tool.static({
+						spa: options.spa,
+						folder: output || input,
+						path: context.url.pathname
+					});
+				}
+			}
+		]
+	});
 
 	await server.open();
 
