@@ -110,6 +110,7 @@ exports.server = async function (input, output, options) {
 
 	const server = new Servey({
 		port: port,
+		cache: false,
 		cors: options.cors,
 		hostname: 'localhost',
 		routes: [
