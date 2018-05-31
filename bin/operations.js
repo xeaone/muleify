@@ -13,12 +13,6 @@ module.exports = {
 		description: 'Enables cross origin resource sharing mode',
 		method: async function () { return true; }
 	},
-	domain: {
-		key: 'd',
-		name: 'domain',
-		description: 'Inserts domain into sitemap',
-		method: async function () { return true; }
-	},
 	bundle: {
 		key: 'b',
 		name: 'bundle',
@@ -42,6 +36,12 @@ module.exports = {
 		name: 'watch',
 		description: 'Watches a file or folder',
 		method: async function () { return true; }
+	},
+	domain: {
+		key: 'd',
+		name: 'domain',
+		description: 'Inserts domain into sitemap',
+		method: async function (domain) { return domain; }
 	},
 	path: {
 		key: 'p',
