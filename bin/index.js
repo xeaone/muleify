@@ -1,179 +1,163 @@
 #!/usr/bin/env node
 
+const Operations = require('./operations');
 const Package = require('../package');
 const Muleify = require('../index');
-const Cmd = require('commander');
-const Chalk = require('chalk');
+const Parse = require('./parse');
+const Cliy = require('cliy');
 const Path = require('path');
 const Fs = require('fs');
 
-Cmd.version(Package.version);
+(async function() {
 
-Cmd.command('pack <input> <output>')
-.option('-b, --bundle', 'Bundles the output')
-.option('-m, --minify', 'Minifies the output')
-.option('-t, --transpile', 'Transpile the output')
-.option('-w, --watch', 'Watches a file or folder')
-.option('-p, --path <path>', 'Defines the path to watch')
-.description('Packs folder or file and muleifies')
-.action(async function (input, output, options) {
-	try {
-		console.log(Chalk.underline.cyan('\nMuleify Packing\n'));
+	const program = new Cliy();
 
-		input = Path.resolve(process.cwd(), input);
+	await program.setup({
+		name: Package.name,
+		version: Package.version,
+		operations: [
+			{
+				key: 'p',
+				name: 'pack',
+				description: 'Packs folder or file and muleifies',
+				method: async function (argument, options) {
+					const data = await Parse(argument);
 
-		if (!Fs.existsSync(input)) {
-			throw new Error(`Input path does not exist ${input}`);
-		}
+					program.log('\nMuleify Packing\n', ['underline', 'cyan']);
 
-		output = Path.resolve(process.cwd(), output);
+					await Muleify.pack(data.input, data.output, options);
 
-		await Muleify.pack(input, output, options);
+					if (options.watch) {
+						const watcher = await Muleify.watcher(data.input, data.output, options);
 
-		if (options.watch) {
-			const watcher = await Muleify.watcher(input, output, options);
+						watcher.on('error', function (error) {
+							program.log(error.stack, ['red']);
+						});
 
-			watcher.on('error', function (error) {
-				console.log(Chalk.red(error.stack));
-			});
-
-			watcher.on('change', function (path) {
-				Promise.resolve().then(function () {
-					return Muleify.pack(input, output, options);
-				}).then(function () {
-					console.log(Chalk.magenta('Changed: ' + path));
-				}).catch(function (error) {
-					console.log(Chalk.red(error.stack));
-				});
-			});
-		}
-
-		console.log(Chalk.magenta(`Input: ${input}`));
-		console.log(Chalk.magenta(`Output: ${output}`));
-	} catch (error) {
-		console.log(Chalk.red(error.stack));
-	}
-});
-
-Cmd.command('serve <input> [output]')
-.option('-b, --bundle', 'Bundles the output')
-.option('-m, --minify', 'Minifies the output')
-.option('-t, --transpile', 'Transpile the output')
-.option('-w, --watch', 'Watches a file or folder')
-.option('-s, --spa', 'Enables single page application mode')
-.option('-c, --cors', 'Enables cross origin resource sharing mode')
-.description('Serves folder and muleifies')
-.action(async function (input, output, options) {
-	try {
-		console.log(Chalk.underline.cyan('\nMuleify Serving\n'));
-
-		input = Path.resolve(process.cwd(), input);
-
-		if (!Fs.existsSync(input)) {
-			throw new Error(`Input path does not exist ${input}`);
-		}
-
-		if (output) {
-			output = Path.resolve(process.cwd(), output);
-			await Muleify.pack(input, output, options);
-		}
-
-		const server = await Muleify.server(input, output, options);
-
-		console.log(Chalk.green(`Served: ${server.hostname}:${server.port}`));
-		console.log(Chalk.magenta(`Input: ${input}`));
-
-		if (output) {
-			console.log(Chalk.magenta(`Output: ${output}\n`));
-		}
-
-		if (options.watch) {
-			const watcher = await Muleify.watcher(input, output, options);
-
-			watcher.on('error', function (error) {
-				console.log(Chalk.red(error.stack));
-			});
-
-			watcher.on('change', function (path) {
-				Promise.resolve().then(function () {
-					if (output) {
-						return Muleify.pack(input, output, options);
+						watcher.on('change', function (path) {
+							Promise.resolve().then(function () {
+								return Muleify.pack(data.input, data.output, options);
+							}).then(function () {
+								program.log('Changed: ' + path, ['magenta']);
+							}).catch(function (error) {
+								program.log(error.stack, ['red']);
+							});
+						});
 					}
-				}).then(function () {
-					console.log(Chalk.magenta('Changed: ' + path));
-				}).catch(function (error) {
-					console.log(Chalk.red(error.stack));
-				});
-			});
-		}
 
-	} catch (error) {
-		console.log(Chalk.red(error.stack));
-	}
+					program.log(`Input: ${data.input}`, ['magenta']);
+					program.log(`Output: ${data.output}`, ['magenta']);
+				},
+				operations: [
+					Operations.path,
+					Operations.watch,
+					Operations.bundle,
+					Operations.minify,
+					Operations.transpile
+				]
+			},
+			{
+				key: 's',
+				name: 'serve',
+				description: 'Serves folder and muleifies',
+				method: async function (argument, options) {
+					const data = await Parse(argument, false);
+
+					console.log(data);
+
+					program.log('\nMuleify Serving\n', ['underline', 'cyan']);
+
+					if (data.output) {
+						await Muleify.pack(data.input, data.output, options);
+					}
+
+					const server = await Muleify.server(data.input, data.output, options);
+
+					program.log(`Served: ${server.hostname}:${server.port}`, ['green']);
+					program.log(`Input: ${data.input}`, ['magenta']);
+
+					if (data.output) {
+						program.log(`Output: ${data.output}\n`, ['magenta']);
+					}
+
+					if (options.watch) {
+						const watcher = await Muleify.watcher(data.input, data.output, options);
+
+						watcher.on('error', function (error) {
+							program.log(error.stack, ['red']);
+						});
+
+						watcher.on('change', function (path) {
+							Promise.resolve().then(function () {
+								if (data.output) {
+									return Muleify.pack(data.input, data.output, options);
+								}
+							}).then(function () {
+								program.log('Changed: ' + path, ['magenta']);
+							}).catch(function (error) {
+								program.log(error.stack, ['red']);
+							});
+						});
+
+					}
+
+				},
+				operations: [
+					Operations.spa,
+					Operations.cors,
+					Operations.path,
+					Operations.watch,
+					Operations.bundle,
+					Operations.minify,
+					Operations.transpile
+				]
+			},
+			{
+				key: 'm',
+				name: 'map',
+				description: 'Creates XML sitemap',
+				method: async function (argument, options) {
+					const data = await Parse(argument);
+
+					program.log('\nMuleify Mapping\n', ['underline', 'cyan']);
+
+					await Muleify.map(data.input, data.output, options);
+
+					program.log(`Input: ${data.input}`, ['magenta']);
+					program.log(`Output: ${data.output}`, ['magenta']);
+				},
+				operations: [ Operations.domain ]
+			},
+			{
+				key: 'e',
+				name: 'encamp',
+				description: 'Creates folders and files from a json file',
+				method: async function (argument, options) {
+					const data = await Parse(argument);
+
+					program.log('\nMuleify Encamping\n', ['underline', 'cyan']);
+
+					await Muleify.encamp(data.input, data.output);
+
+					program.log(`Input: ${data.input}`, ['magenta']);
+					program.log(`Output: ${data.output}`, ['magenta']);
+				}
+			},
+			{
+				key: 'i',
+				name: 'install-sass',
+				description: 'Installs sass/scss compiler (might require sudo)',
+				method: async function (argument, options) {
+					program.log('Installing...', ['white']);
+					const result = await Muleify.sass();
+					program.log(result, ['white']);
+				}
+			}
+		]
+	});
+
+	await program.run(process.argv);
+
+}()).catch(function (error) {
+	console.log(error);
 });
-
-Cmd.command('map <input> <output>')
-.option('-d, --domain <domain>', 'Inserts domain into sitemap')
-.description('Creates XML sitemap')
-.action(async function (input, output, options) {
-	try {
-		console.log(Chalk.underline.cyan('\nMuleify Mapping\n'));
-
-		input = Path.resolve(process.cwd(), input);
-
-		if (!Fs.existsSync(input)) {
-			throw new Error(`Input path does not exist ${input}`);
-		}
-
-		output = Path.resolve(process.cwd(), output);
-
-		await Muleify.map(input, output, options);
-
-		console.log(Chalk.magenta(`Input: ${input}`));
-		console.log(Chalk.magenta(`Output: ${output}`));
-	} catch (error) {
-		console.log(Chalk.red(error.stack));
-	}
-});
-
-Cmd.command('encamp <input> <output>')
-.description('Creates folders and files from a json file')
-.action(async function (input, output) {
-	try {
-		console.log(Chalk.underline.cyan('\nMuleify Encamping\n'));
-
-		input = Path.resolve(process.cwd(), input);
-
-		if (!Fs.existsSync(input)) {
-			throw new Error(`Input path does not exist ${input}`);
-		}
-
-		output = Path.resolve(process.cwd(), output);
-
-		await Muleify.encamp(result.input, result.output);
-
-		console.log(Chalk.magenta(`Input: ${result.input}`));
-		console.log(Chalk.magenta(`Output: ${result.output}`));
-	} catch (error) {
-		console.log(Chalk.red(error.stack));
-	}
-});
-
-Cmd.command('install-sass')
-.description('Installs sass/scss compiler (might require sudo')
-.action(async function () {
-	try {
-		console.log(Chalk.white('Installing...'));
-		const result = await Muleify.sass();
-		console.log(Chalk.white(result));
-	} catch (error) {
-		console.log(Chalk.red(error.stack));
-	}
-});
-
-Cmd.command('*')
-.action(function () {
-	console.log(Cmd.help());
-});
-
-Cmd.parse(process.argv);
