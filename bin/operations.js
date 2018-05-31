@@ -47,6 +47,6 @@ module.exports = {
 		key: 'p',
 		name: 'path',
 		description: 'Defines the path to watch',
-		method: async function () { return path; }
+		method: async function (path) { return path; }
 	}
 };
