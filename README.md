@@ -26,7 +26,7 @@ Another static site and asset generator you might say.
 - 2.7.0 removes default sass/scss support. After install if you want to use sass run `muleify install-node-sass`.
 
 ## CLI
-- `muleify pack [options] <input> <output>` Packs folder/file and muleifies
+- `muleify -p [options] <input> <output>` Packs folder/file and muleifies
 	- `input` path to folder or file
 	- `output` path to folder or file
 	- `-b, --bundle` Bundles the output
@@ -35,7 +35,7 @@ Another static site and asset generator you might say.
 	- `-w, --watch` Watches a file or folder
 	- `-p, --path <path>` Defines the path to watch
 
-- `muleify serve [options] <input> [output]` Serves a folder and muleifies
+- `muleify -s [options] <input> [output]` Serves a folder and muleifies
 	- `input` path to folder
 	- `output` path to folder (optional)
 	- `-b, --bundle` Bundles the output
@@ -45,16 +45,16 @@ Another static site and asset generator you might say.
 	- `-s, --spa` Enables single page application mode
 	- `-c, --cors` Enables cross origin resource sharing mode
 
-- `muleify map [options] <input> <output>` Creates XML sitemap
+- `muleify -m [options] <input> <output>` Creates XML sitemap
 	- `input` path to a folder to generate the sitemap
 	- `output` path to a folder to output sitemap.xml
 	- `-d, --domain <domain>` Inserts domain into sitemap
 
-- `muleify encamp [options] <input> <output>` Creates folders and files from a json file
+- `muleify -e [options] <input> <output>` Creates folders and files from a json file
 	- `input` path to a JSON file
 	- `output` path to a folder
 
-- `muleify install-sass` Installs sass/scss compiler (might require sudo)
+- `muleify -i` Installs sass/scss compiler (might require sudo)
 
 ## Extensions
 Muleify uses extensions and sub-extensions to process specail file types. Sub-extensions are period separated names. They can be combined in any order or combination. The generated file will not contain the sub-extensions. For example a file in the src folder could be named `file.b.e.js` and the dist folder it would be named `file.js`.
