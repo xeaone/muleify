@@ -63,8 +63,6 @@ const Fs = require('fs');
 				method: async function (argument, options) {
 					const data = await Parse(argument, false);
 
-					console.log(data);
-
 					program.log('\nMuleify Serving\n', ['underline', 'cyan']);
 
 					if (data.output) {
@@ -159,5 +157,5 @@ const Fs = require('fs');
 	await program.run(process.argv);
 
 }()).catch(function (error) {
-	console.log(error);
+	console.error(error);
 });
