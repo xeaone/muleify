@@ -1,6 +1,6 @@
 {
 	"name": "muleify",
-	"version": "5.0.3",
+	"version": "5.0.4",
 	"description": "A zero configuration static site generator and asset preprocessor compiler.",
 	"main": "index.js",
 	"engines": {
@@ -57,7 +57,7 @@
 		"babel-core": "^6.26.0",
 		"babel-preset-env": "^1.6.1",
 		"babel-preset-minify": "^0.2.0",
-		"cliy": "^1.6.0",
+		"cliy": "^1.6.1",
 		"fsep": "^2.0.1",
 		"less": "^2.7.3",
 		"marked": "^0.3.9",
@@ -68,6 +68,6 @@
 		"rollup": "^0.41.6",
 		"rollup-plugin-commonjs": "^7.1.0",
 		"rollup-plugin-node-resolve": "^2.1.1",
-		"servey": "^3.1.6"
+		"servey": "^3.3.2"
 	}
 }
