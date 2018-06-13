@@ -19,7 +19,7 @@ module.exports = async function (argument, required) {
 		data.output = Path.resolve(process.cwd(), data.output);
 	}
 
-	if (required !== false && !Fs.existsSync(data.output)) {
+	if (Path.extname(data.output) && required !== false && !Fs.existsSync(data.output)) {
 		throw new Error(`Output path does not exist ${data.output}`);
 	}
 
