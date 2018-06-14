@@ -15,3 +15,18 @@ var sum = add(one, two);
 console.log(`${sum}`)
 console.log('bundle');
 export default add;
+
+/*
+const p = Promise.resolve().then(function () {
+    return 'hello world';
+});
+
+(async function () {
+
+    const r = await p();
+    console.log(r);
+
+}()).catch(function (e) {
+    console.log(e);
+});
+*/
