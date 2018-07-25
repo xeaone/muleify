@@ -74,14 +74,17 @@ Muleify uses extensions and sub-extensions to process specail file types. Sub-ex
 
 #### JS
 - `b` - **bundle** modules ESM to UMD
-- `t` - **transpile** transpile to [> 1%, last 2 versions](http://browserl.ist/?q=%3E+1%25%2C+last+2+versions)
+- `t` - **transpile**
+	- async/await to promises
+	- transpile to [browser list defaults](http://browserl.ist/?q=defaults)
 - `m` - **minify** minify code
 	- `@preserve` will persist comments.
 	- `@banner` will place comment at document start.
 
 #### CSS
 - `b` - **bundle** all imports
-- `t` - **transpile** transpile to [> 1%, last 2 versions](http://browserl.ist/?q=%3E+1%25%2C+last+2+versions)
+- `t` - **transpile**
+	- transpile to [browser list defaults](http://browserl.ist/?q=defaults)
 - `m` - **minify** minify code
 
 #### SCSS
