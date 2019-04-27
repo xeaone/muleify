@@ -3,7 +3,7 @@
 const Muleify = require('../index');
 const Parse = require('./parse');
 
-const Method = async function (argument, options) {
+const Handler = async function (argument, options) {
     const program = this;
 	const data = await Parse(argument);
 
@@ -48,31 +48,31 @@ module.exports = {
 	// 	key: 'p',
 	// 	name: 'path',
 	// 	description: 'Defines the path to watch',
-	// 	method: async function (path) { return path; }
+	// 	async handler (path) { return path; }
 	// },
 	Pack: {
 		key: 'P',
 		name: 'pack',
 		description: 'Packs ',
-		method: Method,
+		handler: Handler,
 		operations: [
         	{
         		key: 'b',
         		name: 'bundle',
         		description: 'Bundles the output',
-        		method: async function () { return true; }
+        		async handler () { return true; }
         	},
         	{
         		key: 'm',
         		name: 'minify',
         		description: 'Minifies the output',
-        		method: async function () { return true; }
+        		async handler () { return true; }
         	},
         	{
         		key: 't',
         		name: 'transpile',
         		description: 'Transpile the output',
-        		method: async function () { return true; }
+        		async handler () { return true; }
         	},
 			module.exports.Serve,
 			module.exports.Watch
@@ -82,20 +82,20 @@ module.exports = {
 		key: 'S',
 		name: 'serve',
 		description: 'Serves',
-		method: Method,
+		handler: Handler,
 		operations: [
 			// module.exports.path,
         	{
         		key: 's',
         		name: 'spa',
         		description: 'Enables single page application mode',
-        		method: async function () { return true; }
+        		async handler () { return true; }
         	},
         	{
         		key: 'c',
         		name: 'cors',
         		description: 'Enables cross origin resource sharing mode',
-        		method: async function () { return true; }
+        		async handler () { return true; }
         	},
 			module.exports.Pack,
 			module.exports.Watch
@@ -105,7 +105,7 @@ module.exports = {
 		key: 'W',
 		name: 'watch',
 		description: 'Watches',
-		method: Method,
+		handler: Handler,
 		operations: [
 			module.exports.Pack,
 			module.exports.Serve,
@@ -115,7 +115,7 @@ module.exports = {
 		key: 'M',
 		name: 'Map',
 		description: 'Creates XML sitemap',
-		method: async function (argument, options) {
+		async handler (argument, options) {
 			const data = await Parse(argument);
 
 			this.log('\nMuleify Mapping\n', ['underline', 'cyan']);
@@ -130,7 +130,7 @@ module.exports = {
         		key: 'd',
         		name: 'domain',
         		description: 'Inserts domain into sitemap',
-        		method: async function (domain) { return domain; }
+        		async handler (domain) { return domain; }
         	}
         ]
 	},
@@ -138,7 +138,7 @@ module.exports = {
 		key: 'E',
 		name: 'Encamp',
 		description: 'Creates folders and files from a json file',
-		method: async function (argument, options) {
+		async handler (argument, options) {
 			const data = await Parse(argument);
 
 			this.log('\nMuleify Encamping\n', ['underline', 'cyan']);
@@ -153,7 +153,7 @@ module.exports = {
 		key: 'I',
 		name: 'install-sass',
 		description: 'Installs sass/scss compiler (might require sudo)',
-		method: async function (argument, options) {
+		async handler (argument, options) {
 			this.log('Installing...', ['white']);
 			const result = await Muleify.sass();
 			this.log(result, ['white']);
