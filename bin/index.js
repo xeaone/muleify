@@ -12,9 +12,9 @@ const Cliy = require('cliy');
     	name: Package.name,
     	version: Package.version,
     	operations: [
-		    Operations.Packer,
-		    Operations.Server,
-		    Operations.Watcher,
+		    Operations.Pack,
+		    Operations.Serve,
+		    Operations.Watch,
 		    Operations.Map,
 		    Operations.Encamp,
             Operations.InstallSass
