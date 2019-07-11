@@ -1,6 +1,6 @@
 {
 	"name": "muleify",
-	"version": "5.1.1",
+	"version": "5.1.2",
 	"description": "A zero configuration static site generator and asset preprocessor compiler.",
 	"main": "index.js",
 	"engines": {
@@ -14,7 +14,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/AlexanderElias/muleify.git"
+		"url": "git+https://github.com/vokeio/muleify.git"
 	},
 	"keywords": [
 		"build",
@@ -49,9 +49,9 @@
 	"author": "Alexander Elias",
 	"license": "MPL-2.0",
 	"bugs": {
-		"url": "https://github.com/AlexanderElias/muleify/issues"
+		"url": "https://github.com/vokeio/muleify/issues"
 	},
-	"homepage": "https://github.com/AlexanderElias/muleify#readme",
+	"homepage": "https://github.com/vokeio/muleify#readme",
 	"dependencies": {
 		"babel-core": "^6.26.0",
 		"babel-plugin-transform-async-to-promises": "^0.7.0",
