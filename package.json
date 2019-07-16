@@ -57,7 +57,7 @@
 		"babel-plugin-transform-async-to-promises": "^0.7.0",
 		"babel-preset-env": "^1.6.1",
 		"babel-preset-minify": "^0.2.0",
-		"cliy": "^2.0.0",
+		"cliy": "^3.0.0",
 		"fsep": "^2.0.1",
 		"less": "^3.8.0",
 		"marked": "^0.6.2",

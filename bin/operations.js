@@ -3,57 +3,51 @@
 const Muleify = require('../index');
 const Parse = require('./parse');
 
-const Handler = async function (argument, options) {
+const Handler = async function (options, results) {
     const program = this;
-	const data = await Parse(argument);
 
     program.log('\nMuleify\n', ['underline', 'cyan']);
 
     if (options.pack) {
-        // await Muleify.packer(data.input, data.output, options);
+        await Muleify.packer(options.input, options.output, options);
 		program.log(`\tPacked: `, ['green']);
     }
 
     if (options.serve) {
-		// const server = await Muleify.server(data.input, data.output, options);
+		const server = await Muleify.server(options.input, options.output, options);
 		program.log(`\tServed: ${server.hostname}:${server.port}`, ['green']);
     }
 
 	if (options.watch) {
-		// const watcher = await Muleify.watcher(data.input, data.output, options);
+		const watcher = await Muleify.watcher(options.input, options.output, options);
 
-		// watcher.on('error', function (error) {
-		// 	program.log(error.stack, ['red']);
-		// });
-        //
-		// watcher.on('change', function (path) {
-        //     if (options.pack) {
-		// 		Promise.resolve().then(function () {
-	    //            return Muleify.packer(data.input, data.output, options);
-		// 		}).then(function () {
-		// 			program.log(`Changed: ${path}`, ['magenta']);
-		// 		}).catch(function (error) {
-		// 			program.log(error.stack, ['red']);
-		// 		});
-        //     }
-		// });
+		watcher.on('error', function (error) {
+			program.log(error.stack, ['red']);
+		});
+
+		watcher.on('change', function (path) {
+            if (options.pack) {
+				Promise.resolve().then(function () {
+	               return Muleify.packer(options.input, options.output, options);
+				}).then(function () {
+					program.log(`Changed: ${path}`, ['magenta']);
+				}).catch(function (error) {
+					program.log(error.stack, ['red']);
+				});
+            }
+		});
 	}
 
-	program.log(`Input: ${data.input}`, ['magenta']);
-	program.log(`Output: ${data.output}`, ['magenta']);
+	program.log(`Input: ${options.input}`, ['magenta']);
+	program.log(`Output: ${options.output}`, ['magenta']);
 };
 
 module.exports = {
-	// path: {
-	// 	key: 'p',
-	// 	name: 'path',
-	// 	description: 'Defines the path to watch',
-	// 	async handler (path) { return path; }
-	// },
 	Pack: {
-		key: 'P',
+		key: 'p',
 		name: 'pack',
-		description: 'Packs ',
+		description: 'Packs folder or file and muleifies',
+        options: [ 'input', 'output' ],
 		handler: Handler,
 		operations: [
         	{
@@ -74,17 +68,17 @@ module.exports = {
         		description: 'Transpile the output',
         		async handler () { return true; }
         	},
-			module.exports.Serve,
-			module.exports.Watch
+			module.exports.Watch,
+			module.exports.Serve
 		]
 	},
 	Serve: {
-		key: 'S',
+		key: 's',
 		name: 'serve',
-		description: 'Serves',
+		description: 'Serves folder and muleifies',
+        options: [ 'input', 'output' ],
 		handler: Handler,
 		operations: [
-			// module.exports.path,
         	{
         		key: 's',
         		name: 'spa',
@@ -102,9 +96,10 @@ module.exports = {
 		]
 	},
 	Watch: {
-		key: 'W',
+		key: 'w',
 		name: 'watch',
 		description: 'Watches',
+        options: [ 'input', 'output' ],
 		handler: Handler,
 		operations: [
 			module.exports.Pack,
@@ -112,48 +107,43 @@ module.exports = {
 		]
 	},
     Map: {
-		key: 'M',
+		key: 'm',
 		name: 'Map',
+        options: [ 'input', 'output' ],
 		description: 'Creates XML sitemap',
-		async handler (argument, options) {
-			const data = await Parse(argument);
-
+		async handler (options) {
 			this.log('\nMuleify Mapping\n', ['underline', 'cyan']);
-
-			await Muleify.map(data.input, data.output, options);
-
-			this.log(`Input: ${data.input}`, ['magenta']);
-			this.log(`Output: ${data.output}`, ['magenta']);
+			await Muleify.map(options.input, options.output, options);
+			this.log(`Input: ${options.input}`, ['magenta']);
+			this.log(`Output: ${options.output}`, ['magenta']);
 		},
 		operations: [
         	{
         		key: 'd',
         		name: 'domain',
-        		description: 'Inserts domain into sitemap',
-        		async handler (domain) { return domain; }
+                options: [ 'domain' ],
+        		description: 'Inserts domain into sitemap'
+        		// async handler (options) { return options.domain; }
         	}
         ]
 	},
 	Encamp: {
-		key: 'E',
+		key: 'e',
 		name: 'Encamp',
+        options: [ 'input', 'output' ],
 		description: 'Creates folders and files from a json file',
-		async handler (argument, options) {
-			const data = await Parse(argument);
-
+		async handler (options) {
 			this.log('\nMuleify Encamping\n', ['underline', 'cyan']);
-
-			await Muleify.encamp(data.input, data.output);
-
-			this.log(`Input: ${data.input}`, ['magenta']);
-			this.log(`Output: ${data.output}`, ['magenta']);
+			await Muleify.encamp(options.input, options.output);
+			this.log(`Input: ${options.input}`, ['magenta']);
+			this.log(`Output: ${options.output}`, ['magenta']);
 		}
 	},
 	InstallSass: {
-		key: 'I',
+		key: 'i',
 		name: 'install-sass',
 		description: 'Installs sass/scss compiler (might require sudo)',
-		async handler (argument, options) {
+		async handler () {
 			this.log('Installing...', ['white']);
 			const result = await Muleify.sass();
 			this.log(result, ['white']);

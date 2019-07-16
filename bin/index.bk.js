@@ -20,7 +20,7 @@ const Fs = require('fs');
 				key: 'p',
 				name: 'pack',
 				description: 'Packs folder or file and muleifies',
-				method: async function (argument, options) {
+				async method (argument, options) {
 					const data = await Parse(argument);
 
 					program.log('\nMuleify Packing\n', ['underline', 'cyan']);
@@ -60,7 +60,7 @@ const Fs = require('fs');
 				key: 's',
 				name: 'serve',
 				description: 'Serves folder and muleifies',
-				method: async function (argument, options) {
+				async method (argument, options) {
 					const data = await Parse(argument, false);
 
 					program.log('\nMuleify Serving\n', ['underline', 'cyan']);
@@ -114,7 +114,7 @@ const Fs = require('fs');
 				key: 'm',
 				name: 'map',
 				description: 'Creates XML sitemap',
-				method: async function (argument, options) {
+				async method (argument, options) {
 					const data = await Parse(argument);
 
 					program.log('\nMuleify Mapping\n', ['underline', 'cyan']);
@@ -130,7 +130,7 @@ const Fs = require('fs');
 				key: 'e',
 				name: 'encamp',
 				description: 'Creates folders and files from a json file',
-				method: async function (argument, options) {
+				async method (argument, options) {
 					const data = await Parse(argument);
 
 					program.log('\nMuleify Encamping\n', ['underline', 'cyan']);
@@ -145,7 +145,7 @@ const Fs = require('fs');
 				key: 'i',
 				name: 'install-sass',
 				description: 'Installs sass/scss compiler (might require sudo)',
-				method: async function (argument, options) {
+				async method (argument, options) {
 					program.log('Installing...', ['white']);
 					const result = await Muleify.sass();
 					program.log(result, ['white']);
@@ -156,6 +156,4 @@ const Fs = require('fs');
 
 	await program.run(process.argv);
 
-}()).catch(function (error) {
-	console.error(error);
-});
+}()).catch(console.error);
