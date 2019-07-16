@@ -1,46 +1,9 @@
 'use strict';
 
 const Muleify = require('../index');
-const Parse = require('./parse');
 
-const Handler = async function (options, results) {
-    const program = this;
-
-    program.log('\nMuleify\n', ['underline', 'cyan']);
-
-    if (options.pack) {
-        await Muleify.packer(options.input, options.output, options);
-		program.log(`\tPacked: `, ['green']);
-    }
-
-    if (options.serve) {
-		const server = await Muleify.server(options.input, options.output, options);
-		program.log(`\tServed: ${server.hostname}:${server.port}`, ['green']);
-    }
-
-	if (options.watch) {
-		const watcher = await Muleify.watcher(options.input, options.output, options);
-
-		watcher.on('error', function (error) {
-			program.log(error.stack, ['red']);
-		});
-
-		watcher.on('change', function (path) {
-            if (options.pack) {
-				Promise.resolve().then(function () {
-	               return Muleify.packer(options.input, options.output, options);
-				}).then(function () {
-					program.log(`Changed: ${path}`, ['magenta']);
-				}).catch(function (error) {
-					program.log(error.stack, ['red']);
-				});
-            }
-		});
-	}
-
-	program.log(`Input: ${options.input}`, ['magenta']);
-	program.log(`Output: ${options.output}`, ['magenta']);
-};
+// program.log(`Input: ${options.input}`, ['magenta']);
+// program.log(`Output: ${options.output}`, ['magenta']);
 
 module.exports = {
 	Pack: {
@@ -48,7 +11,11 @@ module.exports = {
 		name: 'pack',
 		description: 'Packs folder or file and muleifies',
         options: [ 'input', 'output' ],
-		handler: Handler,
+		async handler (options, results) {
+            await Muleify.packer(options.input, options.output, results);
+    		program.log(`\tPacked: ${options.input} to ${options.output}`, ['green']);
+            return true;
+        },
 		operations: [
         	{
         		key: 'b',
@@ -77,7 +44,11 @@ module.exports = {
 		name: 'serve',
 		description: 'Serves folder and muleifies',
         options: [ 'input', 'output' ],
-		handler: Handler,
+		async handler (options, results) {
+    		const server = await Muleify.server(options.input, options.output, results);
+    		program.log(`\tServed: ${server.hostname}:${server.port}`, ['green']);
+            return true;
+        },
 		operations: [
         	{
         		key: 's',
@@ -100,7 +71,30 @@ module.exports = {
 		name: 'watch',
 		description: 'Watches',
         options: [ 'input', 'output' ],
-		handler: Handler,
+		async handler (options, results) {
+
+    		const watcher = await Muleify.watcher(options.input, options.output, results);
+
+    		watcher.on('error', function (error) {
+    			program.log(error.stack, ['red']);
+    		});
+
+    		watcher.on('change', function (path) {
+                if (results.pack) {
+    				Promise.resolve().then(function () {
+    	               return Muleify.packer(options.input, options.output, results);
+    				}).then(function () {
+    					program.log(`Changed: ${path}`, ['magenta']);
+    				}).catch(function (error) {
+    					program.log(error.stack, ['red']);
+    				});
+                }
+    		});
+
+            program.log(`\tWatched: ${options.input} to ${options.output}`, ['green']);
+
+            return true;
+        },
 		operations: [
 			module.exports.Pack,
 			module.exports.Serve,

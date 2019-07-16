@@ -8,6 +8,8 @@ const Cliy = require('cliy');
 
     const program = new Cliy();
 
+    program.log('\nMuleify\n', ['underline', 'cyan']);
+
     await program.setup({
     	name: Package.name,
     	version: Package.version,
