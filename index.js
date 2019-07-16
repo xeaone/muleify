@@ -65,18 +65,13 @@ exports.packer = async function (input, output, options) {
 	}
 };
 
-exports.watcher = async function (input, output, options) {
-
-	const observer = new Observey({
-		path: options.path || input
-	});
-
+exports.watcher = async function (path, options) {
+	const observer = new Observey({ path: path });
 	await observer.open();
-
 	return observer;
 };
 
-exports.server = async function (input, output, options) {
+exports.server = async function (path, options) {
 	const port = await Porty.find(8080);
 
 	const server = new Servey({
@@ -90,8 +85,8 @@ exports.server = async function (input, output, options) {
 				method: 'get',
 				handler: async function (context) {
 					return await context.tool.static({
+						folder: path,
 						spa: options.spa,
-						folder: output || input,
 						path: context.url.pathname
 					});
 				}

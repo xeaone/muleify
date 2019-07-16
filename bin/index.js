@@ -1,14 +1,12 @@
 #!/usr/bin/env node
 
-const Operations = require('./operations');
-const Package = require('../package');
+const Operations = require('./operations.js');
+const Package = require('../package.json');
 const Cliy = require('cliy');
 
 (async function() {
 
     const program = new Cliy();
-
-    program.log('\nMuleify\n', ['underline', 'cyan']);
 
     await program.setup({
     	name: Package.name,
@@ -16,12 +14,14 @@ const Cliy = require('cliy');
     	operations: [
 		    Operations.Pack,
 		    Operations.Serve,
-		    Operations.Watch,
+		    // Operations.Watch,
 		    Operations.Map,
 		    Operations.Encamp,
             Operations.InstallSass
 		]
 	});
+
+    program.log('Muleify', ['underline', 'cyan']);
 
 	await program.run(process.argv);
 
