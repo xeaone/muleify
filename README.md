@@ -26,7 +26,7 @@ Another static site and asset generator you might say.
 - 2.7.0 removes default sass/scss support. After install if you want to use sass run `muleify install-node-sass`.
 
 ## CLI
-- `muleify -p [options] <input> <output>` Packs folder/file and muleifies
+- `muleify -p [options] <input> <output>` Packs a folder or file
 	- `input` path to folder or file
 	- `output` path to folder or file
 	- `-b, --bundle` Bundles the output
@@ -34,14 +34,11 @@ Another static site and asset generator you might say.
 	- `-t, --transpile` Transpile the output
 	- `-w, --watch` Watches a file or folder
 	- `-p, --path <path>` Defines the path to watch
+	- `-s, --serve` Serves a folder or file
 
-- `muleify -s [options] <input> [output]` Serves a folder and muleifies
+- `muleify -s [options] <input> [output]` Serves a folder or file
 	- `input` path to folder
 	- `output` path to folder (optional)
-	- `-b, --bundle` Bundles the output
-	- `-m, --minify` Minifies the output
-	- `-t, --transpile` Transpile the output
-	- `-w, --watch` Watches a file or folder
 	- `-s, --spa` Enables single page application mode
 	- `-c, --cors` Enables cross origin resource sharing mode
 
