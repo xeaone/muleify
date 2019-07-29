@@ -1,0 +1,20 @@
+.two-css {
+	color: lightpink;
+}
+
+
+.one-css {
+	color: lightblue;
+}
+
+
+:root {
+	--gray: gray;
+}
+
+/*
+	hello world
+*/
+.bundle-css {
+	background: var(--gray) !important;
+}
