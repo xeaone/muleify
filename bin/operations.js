@@ -93,39 +93,6 @@ module.exports.Serve = {
 	]
 };
 
-// module.exports.Watch = {
-// 	key: 'w',
-// 	name: 'watch',
-// 	description: 'Watches folder or file',
-//     options: [ 'input', 'output' ],
-// 	async handler (options, results) {
-//         const self = this;
-//         const { input, output } = await Parse.call(this, options);
-// 		const watcher = await Muleify.watcher(input, output, results);
-//
-// 		watcher.on('error', function (error) {
-// 			self.log(error.stack, ['red']);
-// 		});
-//
-// 		watcher.on('change', function (path) {
-//             if (results.pack) {
-// 				Promise.resolve().then(function () {
-// 	               return Muleify.packer(input, output, results);
-// 				}).then(function () {
-// 					self.log(`Changed: ${path}`, ['magenta']);
-// 				}).catch(function (error) {
-// 					self.log(error.stack, ['red']);
-// 				});
-//             }
-// 		});
-//
-//         self.log(`Watched: ${input} to ${output}`, ['green']);
-//
-//         return true;
-//     },
-// 	operations: []
-// };
-
 module.exports.Map = {
 	key: 'm',
 	name: 'map',
@@ -177,16 +144,5 @@ module.exports.InstallSass = {
 };
 
 module.exports.Pack.operations.push(
-    module.exports.Serve,
-    // module.exports.Watch
+    module.exports.Serve
 );
-
-// module.exports.Serve.operations.push(
-    // module.exports.Pack,
-    // module.exports.Watch
-// );
-
-// module.exports.Watch.operations.push(
-//     module.exports.Serve,
-//     module.exports.Pack
-// );

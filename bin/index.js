@@ -14,7 +14,6 @@ const Cliy = require('cliy');
     	operations: [
 		    Operations.Pack,
 		    Operations.Serve,
-		    // Operations.Watch,
 		    Operations.Map,
 		    Operations.Encamp,
             Operations.InstallSass

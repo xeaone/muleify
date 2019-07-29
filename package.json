@@ -1,6 +1,6 @@
 {
 	"name": "muleify",
-	"version": "5.2.0",
+	"version": "5.2.1",
 	"description": "A zero configuration static site generator and asset preprocessor compiler.",
 	"main": "index.js",
 	"engines": {
@@ -10,7 +10,7 @@
 		"muleify": "bin/index.js"
 	},
 	"scripts": {
-		"test": "node bin serve -pws example/src example/dev"
+		"test": "node bin -pws example/src example/dev"
 	},
 	"repository": {
 		"type": "git",
