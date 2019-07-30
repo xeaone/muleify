@@ -16,5 +16,6 @@
 	hello world
 */
 .bundle-css {
+	background: gray !important;
 	background: var(--gray) !important;
 }

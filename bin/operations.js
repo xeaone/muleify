@@ -142,7 +142,3 @@ module.exports.InstallSass = {
 		this.log(data, ['white']);
 	}
 };
-
-module.exports.Pack.operations.push(
-    module.exports.Serve
-);
