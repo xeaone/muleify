@@ -11,12 +11,12 @@ import { add } from './add.i.js';
 	I am still here again
 */
 
-(async function() {
+Promise.resolve().then(async => {
+    
 	const sum = await add(one, two);
 	console.log(`${sum}`);'use strict';
-}()).catch(function (error) {
-	console.error(error);
-});
+
+}).catch(console.error);
 
 console.log('bundle');
 

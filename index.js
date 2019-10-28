@@ -101,8 +101,7 @@ exports.server = async function (path, options) {
 
 exports.encamp = async function (input, output) {
 	const data = await Fsep.readFile(input);
-	data = JSON.parse(data);
-	await Fsep.scaffold(output, data);
+	await Fsep.scaffold(output, JSON.parse(data));
 };
 
 exports.map = async function (input, output, options) {
