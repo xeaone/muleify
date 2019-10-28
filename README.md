@@ -1,4 +1,5 @@
-[Star Issue Watch](https://github.com/AlexanderElias/muleify)
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/vokeio/muleify.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/vokeio/muleify/alerts/)
+[![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/vokeio/muleify.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/vokeio/muleify/context:javascript)
 
 # Muleify
 **Static Site Generator | Website Bundler | Asset Compiler | Templating | Preprocessor**
