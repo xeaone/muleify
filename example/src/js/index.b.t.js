@@ -11,8 +11,8 @@ import { add } from './add.i.js';
 	I am still here again
 */
 
-Promise.resolve().then(async => {
-    
+Promise.resolve().then(async () => {
+
 	const sum = await add(one, two);
 	console.log(`${sum}`);'use strict';
 
