@@ -4,7 +4,7 @@ const Operations = require('./operations.js');
 const Package = require('../package.json');
 const Cliy = require('cliy');
 
-(async function() {
+(async function () {
 
     const program = new Cliy();
 
