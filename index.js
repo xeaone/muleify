@@ -11,8 +11,8 @@ const LB = Global.lb;
 const IGNOREABLES = Global.ignoreables;
 
 const directory = async function (input, output, options) {
-	let beforePaths = [];
-	let afterPaths = [];
+	let before = [];
+	let after = [];
 
 	const paths = await Fsep.walk({
 		path: input,
@@ -20,20 +20,20 @@ const directory = async function (input, output, options) {
 		filters: IGNOREABLES
 	});
 
-	paths.forEach(function (path) {
+	paths.forEach(path => {
 		if (LB.test(path)) {
-			beforePaths.push(path);
+			before.push(path);
 		} else {
-			afterPaths.push(path);
+			after.push(path);
 		}
 	});
 
-	await Promise.all(beforePaths.map(async function (path) {
-		await Transform(Path.join(input, path), Path.join(output, path), options);
+	await Promise.all(before.map(async path => {
+		return Transform(Path.join(input, path), Path.join(output, path), options);
 	}));
 
-	await Promise.all(afterPaths.map(async function (path) {
-		await Transform(Path.join(input, path), Path.join(output, path), options);
+	await Promise.all(after.map(async path => {
+		return Transform(Path.join(input, path), Path.join(output, path), options);
 	}));
 
 };
