@@ -104,14 +104,14 @@ exports.encamp = async function (input, output) {
 	await Fsep.scaffold(output, JSON.parse(data));
 };
 
-exports.map = async function (input, output, options) {
+exports.map = async function (input, output, domain) {
 	const paths = await Fsep.walk({
 		path: input,
 		ignoreDot: true,
 		filters: IGNOREABLES
 	});
 
-	const sitemap = await Sitemap(paths, options.domain);
+	const sitemap = await Sitemap(paths, domain);
 	const path = Path.join(output, 'sitemap.xml');
 
 	await Fsep.outputFile(path, sitemap);
@@ -120,7 +120,7 @@ exports.map = async function (input, output, options) {
 exports.sass = async function () {
 	return await Terminal({
 		cmd: 'npm',
-		args: ['i', '--no-save', 'node-sass'],
+		args: [ 'i', '--no-save', 'node-sass' ],
 		cwd: __dirname
 	});
 };
