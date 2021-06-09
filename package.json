@@ -1,6 +1,6 @@
 {
 	"name": "muleify",
-	"version": "5.4.2",
+	"version": "5.5.0",
 	"description": "A zero configuration static site generator and asset preprocessor compiler.",
 	"main": "index.js",
 	"engines": {
@@ -53,10 +53,10 @@
 	},
 	"homepage": "https://github.com/vokeio/muleify#readme",
 	"dependencies": {
-		"@babel/core": "^7.11.6",
-		"@babel/preset-env": "^7.10.4",
-		"@rollup/plugin-commonjs": "^11.1.0",
-		"@rollup/plugin-node-resolve": "^7.1.3",
+		"@babel/core": "^7.14.3",
+		"@babel/preset-env": "^7.14.4",
+		"@rollup/plugin-commonjs": "^19.0.0",
+		"@rollup/plugin-node-resolve": "^13.0.0",
 		"babel-plugin-transform-async-to-promises": "^0.8.15",
 		"babel-preset-minify": "^0.5.1",
 		"cliy": "^3.1.2",
@@ -67,7 +67,7 @@
 		"porty": "^3.1.1",
 		"postcss": "^8.3.0",
 		"postcss-preset-env": "^6.7.0",
-		"rollup": "^2.21.0",
+		"rollup": "^2.51.1",
 		"servey": "^5.2.6",
 		"svgo": "^2.3.0"
 	}

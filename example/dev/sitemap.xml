@@ -1,43 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 	<url>
-		<loc>http://alex-elias.com/css/index.css</loc>
-		<lastmod>2017-08-06</lastmod>
+		<loc>www.foo.com/css/index.css</loc>
+		<lastmod>2021-06-09</lastmod>
 	</url>
 	<url>
-		<loc>http://alex-elias.com/header.jpg</loc>
-		<lastmod>2017-08-06</lastmod>
+		<loc>www.foo.com/header.jpg</loc>
+		<lastmod>2021-06-09</lastmod>
 	</url>
 	<url>
-		<loc>http://alex-elias.com/index.html</loc>
-		<lastmod>2017-08-06</lastmod>
+		<loc>www.foo.com/index.html</loc>
+		<lastmod>2021-06-09</lastmod>
 	</url>
 	<url>
-		<loc>http://alex-elias.com/js/index.js</loc>
-		<lastmod>2017-08-06</lastmod>
+		<loc>www.foo.com/js/index.js</loc>
+		<lastmod>2021-06-09</lastmod>
 	</url>
 	<url>
-		<loc>http://alex-elias.com/js/zero.js</loc>
-		<lastmod>2017-08-06</lastmod>
+		<loc>www.foo.com/js/zero.js</loc>
+		<lastmod>2021-06-09</lastmod>
 	</url>
 	<url>
-		<loc>http://alex-elias.com/less/index.css</loc>
-		<lastmod>2017-08-06</lastmod>
+		<loc>www.foo.com/less/index.css</loc>
+		<lastmod>2021-06-09</lastmod>
 	</url>
 	<url>
-		<loc>http://alex-elias.com/md/index.html</loc>
-		<lastmod>2017-08-06</lastmod>
+		<loc>www.foo.com/md/index.html</loc>
+		<lastmod>2021-06-09</lastmod>
 	</url>
 	<url>
-		<loc>http://alex-elias.com/scss/index.css</loc>
-		<lastmod>2017-08-06</lastmod>
+		<loc>www.foo.com/scss/index.css</loc>
+		<lastmod>2021-06-09</lastmod>
 	</url>
 	<url>
-		<loc>http://alex-elias.com/sitemap.xml</loc>
-		<lastmod>2017-08-06</lastmod>
+		<loc>www.foo.com/sitemap.xml</loc>
+		<lastmod>2021-06-09</lastmod>
 	</url>
 	<url>
-		<loc>http://alex-elias.com/test.txt</loc>
-		<lastmod>2017-08-06</lastmod>
+		<loc>www.foo.com/svg/heritage-oaks.svg</loc>
+		<lastmod>2021-06-09</lastmod>
+	</url>
+	<url>
+		<loc>www.foo.com/test.txt</loc>
+		<lastmod>2021-06-09</lastmod>
 	</url>
 </urlset>
