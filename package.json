@@ -1,74 +1,74 @@
 {
-	"name": "muleify",
-	"version": "5.5.0",
-	"description": "A zero configuration static site generator and asset preprocessor compiler.",
-	"main": "index.js",
-	"engines": {
-		"node": ">=7.6.0"
-	},
-	"bin": {
-		"muleify": "bin/index.js"
-	},
-	"scripts": {
-		"test": "node bin -ptbw example/src example/dev -s example/dev"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/vokeio/muleify.git"
-	},
-	"keywords": [
-		"build",
-		"tool",
-		"web",
-		"components",
-		"html",
-		"css",
-		"js",
-		"cli",
-		"gulp",
-		"webpack",
-		"webpacker",
-		"webpacks",
-		"webbundle",
-		"webbundler",
-		"webbundles",
-		"web-pack",
-		"web-packer",
-		"web-packs",
-		"web-bundle",
-		"web-bundler",
-		"web-bundles",
-		"static",
-		"site",
-		"generator",
-		"static-site",
-		"static-site-generator",
-		"muleify",
-		"mule"
-	],
-	"author": "Alexander Elias",
-	"license": "MPL-2.0",
-	"bugs": {
-		"url": "https://github.com/vokeio/muleify/issues"
-	},
-	"homepage": "https://github.com/vokeio/muleify#readme",
-	"dependencies": {
-		"@babel/core": "^7.14.3",
-		"@babel/preset-env": "^7.14.4",
-		"@rollup/plugin-commonjs": "^19.0.0",
-		"@rollup/plugin-node-resolve": "^13.0.0",
-		"babel-plugin-transform-async-to-promises": "^0.8.15",
-		"babel-preset-minify": "^0.5.1",
-		"cliy": "^3.1.2",
-		"fsep": "^2.0.1",
-		"less": "^4.1.1",
-		"marked": "^2.0.7",
-		"observey": "^2.0.0",
-		"porty": "^3.1.1",
-		"postcss": "^8.3.0",
-		"postcss-preset-env": "^6.7.0",
-		"rollup": "^2.51.1",
-		"servey": "^5.2.6",
-		"svgo": "^2.3.0"
-	}
+    "name": "muleify",
+    "version": "5.5.1",
+    "description": "A zero configuration static site generator and asset preprocessor compiler.",
+    "main": "index.js",
+    "engines": {
+        "node": ">=7.6.0"
+    },
+    "bin": {
+        "muleify": "bin/index.js"
+    },
+    "scripts": {
+        "test": "node bin -ptbw example/src example/dev -s example/dev"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/vokeio/muleify.git"
+    },
+    "keywords": [
+        "build",
+        "tool",
+        "web",
+        "components",
+        "html",
+        "css",
+        "js",
+        "cli",
+        "gulp",
+        "webpack",
+        "webpacker",
+        "webpacks",
+        "webbundle",
+        "webbundler",
+        "webbundles",
+        "web-pack",
+        "web-packer",
+        "web-packs",
+        "web-bundle",
+        "web-bundler",
+        "web-bundles",
+        "static",
+        "site",
+        "generator",
+        "static-site",
+        "static-site-generator",
+        "muleify",
+        "mule"
+    ],
+    "author": "Alexander Elias",
+    "license": "MPL-2.0",
+    "bugs": {
+        "url": "https://github.com/vokeio/muleify/issues"
+    },
+    "homepage": "https://github.com/vokeio/muleify#readme",
+    "dependencies": {
+        "@babel/core": "^7.14.3",
+        "@babel/preset-env": "^7.14.4",
+        "@rollup/plugin-commonjs": "^19.0.0",
+        "@rollup/plugin-node-resolve": "^13.0.0",
+        "babel-plugin-transform-async-to-promises": "^0.8.15",
+        "babel-preset-minify": "^0.5.1",
+        "cliy": "^3.1.2",
+        "fsep": "^2.0.1",
+        "less": "^4.1.1",
+        "marked": "^2.0.7",
+        "nety": "^0.3.8",
+        "observey": "^2.0.0",
+        "porty": "^3.1.1",
+        "postcss": "^8.3.0",
+        "postcss-preset-env": "^6.7.0",
+        "rollup": "^2.51.1",
+        "svgo": "^2.3.0"
+    }
 }
